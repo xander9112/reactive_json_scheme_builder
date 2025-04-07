@@ -1,0 +1,259 @@
+##################################################################################
+##                      Linter rules for all packages                           ##
+##                      -----------------------------                           ##
+## Note that there is no need to define another                                 ##
+## analysis-options.yaml in each package because they will                      ##
+## automatically go up the tree if not found in the package. See here:          ##
+## https://dart.dev/guides/language/analysis-options#the-analysis-options-file  ##
+##################################################################################
+include: package:very_good_analysis/analysis_options.7.0.0.yaml
+
+##
+# Lint rules to be used for apps without developer facing API. i.e. command line tools and Flutter applications
+##
+analyzer:
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+  errors:
+    # treat missing required parameters as an error (not a hint)
+    missing_required_param: error
+    # treat missing returns as an error (not a hint)
+    missing_return: error
+    # Reassignment should be treated as warning (not a hint)
+    parameter_assignments: warning
+    invalid_annotation_target: ignore
+    one_member_abstracts: ignore
+    public_member_api_docs: ignore
+
+  # Exclude auto-generated files from dart analysis
+  exclude:
+    - "**/**.freezed.dart"
+    - "**/**.config.dart"
+    - "**/**.module.dart"
+    - "**/**.gr.dart"
+    - "**/**.gm.dart"
+    - "**/**.freezed.dart"
+    - "**/**.g.dart"
+    - "**/messages_*.dart"
+
+dart_code_metrics:
+  rules:
+    - avoid-duplicate-map-keys
+    - no-equal-then-else
+    - prefer-return-await
+
+linter:
+  rules:
+    ########################################################################
+    ##                            CUSTOM RULES                            ##
+    ##                       -----------------------                      ##
+    ##                                                                    ##
+    ## Those rules are either :                                           ##
+    ##  -  disabled in inherited package and enabled here (if true here)  ##
+    ##  -  enabled in inherited package and disabled here (if false here) ##
+    ########################################################################
+
+    always_put_required_named_parameters_first: true
+    require_trailing_commas: true
+
+    # Nobody wants to manually wrap lines when changing a few words. This rule is too hard to be a "general" rule
+    lines_longer_than_80_chars: false
+
+    # Types for local variables can improve readability and shouldn't be forced to be removed.
+    #
+    # Dart SDK: >= 2.0.0 • (Linter v0.1.30)
+    #
+    omit_local_variable_types: false
+
+    # Defining interfaces (abstract classes), with only one method, makes sense architecture wise
+    # Discussion: https://github.com/passsy/dart-lint/issues/2
+    #
+    #
+    one_member_abstracts: false
+
+    # Definitely not a rule for standard dart code. Maybe relevant for packages
+    public_member_api_docs: false
+
+    # There is no argument which makes int literals better than double literals for doubles.
+    #
+    prefer_int_literals: false
+
+    # "Any sorting is better than no sorting"... probably but it's also a lot of work
+    # for little added value on pub dependencies. Sometimes it's even less readable
+    # because logical groups can be made with packages that might now follow each other
+    # in the alphabetical order
+    sort_pub_dependencies: true
+
+    # Use whatever makes you happy. lint doesn't define a style
+    # Conflicts with prefer_double_quotes
+    #
+    prefer_single_quotes: true
+
+    ########################################################################
+    ##                           Dart 2.19 rules                          ##
+    ##                       -----------------------                      ##
+    ##                                                                    ##
+    ## We use the plugin "very_good_analysis" in version 3.1.0            ##
+    ## as our base rules set.                                             ##
+    ## However as of 2023/02/06 new Dart 2.19 rules have not been         ##
+    ## added to this plugin yet, so we will put them there for now.       ##
+    ########################################################################
+
+    # !MONITOR!
+    # New Dart 2.19 rule (as of 2023/02/06)
+    collection_methods_unrelated_type: true
+
+    # !MONITOR!
+    # New Dart 2.19 rule (as of 2023/02/06)
+    combinators_ordering: true
+
+    # !MONITOR!
+    # New Dart 2.19 rule (as of 2023/02/06)
+    dangling_library_doc_comments: true
+
+    # !MONITOR!
+    # New Dart 2.19 rule (as of 2023/02/06)
+    library_annotations: true
+
+    # !MONITOR!
+    # New Dart 2.19 rule (as of 2023/02/06)
+    unnecessary_library_directive: true
+
+    # !MONITOR!
+    # New Dart 2.19 rule (as of 2023/02/06)
+    implicit_call_tearoffs: true
+
+    # !MONITOR!
+    # New Dart 2.19 rule (as of 2023/02/06)
+    unreachable_from_main: true
+
+    # !MONITOR!
+    # New Dart 2.19 rule (as of 2023/02/06)
+    use_string_in_part_of_directives: true
+
+    avoid_positional_boolean_parameters: false
+
+    # ------ Disable individual rules ----- #
+    #                 ---                   #
+    # Turn off what you don't like.         #
+    # ------------------------------------- #
+
+    depend_on_referenced_packages: false
+
+    # Util classes are awesome!
+    avoid_classes_with_only_static_members: false
+
+    # ------ Enable individual rules ------ #
+    #                 ---                   #
+    # These rules here are good but too     #
+    # opinionated to enable them by default #
+    # ------------------------------------- #
+
+    # Make constructors the first thing in every class
+    sort_constructors_first: true
+
+    # Blindly follow the Flutter code style, which prefers types everywhere
+    always_specify_types: false
+
+    use_build_context_synchronously: false
+
+    no_leading_underscores_for_local_identifiers: false
+
+    directives_ordering: true
+
+    # Don't explicitly set defaults
+    # Dart SDK: >= 2.8.0-dev.1.0 • (Linter v0.1.107)
+    # https://dart-lang.github.io/linter/lints/avoid_redundant_argument_values.html
+    avoid_redundant_argument_values: true
+
+    # Remove async/await clutter when not required
+    # https://dart-lang.github.io/linter/lints/unnecessary_await_in_return.html
+    unnecessary_await_in_return: true
+
+    # Remove unnecessary braces
+    # pedantic: enabled
+    # https://dart-lang.github.io/linter/lints/unnecessary_brace_in_string_interps.html
+    unnecessary_brace_in_string_interps: true
+
+    # Yes, const everywhere. But not in an already const scope
+    # pedantic: enabled
+    # https://dart-lang.github.io/linter/lints/unnecessary_const.html
+    unnecessary_const: true
+
+    # Disabled because `final` prevents accidental reassignment
+    # https://dart-lang.github.io/linter/lints/unnecessary_final.html
+    # unnecessary_final
+
+    # Getter/setters can be added later on in a non API breaking manner
+    #
+    # https://dart-lang.github.io/linter/lints/unnecessary_getters_setters.html
+    unnecessary_getters_setters: true
+
+    # Flutter setState is a good example where a lambda should always be used.
+    # https://github.com/dart-lang/linter/issues/498
+    #
+    # Some generic code sometimes requires lambdas, otherwise the generic type isn't forwarded correctly.
+    #
+    # https://dart-lang.github.io/linter/lints/unnecessary_lambdas.html
+    # unnecessary_lambdas
+
+    # Remove the optional `new` keyword
+    # pedantic: enabled
+    # https://dart-lang.github.io/linter/lints/unnecessary_new.html
+    unnecessary_new: true
+
+    # Don't assign `null` when value is already `null`.
+    # pedantic: disabled
+    # https://dart-lang.github.io/linter/lints/unnecessary_null_aware_assignments.html
+    unnecessary_null_aware_assignments: true
+
+    # Remove ! when already non-nullable
+    # Dart SDK: >= 2.10.0-144.0.dev • (Linter v0.1.119)
+    # https://dart-lang.github.io/linter/lints/unnecessary_null_checks.html
+    unnecessary_null_checks: true
+
+    # Don't assign `null` when value is already `null`.
+    # pedantic: enabled
+    # https://dart-lang.github.io/linter/lints/unnecessary_null_in_if_null_operators.html
+    unnecessary_null_in_if_null_operators: true
+
+    # If a variable doesn't change and is initialized, no need to define it as nullable (NNDB)
+    # Dart SDK: >= 2.10.0-10.0.dev • (Linter v0.1.118)
+    # https://dart-lang.github.io/linter/lints/unnecessary_nullable_for_final_variable_declarations.html
+    unnecessary_nullable_for_final_variable_declarations: true
+
+    # Remove overrides which simply call super
+    # https://dart-lang.github.io/linter/lints/unnecessary_overrides.html
+    unnecessary_overrides: true
+
+    # Remove clutter where possible
+    # https://dart-lang.github.io/linter/lints/unnecessary_parenthesis.html
+    unnecessary_parenthesis: true
+
+    # Use raw string only when needed
+    # Dart SDK: >= 2.8.0-dev.11.0 • (Linter v0.1.111)
+    # https://dart-lang.github.io/linter/lints/unnecessary_raw_strings.html
+    unnecessary_raw_strings: true
+
+    # Avoid magic overloads of + operators
+    # https://dart-lang.github.io/linter/lints/unnecessary_statements.html
+    unnecessary_statements: true
+
+    # Remove unnecessary escape characters
+    # Dart SDK: >= 2.8.0-dev.11.0 • (Linter v0.1.111)
+    # https://dart-lang.github.io/linter/lints/unnecessary_string_escapes.html
+    unnecessary_string_escapes: true
+
+    # Completely unnecessary code, simplify to save a few CPU cycles
+    #
+    # Dart SDK: >= 2.8.0-dev.10.0 • (Linter v0.1.110)
+    #
+    # https://dart-lang.github.io/linter/lints/unnecessary_string_interpolations.html
+    unnecessary_string_interpolations: true
+
+    # The variable is clear, remove clutter
+    # pedantic: enabled
+    # https://dart-lang.github.io/linter/lints/unnecessary_this.html
+    unnecessary_this: true
