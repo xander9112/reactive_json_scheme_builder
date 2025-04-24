@@ -1,5 +1,6 @@
 export 'checkbox_control.dart';
 export 'date_control.dart';
+export 'date_range_control.dart';
 export 'dropdown_control.dart';
 // export 'email_control.dart';
 export 'integer_control.dart';

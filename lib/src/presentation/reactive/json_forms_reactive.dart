@@ -125,6 +125,13 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
 
     switch (type) {
       case 'string':
+        if (controlProperties.format == 'date') {
+          return FormControl<DateTime>(
+            validators: _parseValidators(schema, requiredList),
+            disabled: readOnly,
+            // value: readOnly ? schema['const'].toString() : value as String?,
+          );
+        }
         return FormControl<String>(
           validators: _parseValidators(schema, requiredList),
           disabled: readOnly,

@@ -344,6 +344,32 @@ final List<Map<String, RenderType<FormGroup>>> customRenders = [
       );
     }
   },
+  // {
+  //   'DATE_RANGE': (
+  //     JsonSchema4 schema,
+  //     UISchemaElement uiSchema,
+  //     JsonForms<FormGroup> jsonForms,
+  //   ) {
+  //     final List<String> parts = uiSchema.scope!.split('/')..removeAt(0);
+  //     String label = uiSchema.label ?? camelCaseToWords(parts.last);
+  //     final String formControlName =
+  //         parts.whereNot((element) => element == 'properties').join('.');
+
+  //     if (schema.required != null && schema.required!.contains(parts.last)) {
+  //       label += '*';
+  //     }
+
+  //     final JsonSchema4 item = getItemFromJsonScheme(parts, schema);
+
+  //     return ReactiveRangeDateControl(
+  //       formControlName: formControlName,
+  //       label: label,
+  //       callback: (data) {},
+  //       path: getParts(uiSchema.scope!),
+  //       jsonData: const {},
+  //     );
+  //   }
+  // },
   {
     'BUTTON': (
       JsonSchema4 schema,

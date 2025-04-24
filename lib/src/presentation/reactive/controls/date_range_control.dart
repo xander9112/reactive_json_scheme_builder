@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:reactive_date_time_picker/reactive_date_time_picker.dart';
+import 'package:reactive_date_range_picker/reactive_date_range_picker.dart';
 import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
 
-class ReactiveDateControl extends StatefulWidget {
-  const ReactiveDateControl({
+class ReactiveRangeDateControl extends StatelessWidget {
+  const ReactiveRangeDateControl({
     required this.formControlName,
     required this.label,
     required this.path,
@@ -25,16 +25,12 @@ class ReactiveDateControl extends StatefulWidget {
   final bool? multi;
 
   @override
-  State<ReactiveDateControl> createState() => _ReactiveDateControlState();
-}
-
-class _ReactiveDateControlState extends State<ReactiveDateControl> {
-  @override
   Widget build(BuildContext context) {
-    return ReactiveDateTimePicker(
-      formControlName: widget.formControlName,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
+    return ReactiveDateRangePicker(
+      formControlName: formControlName,
+
+      // firstDate: DateTime(2000),
+      // lastDate: DateTime(2100),
       // builder: (context, picker, child) {
       //   // final format = field!['format'] ?? 'date';
 

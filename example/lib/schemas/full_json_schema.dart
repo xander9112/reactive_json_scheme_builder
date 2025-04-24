@@ -47,12 +47,14 @@ const fullJsonSchemaStr = r'''
         },
         "birthday": {
             "title": "Дата рождения",
-            "type": "string"
+            "type": "string",
+            "format": "date"
         },
         "date_range": {
             "title": "Выбрать дату",
             "type": "string",
-            "default": null
+            "default": null,
+            "format": "date"
         }
     }
 }

@@ -13,6 +13,8 @@ dependencies:
   reactive_forms_json_scheme:
     path: ../
   mask_text_input_formatter: ^2.9.0
+  reactive_date_range_picker: ^2.3.0
+  reactive_date_time_picker: ^5.0.0
 
 dev_dependencies:
   flutter_lints: ^5.0.0

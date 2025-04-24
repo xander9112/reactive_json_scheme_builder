@@ -11,6 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   mask_text_input_formatter: ^2.9.0
+  reactive_date_range_picker: ^2.3.0
+  reactive_date_time_picker: ^5.0.0
   reactive_forms: ^17.0.1
 
 dev_dependencies:
