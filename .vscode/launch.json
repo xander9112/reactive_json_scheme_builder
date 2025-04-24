@@ -5,9 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "reactive_forms_json_scheme",
+            "name": "Example",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "program": "example/lib/main.dart",
+            "args": [
+                "--target",
+                "lib/main.dart"
+            ]
         },
         {
             "name": "reactive_forms_json_scheme (profile mode)",

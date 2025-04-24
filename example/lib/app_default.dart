@@ -13,7 +13,7 @@ class MyAppDefault extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final jsonForms = JsonFormsDefault(
+    final jsonForms = JsonFormsReactive(
       schema,
       uiSchema ?? {},
       data ?? {},

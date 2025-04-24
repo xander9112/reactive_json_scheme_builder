@@ -1,91 +1,252 @@
 const uiSchemaStr = r'''
 {
-  "type": "VerticalLayout",
-  "elements": [
-    {
-      "type": "HorizontalLayout",
-      "elements": [
-        {
-          "type": "Control",
-          "scope": "#/properties/firstName"
-        },
-        {
-          "type": "Control",
-          "scope": "#/properties/lastName"
-        }
-      ]
+    "type": "GRID_COMPONENT",
+    "options": {
+        "lg": 24,
+        "md": 24,
+        "sm": 24,
+        "xs": 24
     },
-    {
-      "type": "HorizontalLayout",
-      "elements": [
+    "elements": [
         {
-          "type": "Control",
-          "scope": "#/properties/age"
-        },
-        {
-          "type": "Control",
-          "scope": "#/properties/dateOfBirth"
-        }
-      ]
-    },
-    {
-      "type": "VerticalLayout",
-      "elements": [
-        {
-          "type": "Control",
-          "scope": "#/properties/height"
-        },
-        {
-          "type": "Control",
-          "scope": "#/properties/gender"
-        },
-        {
-          "type": "Control",
-          "scope": "#/properties/committer"
-        }
-      ]
-    },
-    {
-      "type": "Group",
-      "label": "Address for Shipping T-Shirt",
-      "elements": [
-        {
-          "type": "GridLayout",
-          "elements": [
-            {
-              "type": "Control",
-              "scope": "#/properties/address/properties/street"
+            "type": "GRID_COMPONENT",
+            "options": {
+                "lg": 24,
+                "md": 24,
+                "sm": 24,
+                "xs": 24
             },
-            {
-              "type": "Control",
-              "scope": "#/properties/address/properties/number"
-            }
-          ]
+            "elements": [
+                {
+                    "type": "GRID_COMPONENT",
+                    "options": {
+                        "lg": 12,
+                        "md": 12,
+                        "sm": 12,
+                        "xs": 13
+                    },
+                    "elements": [
+                        {
+                            "type": "INPUT_TEXT",
+                            "scope": "#/properties/firstName",
+                            "label": "firstName",
+                            "options": {
+                                "name": "firstName",
+                                "bordered": true
+                            }
+                        },
+                        {
+                            "type": "INPUT_NUMBER",
+                            "scope": "#/properties/rating",
+                            "label": "rating",
+                            "options": {
+                                "name": "rating",
+                                "bordered": true
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "GRID_COMPONENT",
+                    "options": {
+                        "lg": 12,
+                        "md": 12,
+                        "sm": 12,
+                        "xs": 12
+                    },
+                    "elements": [
+                        {
+                            "type": "INPUT_TEXT",
+                            "scope": "#/properties/lastName",
+                            "label": "lastName",
+                            "options": {
+                                "name": "lastName",
+                                "size": "middle",
+                                "type": "text",
+                                "bordered": true,
+                                "maxLength": 3
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "GRID_COMPONENT",
+                    "options": {
+                        "lg": 12,
+                        "md": 12,
+                        "sm": 12,
+                        "xs": 12
+                    }
+                },
+                {
+                    "type": "GRID_COMPONENT",
+                    "options": {
+                        "lg": 12,
+                        "md": 12,
+                        "sm": 12,
+                        "xs": 12
+                    }
+                }
+            ]
         },
         {
-          "type": "HorizontalLayout",
-          "elements": [
-            {
-              "type": "Control",
-              "scope": "#/properties/address/properties/postalCode"
-            },
-            {
-              "type": "Control",
-              "scope": "#/properties/address/properties/city"
+            "type": "INPUT_NUMBER",
+            "scope": "#/properties/age",
+            "label": "age",
+            "options": {
+                "name": "age",
+                "bordered": true
             }
-          ]
+        },
+        {
+            "type": "GRID_COMPONENT",
+            "options": {
+                "lg": 24,
+                "md": 24,
+                "sm": 24,
+                "xs": 24
+            },
+            "elements": [
+                {
+                    "type": "GRID_COMPONENT",
+                    "options": {
+                        "lg": 8,
+                        "md": 8,
+                        "sm": 8,
+                        "xs": 8
+                    },
+                    "elements": [
+                        {
+                            "type": "DROP_DOWN",
+                            "scope": "#/properties/gender",
+                            "label": "gender",
+                            "options": {
+                                "name": "gender",
+                                "items": {
+                                    "Male": "Male",
+                                    "Female": "Female",
+                                    "Undisclosed": "Undisclosed"
+                                },
+                                "bordered": true
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "GRID_COMPONENT",
+                    "options": {
+                        "lg": 8,
+                        "md": 8,
+                        "sm": 8,
+                        "xs": 8
+                    },
+                    "elements": [
+                        {
+                            "type": "INPUT_NUMBER",
+                            "scope": "#/properties/height",
+                            "label": "height",
+                            "options": {
+                                "name": "height",
+                                "bordered": true
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "GRID_COMPONENT",
+                    "options": {
+                        "lg": 8,
+                        "md": 8,
+                        "sm": 8,
+                        "xs": 8
+                    },
+                    "elements": [
+                        {
+                            "type": "INPUT_TEXT",
+                            "scope": "#/properties/dateOfBirth",
+                            "label": "dateOfBirth",
+                            "options": {
+                                "name": "dateOfBirth",
+                                "bordered": true
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "GRID_COMPONENT",
+                    "options": {
+                        "lg": 12,
+                        "md": 12,
+                        "sm": 12,
+                        "xs": 12
+                    }
+                }
+            ]
+        },
+        {
+            "type": "SWITCH",
+            "scope": "#/properties/committer",
+            "label": "committer",
+            "options": {
+                "name": "committer",
+                "bordered": true
+            }
+        },
+        {
+            "type": "GRID_COMPONENT",
+            "options": {
+                "lg": 24,
+                "md": 24,
+                "sm": 24,
+                "xs": 24
+            },
+            "elements": [
+                {
+                    "type": "INPUT_TEXT",
+                    "scope": "#/properties/address/properties/street",
+                    "label": "street",
+                    "options": {
+                        "name": "street",
+                        "bordered": true
+                    }
+                },
+                {
+                    "type": "INPUT_NUMBER",
+                    "scope": "#/properties/address/properties/number",
+                    "label": "number",
+                    "options": {
+                        "name": "number",
+                        "bordered": true
+                    }
+                },
+                {
+                    "type": "INPUT_NUMBER",
+                    "scope": "#/properties/address/properties/postalCode",
+                    "label": "postalCode",
+                    "options": {
+                        "name": "postalCode",
+                        "bordered": true
+                    }
+                },
+                {
+                    "type": "INPUT_TEXT",
+                    "scope": "#/properties/address/properties/city",
+                    "label": "city",
+                    "options": {
+                        "name": "city",
+                        "bordered": true
+                    }
+                }
+            ]
+        },
+        {
+            "type": "BUTTON",
+            "label": "Button",
+            "options": {
+                "type": "default",
+                "htmlType": "button"
+            }
         }
-      ],
-      "rule": {
-        "effect": "ENABLE",
-        "condition": {
-          "scope": "#/properties/committer",
-          "schema": {
-            "const": true
-          }
-        }
-      }
-    }
-  ]
+    ]
 }
 ''';

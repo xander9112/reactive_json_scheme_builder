@@ -5,12 +5,12 @@ enum PropertyType { string, number, integer, boolean, array, object }
 
 enum PropertyFormat { date, time, email, hostname, uri }
 
-abstract class JsonForms {
+abstract class JsonForms<FormType> {
   JsonForms(
     Map<String, dynamic> dataSchemaJson,
     Map<String, dynamic> uiSchemaJson,
     Map<String, dynamic> dataJson,
-    List<Map<String, RenderType>>? customRenderList,
+    List<Map<String, RenderType<FormType>>>? customRenderList,
     this.callback,
   ) {
     dataSchema = JsonSchema4.fromJson(dataSchemaJson);
@@ -22,15 +22,17 @@ abstract class JsonForms {
       renderList.addAll(customRenderList);
     }
   }
+
+  final JsonFormsCallback callback;
+
   late UISchemaElement uiSchema;
   late JsonSchema4 dataSchema;
   late Map<String, dynamic> data;
-  final JsonFormsCallback callback;
-  late final List<Map<String, RenderType>> renderList;
 
-  final formKey = GlobalKey<FormState>();
+  late final List<Map<String, RenderType<FormType>>> renderList;
+  late final FormType form;
 
-  List<Map<String, RenderType>> get myRenderList;
+  List<Map<String, RenderType<FormType>>> get myRenderList;
 
   Widget getControl(
     UISchemaElement uiSchema,
