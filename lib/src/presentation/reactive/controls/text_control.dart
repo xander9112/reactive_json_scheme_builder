@@ -7,7 +7,6 @@ class ReactiveTextControl extends StatefulWidget {
     required this.formControlName,
     required this.label,
     required this.path,
-    required this.jsonData,
     required this.callback,
     super.key,
     this.description,
@@ -19,7 +18,7 @@ class ReactiveTextControl extends StatefulWidget {
   final String label;
   final String? description;
   final List<String> path;
-  final Map<String, dynamic> jsonData;
+
   final JsonFormsCallback callback;
   final int? minLength;
   final bool? multi;

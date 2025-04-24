@@ -4,16 +4,18 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
 
 class JsonFormsReactive implements JsonForms<FormGroup> {
-  JsonFormsReactive(
-    Map<String, dynamic> dataSchemaJson,
-    Map<String, dynamic> uiSchemaJson,
-    Map<String, dynamic> dataJson,
-    List<Map<String, RenderType<FormGroup>>>? customRenderList,
-    this.callback,
-  ) {
-    dataSchema = JsonSchema4.fromJson(dataSchemaJson);
-    uiSchema = UISchemaElement.fromJson(uiSchemaJson);
-    data = dataJson;
+  JsonFormsReactive({
+    required Map<String, dynamic> jsonSchema,
+    required List<Map<String, RenderType<FormGroup>>>? customRenderList,
+    required this.onSubmit,
+    Map<String, dynamic>? dataJson,
+    Map<String, dynamic>? uiSchema,
+  }) {
+    jsonSchemaDTO = JsonSchema4.fromJson(jsonSchema);
+    uiSchemaDTO = uiSchema != null
+        ? UISchemaElement.fromJson(uiSchema)
+        : UISchemaElement.fromJsonSchema(jsonSchema);
+    data = dataJson ?? {};
     renderList = [...myRenderList];
 
     if (customRenderList != null && customRenderList.isNotEmpty) {
@@ -22,14 +24,16 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
 
     form = createFormGroup();
   }
+
   @override
-  late UISchemaElement uiSchema;
+  late UISchemaElement uiSchemaDTO;
+
   @override
-  late JsonSchema4 dataSchema;
+  late JsonSchema4 jsonSchemaDTO;
+
   @override
   late Map<String, dynamic> data;
-  @override
-  final JsonFormsCallback callback;
+
   @override
   late final List<Map<String, RenderType<FormGroup>>> renderList;
 
@@ -37,210 +41,36 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
   late final FormGroup form;
 
   @override
-  List<Map<String, RenderType<FormGroup>>> get myRenderList => [
-        {
-          'HorizontalLayout': (
-            UISchemaElement uiSchema,
-            JsonSchema4 schema,
-            JsonForms<FormGroup> jsonForms,
-          ) {
-            return HorizontalLayout(
-              uiSchema: uiSchema,
-              schema: schema,
-              jsonForms: jsonForms,
-              createWidgets: createWidgets,
-            );
-          },
-        },
-        {
-          'VerticalLayout': (
-            UISchemaElement uiSchema,
-            JsonSchema4 schema,
-            JsonForms<FormGroup> jsonForms,
-          ) {
-            return VerticalLayout(
-              uiSchema: uiSchema,
-              schema: schema,
-              jsonForms: jsonForms,
-              createWidgets: createWidgets,
-            );
-          },
-        },
-        {
-          'Label': (
-            UISchemaElement uiSchema,
-            JsonSchema4 schema,
-            JsonForms<FormGroup> jsonForms,
-          ) {
-            return ListTile(
-              title: Text(
-                uiSchema.text!,
-              ),
-            );
-          },
-        },
-        {
-          'Control': (
-            UISchemaElement uiSchema,
-            JsonSchema4 schema,
-            JsonForms<FormGroup> jsonForms,
-          ) {
-            final List<String> parts = uiSchema.scope!.split('/')..removeAt(0);
-            String label = uiSchema.label ?? camelCaseToWords(parts.last);
+  void Function(Map<String, dynamic> value) onSubmit;
 
-            final String formControlName =
-                parts.whereNot((element) => element == 'properties').join('.');
-
-            if (schema.required != null &&
-                schema.required!.contains(parts.last)) {
-              label += '*';
-            }
-
-            final JsonSchema4 item = getItemFromJsonScheme(parts, schema);
-
-            switch (item.type) {
-              case 'string':
-                final bool? multi = uiSchema.options?['multi'] as bool?;
-
-                if (item.format == PropertyFormat.date.name) {
-                  return ReactiveDateControl(
-                    formControlName: formControlName,
-                    label: label,
-                    description: item.description,
-                    path: getParts(uiSchema.scope!),
-                    jsonData: const {},
-                    callback: (Map<String, dynamic> data) {
-                      // callback(data);
-                    },
-                  );
-                }
-
-                // if (item.format == PropertyFormat.email.name) {
-                //   return EmailControl(
-                //     label: label,
-                //     description: item.description,
-                //     path: getParts(uiSchema.scope!),
-                //     jsonData: {},
-                //     callback: (Map<String, dynamic> data) {
-                //       // callback(data);
-                //     },
-                //     multi: multi,
-                //   );
-                // }
-
-                // if (item.format == PropertyFormat.uri.name) {
-                //   return UriControl(
-                //     label: label,
-                //     description: item.description,
-                //     path: getParts(uiSchema.scope!),
-                //     jsonData: {},
-                //     callback: (Map<String, dynamic> data) {
-                //       // callback(data);
-                //     },
-                //     multi: multi,
-                //   );
-                // }
-
-                if (item.enumValues != null) {
-                  return ReactiveDropdownControl(
-                    formControlName: formControlName,
-                    label: label,
-                    description: item.description,
-                    path: getParts(uiSchema.scope!),
-                    jsonData: const {},
-                    callback: (Map<String, dynamic> data) {
-                      // callback(data);
-                    },
-                    enumValues: item.enumValues! as List<String>,
-                  );
-                }
-
-                return ReactiveTextControl(
-                  formControlName: formControlName,
-                  label: label,
-                  description: item.description,
-                  path: getParts(uiSchema.scope!),
-                  jsonData: const {},
-                  callback: (Map<String, dynamic> data) {
-                    // callback(data);
-                  },
-                  minLength: item.minLength,
-                  multi: multi,
-                );
-              case 'boolean':
-                return ReactiveCheckboxControl(
-                  formControlName: formControlName,
-                  label: label,
-                  path: getParts(uiSchema.scope!),
-                  jsonData: const {},
-                  callback: (Map<String, dynamic> data) {
-                    // callback(data);
-                  },
-                );
-              case 'integer':
-                return ReactiveIntegerControl(
-                  formControlName: formControlName,
-                  label: label,
-                  description: item.description,
-                  path: getParts(uiSchema.scope!),
-                  jsonData: const {},
-                  callback: (Map<String, dynamic> data) {
-                    // callback(data);
-                  },
-                );
-              case 'number':
-                return ReactiveNumberControl(
-                  formControlName: formControlName,
-                  label: label,
-                  description: item.description,
-                  path: getParts(uiSchema.scope!),
-                  jsonData: const {},
-                  callback: (Map<String, dynamic> data) {
-                    // callback(data);
-                  },
-                );
-              default:
-                return Container();
-            }
-          },
-        },
-        {
-          'Group': (
-            UISchemaElement uiSchema,
-            JsonSchema4 schema,
-            JsonForms<FormGroup> jsonForms,
-          ) {
-            return GroupLayout(
-              uiSchema: uiSchema,
-              schema: schema,
-              jsonForms: jsonForms,
-              createWidgets: createWidgets,
-            );
-          },
-        }
-      ];
+  @override
+  List<Map<String, RenderType<FormGroup>>> get myRenderList =>
+      reactiveRenderList(createWidgets);
 
   FormGroup createFormGroup() {
     return _buildFormGroup(
-      dataSchema.properties!,
-      dataSchema.required,
+      jsonSchemaDTO.properties!,
+      jsonSchemaDTO.required,
     );
   }
 
   FormGroup _buildFormGroup(
     Map<String, JsonSchema4> properties,
-    List<String>? requiredList,
-  ) {
+    List<String>? requiredList, {
+    String path = '',
+  }) {
     final controls = <String, AbstractControl<dynamic>>{};
 
     properties.forEach((name, value) {
       final type = value.type;
+      final String newPath = path.isEmpty ? name : '$path.$name';
 
       switch (type) {
         case 'object':
           controls[name] = _parseObject(
             value.properties,
             requiredList,
+            path: newPath,
           );
         case 'array':
           // _parseArray(value);
@@ -250,7 +80,8 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
         case 'integer':
         case 'boolean':
         case 'null':
-          controls[name] = _buildControl({name: value}, requiredList);
+          controls[name] =
+              _buildControl({name: value}, requiredList, path: newPath);
         default:
           throw ArgumentError('Неизвестный тип: $type');
       }
@@ -262,15 +93,19 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
   // Преобразует тип "object" в FormGroup
   FormGroup _parseObject(
     Map<String, JsonSchema4>? properties,
-    List<String>? requiredList,
-  ) {
+    List<String>? requiredList, {
+    String path = '',
+  }) {
     final controls = <String, AbstractControl<dynamic>>{};
 
     properties?.forEach((name, value) {
+      final String newPath = path.isEmpty ? name : '$path.$name';
+
       controls[name] = _buildControl(
         {name: value},
         requiredList,
-      ); // рекурсивный вызов для вложенных объектов
+        path: newPath,
+      );
     });
 
     return FormGroup(controls);
@@ -278,31 +113,36 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
 
   AbstractControl<dynamic> _buildControl(
     Map<String, JsonSchema4> schema,
-    List<String>? requiredList,
-  ) {
+    List<String>? requiredList, {
+    String path = '',
+  }) {
     // final controlName = schema.entries.first.key;
     final controlProperties = schema.entries.first.value;
 
     final type = controlProperties.type;
     final readOnly = controlProperties.constValue != null;
 
+    final value = getValueFromPath(data, path.split('.'));
+
     switch (type) {
       case 'string':
         return FormControl<String>(
           validators: _parseValidators(schema, requiredList),
           disabled: readOnly,
-          value: readOnly ? schema['const'].toString() : null,
+          value: readOnly ? schema['const'].toString() : value as String?,
         );
       case 'number':
         return FormControl<double>(
           validators: _parseValidators(schema, requiredList),
+          value: double.tryParse(value.toString()),
         );
       case 'integer':
         return FormControl<int>(
           validators: _parseValidators(schema, requiredList),
+          value: value as int?,
         );
       case 'boolean':
-        return FormControl<bool>();
+        return FormControl<bool>(value: value as bool?);
       case 'null':
         return FormControl<Null>();
       default:
@@ -342,109 +182,9 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
   }
 
   @override
-  Widget getControl(
-    UISchemaElement uiSchema,
-    JsonSchema4 schema,
-    BuildContext context,
-  ) {
-    final List<String> parts = uiSchema.scope!.split('/')..removeAt(0);
-    String label = uiSchema.label ?? camelCaseToWords(parts.last);
-
-    if (schema.required != null && schema.required!.contains(parts.last)) {
-      label += '*';
-    }
-
-    final JsonSchema4 item = getItemFromJsonScheme(parts, schema);
-
-    switch (item.type) {
-      case 'string':
-        final bool? multi = uiSchema.options?['multi'] as bool?;
-
-        if (item.format == PropertyFormat.date.name) {
-          return DateControl(
-            label: label,
-            description: item.description,
-            path: getParts(uiSchema.scope!),
-            jsonData: data,
-            callback: callback,
-          );
-        }
-
-        if (item.format == PropertyFormat.email.name) {
-          return EmailControl(
-            label: label,
-            description: item.description,
-            path: getParts(uiSchema.scope!),
-            jsonData: data,
-            callback: callback,
-            multi: multi,
-          );
-        }
-
-        if (item.format == PropertyFormat.uri.name) {
-          return UriControl(
-            label: label,
-            description: item.description,
-            path: getParts(uiSchema.scope!),
-            jsonData: data,
-            callback: callback,
-            multi: multi,
-          );
-        }
-
-        if (item.enumValues != null) {
-          return DropdownControl(
-            label: label,
-            description: item.description,
-            path: getParts(uiSchema.scope!),
-            jsonData: data,
-            callback: callback,
-            enumValues: item.enumValues! as List<String>,
-          );
-        }
-
-        return TextControl(
-          label: label,
-          description: item.description,
-          path: getParts(uiSchema.scope!),
-          jsonData: data,
-          callback: callback,
-          minLength: item.minLength,
-          multi: multi,
-        );
-      case 'boolean':
-        return CheckboxControl(
-          label: label,
-          path: getParts(uiSchema.scope!),
-          jsonData: data,
-          callback: callback,
-        );
-      case 'integer':
-        return IntegerControl(
-          label: label,
-          description: item.description,
-          path: getParts(uiSchema.scope!),
-          jsonData: data,
-          callback: callback,
-        );
-      case 'number':
-        return NumberControl(
-          label: label,
-          description: item.description,
-          path: getParts(uiSchema.scope!),
-          jsonData: data,
-          callback: callback,
-        );
-      default:
-        return Container();
-    }
-  }
-
-  @override
   List<Widget> createWidgets(
-    UISchemaElement uiSchema,
     JsonSchema4 schema,
-    BuildContext context,
+    UISchemaElement uiSchema,
     List<Widget> widgets,
   ) {
     final render = renderList.firstWhereOrNull(
@@ -453,13 +193,13 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
 
     if (render == null) {
       widgets.add(
-        Text(
+        const Text(
           'Unknown render',
-          style: TextStyle(color: Theme.of(context).colorScheme.error),
+          style: TextStyle(color: Colors.red),
         ),
       );
     } else {
-      widgets.add(render.entries.first.value(uiSchema, schema, this));
+      widgets.add(render.entries.first.value(schema, uiSchema, this));
     }
 
     return widgets;
@@ -470,7 +210,11 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
     return ReactiveForm(
       formGroup: form,
       child: ListView(
-        children: createWidgets(uiSchema, dataSchema, context, []),
+        children: createWidgets(
+          jsonSchemaDTO,
+          uiSchemaDTO,
+          [],
+        ),
       ),
     );
   }

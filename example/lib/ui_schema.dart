@@ -23,7 +23,7 @@ const uiSchemaStr = r'''
                         "lg": 12,
                         "md": 12,
                         "sm": 12,
-                        "xs": 13
+                        "xs": 24
                     },
                     "elements": [
                         {
@@ -52,7 +52,7 @@ const uiSchemaStr = r'''
                         "lg": 12,
                         "md": 12,
                         "sm": 12,
-                        "xs": 12
+                        "xs": 24
                     },
                     "elements": [
                         {
@@ -68,25 +68,7 @@ const uiSchemaStr = r'''
                             }
                         }
                     ]
-                },
-                {
-                    "type": "GRID_COMPONENT",
-                    "options": {
-                        "lg": 12,
-                        "md": 12,
-                        "sm": 12,
-                        "xs": 12
-                    }
-                },
-                {
-                    "type": "GRID_COMPONENT",
-                    "options": {
-                        "lg": 12,
-                        "md": 12,
-                        "sm": 12,
-                        "xs": 12
-                    }
-                }
+                }               
             ]
         },
         {
@@ -112,8 +94,8 @@ const uiSchemaStr = r'''
                     "options": {
                         "lg": 8,
                         "md": 8,
-                        "sm": 8,
-                        "xs": 8
+                        "sm": 12,
+                        "xs": 24
                     },
                     "elements": [
                         {
@@ -137,8 +119,8 @@ const uiSchemaStr = r'''
                     "options": {
                         "lg": 8,
                         "md": 8,
-                        "sm": 8,
-                        "xs": 8
+                        "sm": 12,
+                        "xs": 24
                     },
                     "elements": [
                         {
@@ -157,8 +139,8 @@ const uiSchemaStr = r'''
                     "options": {
                         "lg": 8,
                         "md": 8,
-                        "sm": 8,
-                        "xs": 8
+                        "sm": 24,
+                        "xs": 24
                     },
                     "elements": [
                         {
@@ -171,15 +153,6 @@ const uiSchemaStr = r'''
                             }
                         }
                     ]
-                },
-                {
-                    "type": "GRID_COMPONENT",
-                    "options": {
-                        "lg": 12,
-                        "md": 12,
-                        "sm": 12,
-                        "xs": 12
-                    }
                 }
             ]
         },

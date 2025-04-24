@@ -14,11 +14,11 @@ class MyAppDefault extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final jsonForms = JsonFormsReactive(
-      schema,
-      uiSchema ?? {},
-      data ?? {},
-      customRenders,
-      (data) {},
+      jsonSchema: schema,
+      uiSchema: uiSchema ?? {},
+      dataJson: data ?? {},
+      customRenderList: customRenders,
+      onSubmit: (data) {},
     );
 
     return MaterialApp(

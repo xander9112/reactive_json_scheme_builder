@@ -6,16 +6,18 @@ enum PropertyType { string, number, integer, boolean, array, object }
 enum PropertyFormat { date, time, email, hostname, uri }
 
 abstract class JsonForms<FormType> {
-  JsonForms(
-    Map<String, dynamic> dataSchemaJson,
-    Map<String, dynamic> uiSchemaJson,
-    Map<String, dynamic> dataJson,
-    List<Map<String, RenderType<FormType>>>? customRenderList,
-    this.callback,
-  ) {
-    dataSchema = JsonSchema4.fromJson(dataSchemaJson);
-    uiSchema = UISchemaElement.fromJson(uiSchemaJson);
-    data = dataJson;
+  JsonForms({
+    required Map<String, dynamic> jsonSchema,
+    required List<Map<String, RenderType<FormType>>>? customRenderList,
+    required this.onSubmit,
+    Map<String, dynamic>? dataJson,
+    Map<String, dynamic>? uiSchema,
+  }) {
+    jsonSchemaDTO = JsonSchema4.fromJson(jsonSchema);
+    uiSchemaDTO = uiSchema != null
+        ? UISchemaElement.fromJson(uiSchema)
+        : UISchemaElement.fromJsonSchema(jsonSchema);
+    data = dataJson ?? {};
     renderList = [...myRenderList];
 
     if (customRenderList != null && customRenderList.isNotEmpty) {
@@ -23,27 +25,20 @@ abstract class JsonForms<FormType> {
     }
   }
 
-  final JsonFormsCallback callback;
-
-  late UISchemaElement uiSchema;
-  late JsonSchema4 dataSchema;
+  late UISchemaElement uiSchemaDTO;
+  late JsonSchema4 jsonSchemaDTO;
   late Map<String, dynamic> data;
 
   late final List<Map<String, RenderType<FormType>>> renderList;
   late final FormType form;
 
+  late final void Function(Map<String, dynamic> value) onSubmit;
+
   List<Map<String, RenderType<FormType>>> get myRenderList;
 
-  Widget getControl(
-    UISchemaElement uiSchema,
-    JsonSchema4 schema,
-    BuildContext context,
-  );
-
   List<Widget> createWidgets(
-    UISchemaElement uiSchema,
     JsonSchema4 schema,
-    BuildContext context,
+    UISchemaElement uiSchema,
     List<Widget> widgets,
   );
 

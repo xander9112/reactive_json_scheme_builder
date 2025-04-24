@@ -11,34 +11,34 @@ class GridLayout extends StatelessWidget {
     required this.createWidgets,
   });
 
-  final UISchemaElement uiSchema;
   final JsonSchema4 schema;
+  final UISchemaElement uiSchema;
   final JsonForms jsonForms;
   final List<Widget> Function(
-    UISchemaElement uiSchema,
     JsonSchema4 schema,
-    BuildContext context,
+    UISchemaElement uiSchema,
     List<Widget> widgets,
   ) createWidgets;
 
   static const int cellsCount = 24;
   static const String type = 'GRID_COMPONENT';
 
+  static const int sm = 576;
+  static const int md = 768;
+  static const int lg = 992;
+
   @override
   Widget build(BuildContext context) {
     final List<UISchemaElement> elements = uiSchema.elements ?? [];
     List<Widget> localWidgets = [];
-
-    final size = (uiSchema.options ?? {})['lg'];
 
     final bool hasGridInChildren =
         elements.firstWhereOrNull((e) => e.type == type) != null;
 
     for (var element in elements) {
       List<Widget> current = createWidgets(
-        element,
         schema,
-        context,
+        element,
         [],
       ).toList();
 
@@ -51,8 +51,11 @@ class GridLayout extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
+        final fullSize = MediaQuery.of(context).size.width;
         final widgetSize = constraints.maxWidth;
         final cellSize = widgetSize / cellsCount;
+
+        final size = (uiSchema.options ?? {})[_getSize(fullSize)];
 
         return SizedBox(
           width: cellSize * size,
@@ -69,5 +72,21 @@ class GridLayout extends StatelessWidget {
         );
       },
     );
+  }
+
+  String _getSize(double size) {
+    if (size < sm) {
+      return 'xs';
+    }
+
+    if (size < md) {
+      return 'sm';
+    }
+
+    if (size < lg) {
+      return 'md';
+    }
+
+    return 'lg';
   }
 }

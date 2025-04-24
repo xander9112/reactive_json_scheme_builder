@@ -36,6 +36,7 @@ void setValueAtPath(
   dynamic newValue,
 ) {
   dynamic value = json;
+
   for (int i = 0; i < path.length - 1; i++) {
     final String key = path[i];
     if (value is Map<String, dynamic>) {

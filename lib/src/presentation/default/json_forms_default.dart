@@ -3,16 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
 
 class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
-  JsonFormsDefault(
-    Map<String, dynamic> dataSchemaJson,
-    Map<String, dynamic> uiSchemaJson,
-    Map<String, dynamic> dataJson,
-    List<Map<String, RenderType<GlobalKey<FormState>>>>? customRenderList,
-    this.callback,
-  ) {
-    dataSchema = JsonSchema4.fromJson(dataSchemaJson);
-    uiSchema = UISchemaElement.fromJson(uiSchemaJson);
-
+  JsonFormsDefault({
+    required Map<String, dynamic> jsonSchema,
+    required Map<String, dynamic> dataJson,
+    required List<Map<String, RenderType<GlobalKey<FormState>>>>?
+        customRenderList,
+    required this.callback,
+    required this.onSubmit,
+    Map<String, dynamic>? uiSchema,
+  }) {
+    jsonSchemaDTO = JsonSchema4.fromJson(jsonSchema);
+    uiSchemaDTO = uiSchema != null
+        ? UISchemaElement.fromJson(uiSchema)
+        : UISchemaElement.fromJsonSchema(jsonSchema);
     data = dataJson;
     renderList = [...myRenderList];
 
@@ -22,10 +25,13 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
 
     form = GlobalKey<FormState>();
   }
+
   @override
-  late UISchemaElement uiSchema;
+  late UISchemaElement uiSchemaDTO;
+
   @override
-  late JsonSchema4 dataSchema;
+  late JsonSchema4 jsonSchemaDTO;
+
   @override
   late Map<String, dynamic> data;
   @override
@@ -40,8 +46,8 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
   List<Map<String, RenderType<GlobalKey<FormState>>>> get myRenderList => [
         {
           'HorizontalLayout': (
-            UISchemaElement uiSchema,
             JsonSchema4 schema,
+            UISchemaElement uiSchema,
             JsonForms<GlobalKey<FormState>> jsonForms,
           ) {
             return HorizontalLayout(
@@ -54,8 +60,8 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
         },
         {
           'VerticalLayout': (
-            UISchemaElement uiSchema,
             JsonSchema4 schema,
+            UISchemaElement uiSchema,
             JsonForms<GlobalKey<FormState>> jsonForms,
           ) {
             return VerticalLayout(
@@ -68,8 +74,8 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
         },
         {
           'Label': (
-            UISchemaElement uiSchema,
             JsonSchema4 schema,
+            UISchemaElement uiSchema,
             JsonForms<GlobalKey<FormState>> jsonForms,
           ) {
             return ListTile(
@@ -82,8 +88,8 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
         },
         {
           'Control': (
-            UISchemaElement uiSchema,
             JsonSchema4 schema,
+            UISchemaElement uiSchema,
             JsonForms<GlobalKey<FormState>> jsonForms,
           ) {
             final List<String> parts = uiSchema.scope!.split('/')..removeAt(0);
@@ -198,8 +204,8 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
         },
         {
           'Group': (
-            UISchemaElement uiSchema,
             JsonSchema4 schema,
+            UISchemaElement uiSchema,
             JsonForms<GlobalKey<FormState>> jsonForms,
           ) {
             return GroupLayout(
@@ -213,109 +219,9 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
       ];
 
   @override
-  Widget getControl(
-    UISchemaElement uiSchema,
-    JsonSchema4 schema,
-    BuildContext context,
-  ) {
-    final List<String> parts = uiSchema.scope!.split('/')..removeAt(0);
-    String label = uiSchema.label ?? camelCaseToWords(parts.last);
-
-    if (schema.required != null && schema.required!.contains(parts.last)) {
-      label += '*';
-    }
-
-    final JsonSchema4 item = getItemFromJsonScheme(parts, schema);
-
-    switch (item.type) {
-      case 'string':
-        final bool? multi = uiSchema.options?['multi'] as bool?;
-
-        if (item.format == PropertyFormat.date.name) {
-          return DateControl(
-            label: label,
-            description: item.description,
-            path: getParts(uiSchema.scope!),
-            jsonData: data,
-            callback: callback,
-          );
-        }
-
-        if (item.format == PropertyFormat.email.name) {
-          return EmailControl(
-            label: label,
-            description: item.description,
-            path: getParts(uiSchema.scope!),
-            jsonData: data,
-            callback: callback,
-            multi: multi,
-          );
-        }
-
-        if (item.format == PropertyFormat.uri.name) {
-          return UriControl(
-            label: label,
-            description: item.description,
-            path: getParts(uiSchema.scope!),
-            jsonData: data,
-            callback: callback,
-            multi: multi,
-          );
-        }
-
-        if (item.enumValues != null) {
-          return DropdownControl(
-            label: label,
-            description: item.description,
-            path: getParts(uiSchema.scope!),
-            jsonData: data,
-            callback: callback,
-            enumValues: item.enumValues! as List<String>,
-          );
-        }
-
-        return TextControl(
-          label: label,
-          description: item.description,
-          path: getParts(uiSchema.scope!),
-          jsonData: data,
-          callback: callback,
-          minLength: item.minLength,
-          multi: multi,
-        );
-      case 'boolean':
-        return CheckboxControl(
-          label: label,
-          path: getParts(uiSchema.scope!),
-          jsonData: data,
-          callback: callback,
-        );
-      case 'integer':
-        return IntegerControl(
-          label: label,
-          description: item.description,
-          path: getParts(uiSchema.scope!),
-          jsonData: data,
-          callback: callback,
-        );
-      case 'number':
-        return NumberControl(
-          label: label,
-          description: item.description,
-          path: getParts(uiSchema.scope!),
-          jsonData: data,
-          callback: callback,
-        );
-      default:
-        return Container();
-    }
-  }
-
-  @override
   List<Widget> createWidgets(
-    UISchemaElement uiSchema,
     JsonSchema4 schema,
-    BuildContext context,
+    UISchemaElement uiSchema,
     List<Widget> widgets,
   ) {
     final render = renderList.firstWhereOrNull(
@@ -324,13 +230,13 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
 
     if (render == null) {
       widgets.add(
-        Text(
-          'Unknown render: ${uiSchema.type}',
-          style: TextStyle(color: Theme.of(context).colorScheme.error),
+        const Text(
+          'Unknown render',
+          style: TextStyle(color: Colors.red),
         ),
       );
     } else {
-      widgets.add(render.entries.first.value(uiSchema, schema, this));
+      widgets.add(render.entries.first.value(schema, uiSchema, this));
     }
 
     return widgets;
@@ -341,8 +247,15 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
     return Form(
       key: form,
       child: ListView(
-        children: createWidgets(uiSchema, dataSchema, context, []),
+        children: createWidgets(
+          jsonSchemaDTO,
+          uiSchemaDTO,
+          [],
+        ),
       ),
     );
   }
+
+  @override
+  void Function(Map<String, dynamic> value) onSubmit;
 }

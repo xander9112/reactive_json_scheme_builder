@@ -10,13 +10,12 @@ class GroupLayout extends StatelessWidget {
     super.key,
   });
 
-  final UISchemaElement uiSchema;
   final JsonSchema4 schema;
+  final UISchemaElement uiSchema;
   final JsonForms<dynamic> jsonForms;
   final List<Widget> Function(
-    UISchemaElement uiSchema,
     JsonSchema4 schema,
-    BuildContext context,
+    UISchemaElement uiSchema,
     List<Widget> widgets,
   ) createWidgets;
 
@@ -25,7 +24,7 @@ class GroupLayout extends StatelessWidget {
     final List<Widget> localWidgets = [];
 
     for (final element in uiSchema.elements!) {
-      final List<Widget> current = createWidgets(element, schema, context, []);
+      final List<Widget> current = createWidgets(schema, element, []);
 
       localWidgets.addAll(current);
     }

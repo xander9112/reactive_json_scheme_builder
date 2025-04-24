@@ -4,27 +4,26 @@ import 'package:flutter/widgets.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms_json_scheme/src/_src.dart';
 
-List<Map<String, RenderType<FormGroup>>> myRenderList(
+List<Map<String, RenderType<FormGroup>>> reactiveRenderList(
   List<Widget> Function(
-    UISchemaElement uiSchema,
     JsonSchema4 schema,
-    BuildContext context,
+    UISchemaElement uiSchema,
     List<Widget> widgets,
   ) createWidgets,
 ) =>
     [
       {
         HorizontalLayout.type: (
-          UISchemaElement uiSchema,
           JsonSchema4 schema,
+          UISchemaElement uiSchema,
           JsonForms<FormGroup> jsonForms,
         ) =>
-            HorizontalLayout.render(uiSchema, schema, jsonForms, createWidgets),
+            HorizontalLayout.render(schema, uiSchema, jsonForms, createWidgets),
       },
       {
         'VerticalLayout': (
-          UISchemaElement uiSchema,
           JsonSchema4 schema,
+          UISchemaElement uiSchema,
           JsonForms<FormGroup> jsonForms,
         ) {
           return VerticalLayout(
@@ -37,8 +36,8 @@ List<Map<String, RenderType<FormGroup>>> myRenderList(
       },
       {
         'Label': (
-          UISchemaElement uiSchema,
           JsonSchema4 schema,
+          UISchemaElement uiSchema,
           JsonForms<FormGroup> jsonForms,
         ) {
           return ListTile(
@@ -50,8 +49,8 @@ List<Map<String, RenderType<FormGroup>>> myRenderList(
       },
       {
         'Control': (
-          UISchemaElement uiSchema,
           JsonSchema4 schema,
+          UISchemaElement uiSchema,
           JsonForms<FormGroup> jsonForms,
         ) {
           final List<String> parts = uiSchema.scope!.split('/')..removeAt(0);
@@ -129,7 +128,6 @@ List<Map<String, RenderType<FormGroup>>> myRenderList(
                 label: label,
                 description: item.description,
                 path: getParts(uiSchema.scope!),
-                jsonData: const {},
                 callback: (Map<String, dynamic> data) {
                   // callback(data);
                 },
@@ -175,8 +173,8 @@ List<Map<String, RenderType<FormGroup>>> myRenderList(
       },
       {
         'Group': (
-          UISchemaElement uiSchema,
           JsonSchema4 schema,
+          UISchemaElement uiSchema,
           JsonForms<FormGroup> jsonForms,
         ) {
           return GroupLayout(

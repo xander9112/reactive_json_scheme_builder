@@ -8,6 +8,30 @@ class UISchemaElement {
     this.options,
   });
 
+  factory UISchemaElement.fromJsonSchema(
+    Map<String, dynamic> json, {
+    String path = '',
+  }) {
+    final bool hasProperties = json['properties'] != null;
+
+    return UISchemaElement(
+      type: hasProperties ? 'VerticalLayout' : 'Control',
+      scope: hasProperties ? null : path,
+      elements: (json['properties'] as Map?)?.entries.map(
+        (e) {
+          final String newPath = path.isEmpty
+              ? '#/properties/${e.key}'
+              : '$path/properties/${e.key}';
+
+          return UISchemaElement.fromJsonSchema(
+            e.value as Map<String, dynamic>,
+            path: newPath,
+          );
+        },
+      ).toList(),
+    );
+  }
+
   factory UISchemaElement.fromJson(Map<String, dynamic> json) {
     return UISchemaElement(
       type: json['type'] as String?,

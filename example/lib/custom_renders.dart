@@ -7,8 +7,8 @@ import 'layouts/grid_layout.dart';
 final List<Map<String, RenderType>> customRenders = [
   {
     'GridLayout': (
-      UISchemaElement uiSchema,
       JsonSchema4 schema,
+      UISchemaElement uiSchema,
       JsonForms jsonForms,
     ) {
       return GridLayout(
@@ -21,8 +21,8 @@ final List<Map<String, RenderType>> customRenders = [
   },
   {
     GridLayout.type: (
-      UISchemaElement uiSchema,
       JsonSchema4 schema,
+      UISchemaElement uiSchema,
       JsonForms jsonForms,
     ) {
       return GridLayout(
@@ -35,8 +35,8 @@ final List<Map<String, RenderType>> customRenders = [
   },
   {
     'INPUT_TEXT': (
-      UISchemaElement uiSchema,
       JsonSchema4 schema,
+      UISchemaElement uiSchema,
       JsonForms jsonForms,
     ) {
       final List<String> parts = uiSchema.scope!.split('/')..removeAt(0);
@@ -58,7 +58,6 @@ final List<Map<String, RenderType>> customRenders = [
         label: label,
         description: item.description,
         path: getParts(uiSchema.scope!),
-        jsonData: const {},
         callback: (Map<String, dynamic> data) {
           // callback(data);
         },
@@ -69,8 +68,8 @@ final List<Map<String, RenderType>> customRenders = [
   },
   {
     'INPUT_NUMBER': (
-      UISchemaElement uiSchema,
       JsonSchema4 schema,
+      UISchemaElement uiSchema,
       JsonForms jsonForms,
     ) {
       final List<String> parts = uiSchema.scope!.split('/')..removeAt(0);
@@ -98,8 +97,8 @@ final List<Map<String, RenderType>> customRenders = [
   },
   {
     'DROP_DOWN': (
-      UISchemaElement uiSchema,
       JsonSchema4 schema,
+      UISchemaElement uiSchema,
       JsonForms jsonForms,
     ) {
       final List<String> parts = uiSchema.scope!.split('/')..removeAt(0);
@@ -128,8 +127,8 @@ final List<Map<String, RenderType>> customRenders = [
   },
   {
     'SWITCH': (
-      UISchemaElement uiSchema,
       JsonSchema4 schema,
+      UISchemaElement uiSchema,
       JsonForms jsonForms,
     ) {
       final List<String> parts = uiSchema.scope!.split('/')..removeAt(0);
@@ -154,13 +153,17 @@ final List<Map<String, RenderType>> customRenders = [
   },
   {
     'BUTTON': (
-      UISchemaElement uiSchema,
       JsonSchema4 schema,
+      UISchemaElement uiSchema,
       JsonForms jsonForms,
     ) {
       String label = uiSchema.label ?? 'Button';
 
-      return ElevatedButton(onPressed: () {}, child: Text(label));
+      return ElevatedButton(
+          onPressed: () {
+            jsonForms.onSubmit(jsonForms.form.value);
+          },
+          child: Text(label));
     }
   },
 ];
