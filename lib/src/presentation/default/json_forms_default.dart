@@ -8,7 +8,6 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
     required Map<String, dynamic> dataJson,
     required List<Map<String, RenderType<GlobalKey<FormState>>>>?
         customRenderList,
-    required this.callback,
     required this.onSubmit,
     Map<String, dynamic>? uiSchema,
   }) {
@@ -34,13 +33,15 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
 
   @override
   late Map<String, dynamic> data;
-  @override
-  final JsonFormsCallback callback;
+
   @override
   late final List<Map<String, RenderType<GlobalKey<FormState>>>> renderList;
 
   @override
   late final GlobalKey<FormState> form;
+
+  @override
+  void Function(Map<String, dynamic> value) onSubmit;
 
   @override
   List<Map<String, RenderType<GlobalKey<FormState>>>> get myRenderList => [
@@ -243,10 +244,14 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
   }
 
   @override
-  Widget getFormWidget(BuildContext context) {
+  Widget getFormWidget(
+    BuildContext context, {
+    EdgeInsets padding = EdgeInsets.zero,
+  }) {
     return Form(
       key: form,
       child: ListView(
+        padding: padding,
         children: createWidgets(
           jsonSchemaDTO,
           uiSchemaDTO,
@@ -255,7 +260,4 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
       ),
     );
   }
-
-  @override
-  void Function(Map<String, dynamic> value) onSubmit;
 }

@@ -42,5 +42,5 @@ abstract class JsonForms<FormType> {
     List<Widget> widgets,
   );
 
-  Widget getFormWidget(BuildContext context);
+  Widget getFormWidget(BuildContext context, {EdgeInsets padding});
 }

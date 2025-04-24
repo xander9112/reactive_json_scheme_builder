@@ -8,6 +8,6 @@ class UiFormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return jsonForm.getFormWidget(context);
+    return jsonForm.getFormWidget(context, padding: EdgeInsets.all(16));
   }
 }

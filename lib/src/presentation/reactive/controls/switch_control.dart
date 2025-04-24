@@ -23,9 +23,12 @@ class ReactiveSwitchControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ReactiveSwitchListTile(
-      formControlName: formControlName,
-      title: Text(label),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: ReactiveSwitchListTile(
+        formControlName: formControlName,
+        title: Text(label),
+      ),
     );
   }
 }

@@ -206,10 +206,14 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
   }
 
   @override
-  Widget getFormWidget(BuildContext context) {
+  Widget getFormWidget(
+    BuildContext context, {
+    EdgeInsets padding = EdgeInsets.zero,
+  }) {
     return ReactiveForm(
       formGroup: form,
       child: ListView(
+        padding: padding,
         children: createWidgets(
           jsonSchemaDTO,
           uiSchemaDTO,

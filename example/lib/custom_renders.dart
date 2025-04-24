@@ -4,12 +4,12 @@ import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
 
 import 'layouts/grid_layout.dart';
 
-final List<Map<String, RenderType>> customRenders = [
+final List<Map<String, RenderType<FormGroup>>> customRenders = [
   {
     'GridLayout': (
       JsonSchema4 schema,
       UISchemaElement uiSchema,
-      JsonForms jsonForms,
+      JsonForms<FormGroup> jsonForms,
     ) {
       return GridLayout(
         uiSchema: uiSchema,
@@ -23,7 +23,7 @@ final List<Map<String, RenderType>> customRenders = [
     GridLayout.type: (
       JsonSchema4 schema,
       UISchemaElement uiSchema,
-      JsonForms jsonForms,
+      JsonForms<FormGroup> jsonForms,
     ) {
       return GridLayout(
         uiSchema: uiSchema,
@@ -37,7 +37,7 @@ final List<Map<String, RenderType>> customRenders = [
     'INPUT_TEXT': (
       JsonSchema4 schema,
       UISchemaElement uiSchema,
-      JsonForms jsonForms,
+      JsonForms<FormGroup> jsonForms,
     ) {
       final List<String> parts = uiSchema.scope!.split('/')..removeAt(0);
       String label = uiSchema.label ?? camelCaseToWords(parts.last);
@@ -70,7 +70,7 @@ final List<Map<String, RenderType>> customRenders = [
     'INPUT_NUMBER': (
       JsonSchema4 schema,
       UISchemaElement uiSchema,
-      JsonForms jsonForms,
+      JsonForms<FormGroup> jsonForms,
     ) {
       final List<String> parts = uiSchema.scope!.split('/')..removeAt(0);
       String label = uiSchema.label ?? camelCaseToWords(parts.last);
@@ -99,7 +99,7 @@ final List<Map<String, RenderType>> customRenders = [
     'DROP_DOWN': (
       JsonSchema4 schema,
       UISchemaElement uiSchema,
-      JsonForms jsonForms,
+      JsonForms<FormGroup> jsonForms,
     ) {
       final List<String> parts = uiSchema.scope!.split('/')..removeAt(0);
       String label = uiSchema.label ?? camelCaseToWords(parts.last);
@@ -129,7 +129,7 @@ final List<Map<String, RenderType>> customRenders = [
     'SWITCH': (
       JsonSchema4 schema,
       UISchemaElement uiSchema,
-      JsonForms jsonForms,
+      JsonForms<FormGroup> jsonForms,
     ) {
       final List<String> parts = uiSchema.scope!.split('/')..removeAt(0);
       String label = uiSchema.label ?? camelCaseToWords(parts.last);
@@ -155,7 +155,7 @@ final List<Map<String, RenderType>> customRenders = [
     'BUTTON': (
       JsonSchema4 schema,
       UISchemaElement uiSchema,
-      JsonForms jsonForms,
+      JsonForms<FormGroup> jsonForms,
     ) {
       String label = uiSchema.label ?? 'Button';
 

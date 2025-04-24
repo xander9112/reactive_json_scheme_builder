@@ -7,25 +7,21 @@ import 'package:example/ui_schema.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // runApp(
-  //   MyAppDefault(
-  //     schema: jsonDecode(jsonSchemaStr) as Map<String, dynamic>,
-  //     uiSchema: jsonDecode(uiSchemaStr) as Map<String, dynamic>,
-  //   ),
-  // );
   runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
-
-      // Инициализация сервисов, Firebase и т.д.
-      // await Firebase.initializeApp();
 
       FlutterError.onError = (FlutterErrorDetails details) {
         // Логировать синхронные ошибки во Flutter виджетах
         print('FlutterError: ${details.exception}');
       };
+
+      // runApp(
+      //   MyAppDefault(
+      //     schema: jsonDecode(jsonSchemaStr) as Map<String, dynamic>,
+      //     uiSchema: jsonDecode(uiSchemaStr) as Map<String, dynamic>,
+      //   ),
+      // );
 
       runApp(
         MyAppReactive(

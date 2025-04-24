@@ -30,20 +30,24 @@ class ReactiveDropdownControl extends StatefulWidget {
 class _ReactiveDropdownControlState extends State<ReactiveDropdownControl> {
   @override
   Widget build(BuildContext context) {
-    return ReactiveDropdownField<String>(
-      formControlName: widget.formControlName,
-      decoration: InputDecoration(
-        labelText: widget.label,
-        helperText: widget.description,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: ReactiveDropdownField<String>(
+        formControlName: widget.formControlName,
+        decoration: InputDecoration(
+          labelText: widget.label,
+          helperText: widget.description,
+          border: const OutlineInputBorder(),
+        ),
+        items: widget.enumValues
+            .map(
+              (e) => DropdownMenuItem<String>(
+                value: e.toString(),
+                child: Text(e.toString()),
+              ),
+            )
+            .toList(),
       ),
-      items: widget.enumValues
-          .map(
-            (e) => DropdownMenuItem<String>(
-              value: e.toString(),
-              child: Text(e.toString()),
-            ),
-          )
-          .toList(),
     );
   }
 }

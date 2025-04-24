@@ -30,11 +30,15 @@ class ReactiveTextControl extends StatefulWidget {
 class _ReactiveTextControlState extends State<ReactiveTextControl> {
   @override
   Widget build(BuildContext context) {
-    return ReactiveTextField<String>(
-      formControlName: widget.formControlName,
-      decoration: InputDecoration(
-        labelText: widget.label,
-        hintText: widget.description,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: ReactiveTextField<String>(
+        formControlName: widget.formControlName,
+        decoration: InputDecoration(
+          labelText: widget.label,
+          hintText: widget.description,
+          border: const OutlineInputBorder(),
+        ),
       ),
     );
   }
