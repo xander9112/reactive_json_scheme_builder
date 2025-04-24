@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
 
-class ReactiveTextControl extends StatelessWidget {
-  const ReactiveTextControl({
+class ReactiveTextAreaControl extends StatelessWidget {
+  const ReactiveTextAreaControl({
     required this.formControlName,
     required this.label,
     required this.path,
@@ -28,6 +28,8 @@ class ReactiveTextControl extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 16.0),
       child: ReactiveTextField<String>(
         formControlName: formControlName,
+        maxLines: 5,
+        minLines: 2,
         decoration: InputDecoration(
           labelText: label,
           hintText: description,

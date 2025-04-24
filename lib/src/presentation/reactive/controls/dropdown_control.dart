@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
 
 class ReactiveDropdownControl extends StatefulWidget {
@@ -39,11 +38,11 @@ class _ReactiveDropdownControlState extends State<ReactiveDropdownControl> {
           helperText: widget.description,
           border: const OutlineInputBorder(),
         ),
-        items: widget.enumValues
+        items: (widget.enumValues as List<Map>)
             .map(
               (e) => DropdownMenuItem<String>(
-                value: e.toString(),
-                child: Text(e.toString()),
+                value: e.entries.first.key.toString(),
+                child: Text(e.entries.first.value.toString()),
               ),
             )
             .toList(),

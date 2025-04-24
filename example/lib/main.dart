@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:example/app_reactive.dart';
-import 'package:example/json_schema.dart';
-import 'package:example/ui_schema.dart';
 import 'package:flutter/material.dart';
+
+import 'schemas/_schemas.dart';
 
 void main() {
   runZonedGuarded(
@@ -25,24 +25,8 @@ void main() {
 
       runApp(
         MyAppReactive(
-          schema: jsonDecode(jsonSchemaStr) as Map<String, dynamic>,
-          uiSchema: jsonDecode(uiSchemaStr) as Map<String, dynamic>,
-          data: {
-            "firstName": "Alexander",
-            "lastName": "Ivanov",
-            "age": 33,
-            "gender": "Female",
-            "height": 180.0,
-            "dateOfBirth": "2019-11-02 17:07:27.166353",
-            "rating": 4,
-            "committer": false,
-            "address": {
-              "street": "Московский",
-              "number": 22.0,
-              "postalCode": 2345,
-              "city": "Воронеж"
-            }
-          },
+          schema: jsonDecode(fullJsonSchemaStr) as Map<String, dynamic>,
+          uiSchema: jsonDecode(fullUiSchemaStr) as Map<String, dynamic>,
         ),
       );
     },

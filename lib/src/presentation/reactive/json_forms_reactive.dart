@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
 
 class JsonFormsReactive implements JsonForms<FormGroup> {
@@ -193,9 +192,9 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
 
     if (render == null) {
       widgets.add(
-        const Text(
-          'Unknown render',
-          style: TextStyle(color: Colors.red),
+        Text(
+          'Unknown render: ${uiSchema.type}',
+          style: const TextStyle(color: Colors.red),
         ),
       );
     } else {
