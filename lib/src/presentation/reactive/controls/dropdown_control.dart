@@ -27,6 +27,28 @@ class ReactiveDropdownControl extends StatefulWidget {
 }
 
 class _ReactiveDropdownControlState extends State<ReactiveDropdownControl> {
+  List<DropdownMenuItem<String>> get items {
+    if (widget.enumValues is List<String>) {
+      return widget.enumValues.map(
+        (e) {
+          return DropdownMenuItem<String>(
+            value: e.toString(),
+            child: Text(e.toString()),
+          );
+        },
+      ).toList();
+    }
+
+    return (widget.enumValues as List<Map>)
+        .map(
+          (e) => DropdownMenuItem<String>(
+            value: e.entries.first.key.toString(),
+            child: Text(e.entries.first.value.toString()),
+          ),
+        )
+        .toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -38,14 +60,7 @@ class _ReactiveDropdownControlState extends State<ReactiveDropdownControl> {
           helperText: widget.description,
           border: const OutlineInputBorder(),
         ),
-        items: (widget.enumValues as List<Map>)
-            .map(
-              (e) => DropdownMenuItem<String>(
-                value: e.entries.first.key.toString(),
-                child: Text(e.entries.first.value.toString()),
-              ),
-            )
-            .toList(),
+        items: items,
       ),
     );
   }

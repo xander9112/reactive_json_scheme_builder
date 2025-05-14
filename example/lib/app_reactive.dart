@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:example/custom_renders.dart';
 import 'package:example/form_widget.dart';
+import 'package:example/g_form_renders.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
 
@@ -30,12 +30,13 @@ class _MyAppReactiveState extends State<MyAppReactive> {
       jsonSchema: widget.schema,
       uiSchema: widget.uiSchema,
       dataJson: widget.data,
-      customRenderList: customRenders,
+      customRenderList: gFormRenders,
       onSubmit: (value) {
         jsonForms.form.markAllAsTouched();
 
         if (jsonForms.form.valid) {
-          print(jsonEncode(value));
+          print(jsonEncode(
+              {...value, 'birthDate': value['birthDate'].toString()}));
         } else {
           print(jsonForms.form.errors);
         }

@@ -34,6 +34,7 @@ class ReactiveTextAreaControl extends StatelessWidget {
           labelText: label,
           hintText: description,
           border: const OutlineInputBorder(),
+          alignLabelWithHint: true,
         ),
       ),
     );
