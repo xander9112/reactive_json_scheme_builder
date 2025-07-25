@@ -31,9 +31,11 @@ class _EmailControlState extends State<EmailControl> {
     super.initState();
 
     controller
-      ..text = getValueFromPath(widget.jsonData, widget.path) as String? ?? ''
+      ..text =
+          JFUtils.getValueFromPath(widget.jsonData, widget.path) as String? ??
+              ''
       ..addListener(() {
-        setValueAtPath(
+        JFUtils.setValueAtPath(
           widget.jsonData,
           widget.path,
           controller.text,

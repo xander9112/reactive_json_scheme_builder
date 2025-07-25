@@ -4,23 +4,16 @@ import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
 class ReactivePasswordControl extends StatefulWidget {
   const ReactivePasswordControl({
     required this.formControlName,
-    required this.label,
-    required this.path,
-    required this.callback,
+    this.path,
+    this.label,
     super.key,
     this.description,
-    this.minLength,
-    this.multi,
   });
 
   final String formControlName;
-  final String label;
+  final String? label;
   final String? description;
-  final List<String> path;
-
-  final JsonFormsCallback callback;
-  final int? minLength;
-  final bool? multi;
+  final List<String>? path;
 
   @override
   State<ReactivePasswordControl> createState() =>
@@ -45,7 +38,7 @@ class _ReactivePasswordControlState extends State<ReactivePasswordControl> {
         obscureText: _obscureText,
         decoration: InputDecoration(
           labelText: widget.label,
-          hintText: widget.description,
+          helperText: widget.description,
           border: const OutlineInputBorder(),
           suffixIcon: IconButton(
             icon: Icon(

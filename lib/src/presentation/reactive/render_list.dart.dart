@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart' show ListTile;
 import 'package:flutter/widgets.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -54,32 +53,17 @@ List<Map<String, RenderType<FormGroup>>> reactiveRenderList(
           JsonForms<FormGroup> jsonForms,
         ) {
           final List<String> parts = uiSchema.scope!.split('/')..removeAt(0);
-          String label = uiSchema.label ?? camelCaseToWords(parts.last);
 
-          final String formControlName =
-              parts.whereNot((element) => element == 'properties').join('.');
-
-          if (schema.required != null &&
-              schema.required!.contains(parts.last)) {
-            label += '*';
-          }
-
-          final JsonSchema4 item = getItemFromJsonScheme(parts, schema);
+          final JsonSchema4 item = JFUtils.getItemFromJsonScheme(parts, schema);
 
           switch (item.type) {
             case 'string':
-              final bool? multi = uiSchema.options?['multi'] as bool?;
-
               if (item.format == PropertyFormat.date.name) {
                 return ReactiveDateControl(
-                  formControlName: formControlName,
-                  label: label,
-                  description: item.description,
-                  path: getParts(uiSchema.scope!),
-                  jsonData: const {},
-                  callback: (Map<String, dynamic> data) {
-                    // callback(data);
-                  },
+                  formControlName: JFUtils.getFormControlName(schema, uiSchema),
+                  label: JFUtils.getLabel(schema, uiSchema),
+                  description: JFUtils.getDescription(schema, uiSchema),
+                  path: JFUtils.getParts(uiSchema.scope),
                 );
               }
 
@@ -111,60 +95,40 @@ List<Map<String, RenderType<FormGroup>>> reactiveRenderList(
 
               if (item.enumValues != null) {
                 return ReactiveDropdownControl(
-                  formControlName: formControlName,
-                  label: label,
-                  description: item.description,
-                  path: getParts(uiSchema.scope!),
-                  jsonData: const {},
-                  callback: (Map<String, dynamic> data) {
-                    // callback(data);
-                  },
+                  formControlName: JFUtils.getFormControlName(schema, uiSchema),
+                  label: JFUtils.getLabel(schema, uiSchema),
+                  description: JFUtils.getDescription(schema, uiSchema),
+                  path: JFUtils.getParts(uiSchema.scope),
                   enumValues: item.enumValues! as List<String>,
                 );
               }
 
               return ReactiveTextControl(
-                formControlName: formControlName,
-                label: label,
-                description: item.description,
-                path: getParts(uiSchema.scope!),
-                callback: (Map<String, dynamic> data) {
-                  // callback(data);
-                },
-                minLength: item.minLength,
-                multi: multi,
+                formControlName: JFUtils.getFormControlName(schema, uiSchema),
+                label: JFUtils.getLabel(schema, uiSchema),
+                description: JFUtils.getDescription(schema, uiSchema),
+                path: JFUtils.getParts(uiSchema.scope),
               );
             case 'boolean':
               return ReactiveCheckboxControl(
-                formControlName: formControlName,
-                label: label,
-                path: getParts(uiSchema.scope!),
-                jsonData: const {},
-                callback: (Map<String, dynamic> data) {
-                  // callback(data);
-                },
+                formControlName: JFUtils.getFormControlName(schema, uiSchema),
+                label: JFUtils.getLabel(schema, uiSchema),
+                description: JFUtils.getDescription(schema, uiSchema),
+                path: JFUtils.getParts(uiSchema.scope),
               );
             case 'integer':
               return ReactiveIntegerControl(
-                formControlName: formControlName,
-                label: label,
-                description: item.description,
-                path: getParts(uiSchema.scope!),
-                jsonData: const {},
-                callback: (Map<String, dynamic> data) {
-                  // callback(data);
-                },
+                formControlName: JFUtils.getFormControlName(schema, uiSchema),
+                label: JFUtils.getLabel(schema, uiSchema),
+                description: JFUtils.getDescription(schema, uiSchema),
+                path: JFUtils.getParts(uiSchema.scope),
               );
             case 'number':
               return ReactiveNumberControl(
-                formControlName: formControlName,
-                label: label,
-                description: item.description,
-                path: getParts(uiSchema.scope!),
-                jsonData: const {},
-                callback: (Map<String, dynamic> data) {
-                  // callback(data);
-                },
+                formControlName: JFUtils.getFormControlName(schema, uiSchema),
+                label: JFUtils.getLabel(schema, uiSchema),
+                description: JFUtils.getDescription(schema, uiSchema),
+                path: JFUtils.getParts(uiSchema.scope),
               );
             default:
               return Container();

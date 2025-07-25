@@ -25,13 +25,14 @@ class _SwitchState extends State<SwitchControl> {
   @override
   Widget build(BuildContext context) {
     final bool value =
-        getValueFromPath(widget.jsonData, widget.path) as bool? ?? false;
+        JFUtils.getValueFromPath(widget.jsonData, widget.path) as bool? ??
+            false;
 
     return SwitchListTile(
       value: value,
       onChanged: (bool? value) {
         setState(() {
-          setValueAtPath(widget.jsonData, widget.path, value);
+          JFUtils.setValueAtPath(widget.jsonData, widget.path, value);
         });
         widget.callback(widget.jsonData);
       },

@@ -3,23 +3,17 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 class ReactiveSwitchControl extends StatelessWidget {
   const ReactiveSwitchControl({
-    required this.label,
-    required this.path,
-    required this.jsonData,
     required this.formControlName,
+    this.path,
+    this.label,
     super.key,
     this.description,
-    this.minLength,
-    this.multi,
   });
 
-  final String label;
+  final String? label;
   final String formControlName;
   final String? description;
-  final List<String> path;
-  final Map<String, dynamic> jsonData;
-  final int? minLength;
-  final bool? multi;
+  final List<String>? path;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +21,8 @@ class ReactiveSwitchControl extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 16.0),
       child: ReactiveSwitchListTile(
         formControlName: formControlName,
-        title: Text(label),
+        title: label != null ? Text(label ?? '') : null,
+        subtitle: description != null ? Text(description ?? '') : null,
       ),
     );
   }

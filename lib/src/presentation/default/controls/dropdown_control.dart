@@ -5,16 +5,16 @@ class DropdownControl extends StatefulWidget {
   const DropdownControl({
     required this.label,
     required this.description,
-    required this.path,
     required this.jsonData,
     required this.callback,
     required this.enumValues,
+    this.path,
     super.key,
   });
 
   final String label;
   final String? description;
-  final List<String> path;
+  final List<String>? path;
   final Map<String, dynamic> jsonData;
   final JsonFormsCallback callback;
   final List<dynamic> enumValues;
@@ -38,7 +38,7 @@ class _DropdownControlState extends State<DropdownControl> {
         requestFocusOnTap: true,
         label: Text(widget.label),
         onSelected: (String? value) {
-          setValueAtPath(widget.jsonData, widget.path, value);
+          JFUtils.setValueAtPath(widget.jsonData, widget.path, value);
           widget.callback(widget.jsonData);
         },
         dropdownMenuEntries: getDropdownMenuEntries(

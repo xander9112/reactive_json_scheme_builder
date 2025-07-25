@@ -1,4 +1,3 @@
-import 'package:example/custom_renders.dart';
 import 'package:example/form_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
@@ -17,7 +16,6 @@ class MyAppDefault extends StatelessWidget {
       jsonSchema: schema,
       uiSchema: uiSchema ?? {},
       dataJson: data ?? {},
-      customRenderList: customRenders,
       onSubmit: (data) {},
     );
 

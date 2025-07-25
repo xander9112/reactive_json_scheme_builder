@@ -5,16 +5,16 @@ class UriControl extends StatefulWidget {
   const UriControl({
     required this.label,
     required this.description,
-    required this.path,
     required this.jsonData,
     required this.callback,
+    this.path,
     super.key,
     this.multi,
   });
 
   final String label;
   final String? description;
-  final List<String> path;
+  final List<String>? path;
   final Map<String, dynamic> jsonData;
   final JsonFormsCallback callback;
   final bool? multi;
@@ -31,9 +31,11 @@ class _UriControlState extends State<UriControl> {
     super.initState();
 
     controller
-      ..text = getValueFromPath(widget.jsonData, widget.path) as String? ?? ''
+      ..text =
+          JFUtils.getValueFromPath(widget.jsonData, widget.path) as String? ??
+              ''
       ..addListener(() {
-        setValueAtPath(
+        JFUtils.setValueAtPath(
           widget.jsonData,
           widget.path,
           controller.text,

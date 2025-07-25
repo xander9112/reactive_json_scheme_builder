@@ -4,21 +4,18 @@ import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
 class ReactiveRadioControl extends StatelessWidget {
   const ReactiveRadioControl({
     required this.formControlName,
-    required this.label,
-    required this.path,
-    required this.jsonData,
-    required this.callback,
+    this.path,
+    this.label,
     super.key,
     this.description,
     this.enumValues = const [],
   });
 
   final String formControlName;
-  final String label;
+  final String? label;
   final String? description;
-  final List<String> path;
-  final Map<String, dynamic> jsonData;
-  final JsonFormsCallback callback;
+  final List<String>? path;
+
   final List<dynamic> enumValues;
 
   @override
@@ -32,6 +29,7 @@ class ReactiveRadioControl extends StatelessWidget {
               formControlName: formControlName,
               value: e.entries.first.key,
               title: Text(e.entries.first.value.toString()),
+              secondary: description != null ? Text(description ?? '') : null,
             );
           },
         ).toList(),

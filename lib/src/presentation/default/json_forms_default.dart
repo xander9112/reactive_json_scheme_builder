@@ -94,14 +94,16 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
             JsonForms<GlobalKey<FormState>> jsonForms,
           ) {
             final List<String> parts = uiSchema.scope!.split('/')..removeAt(0);
-            String label = uiSchema.label ?? camelCaseToWords(parts.last);
+            String label =
+                uiSchema.label ?? JFUtils.camelCaseToWords(parts.last);
 
             if (schema.required != null &&
                 schema.required!.contains(parts.last)) {
               label += '*';
             }
 
-            final JsonSchema4 item = getItemFromJsonScheme(parts, schema);
+            final JsonSchema4 item =
+                JFUtils.getItemFromJsonScheme(parts, schema);
 
             switch (item.type) {
               case 'string':
@@ -111,7 +113,7 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
                   return DateControl(
                     label: label,
                     description: item.description,
-                    path: getParts(uiSchema.scope!),
+                    path: JFUtils.getParts(uiSchema.scope),
                     jsonData: const {},
                     callback: (Map<String, dynamic> data) {
                       // callback(data);
@@ -123,7 +125,7 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
                   return EmailControl(
                     label: label,
                     description: item.description,
-                    path: getParts(uiSchema.scope!),
+                    path: JFUtils.getParts(uiSchema.scope),
                     jsonData: const {},
                     callback: (Map<String, dynamic> data) {
                       // callback(data);
@@ -136,7 +138,7 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
                   return UriControl(
                     label: label,
                     description: item.description,
-                    path: getParts(uiSchema.scope!),
+                    path: JFUtils.getParts(uiSchema.scope),
                     jsonData: const {},
                     callback: (Map<String, dynamic> data) {
                       // callback(data);
@@ -149,7 +151,7 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
                   return DropdownControl(
                     label: label,
                     description: item.description,
-                    path: getParts(uiSchema.scope!),
+                    path: JFUtils.getParts(uiSchema.scope),
                     jsonData: const {},
                     callback: (Map<String, dynamic> data) {
                       // callback(data);
@@ -161,7 +163,7 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
                 return TextControl(
                   label: label,
                   description: item.description,
-                  path: getParts(uiSchema.scope!),
+                  path: JFUtils.getParts(uiSchema.scope),
                   jsonData: const {},
                   callback: (Map<String, dynamic> data) {
                     // callback(data);
@@ -172,7 +174,7 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
               case 'boolean':
                 return CheckboxControl(
                   label: label,
-                  path: getParts(uiSchema.scope!),
+                  path: JFUtils.getParts(uiSchema.scope),
                   jsonData: const {},
                   callback: (Map<String, dynamic> data) {
                     // callback(data);
@@ -182,7 +184,7 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
                 return IntegerControl(
                   label: label,
                   description: item.description,
-                  path: getParts(uiSchema.scope!),
+                  path: JFUtils.getParts(uiSchema.scope),
                   jsonData: const {},
                   callback: (Map<String, dynamic> data) {
                     // callback(data);
@@ -192,7 +194,7 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
                 return NumberControl(
                   label: label,
                   description: item.description,
-                  path: getParts(uiSchema.scope!),
+                  path: JFUtils.getParts(uiSchema.scope),
                   jsonData: const {},
                   callback: (Map<String, dynamic> data) {
                     // callback(data);

@@ -5,25 +5,17 @@ import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
 
 class ReactiveIntegerControl extends StatefulWidget {
   const ReactiveIntegerControl({
-    required this.label,
     required this.formControlName,
-    required this.path,
-    required this.jsonData,
-    required this.callback,
+    this.path,
+    this.label,
     super.key,
     this.description,
-    this.minLength,
-    this.multi,
   });
 
-  final String label;
+  final String? label;
   final String formControlName;
   final String? description;
-  final List<String> path;
-  final Map<String, dynamic> jsonData;
-  final JsonFormsCallback callback;
-  final int? minLength;
-  final bool? multi;
+  final List<String>? path;
 
   @override
   State<ReactiveIntegerControl> createState() => _ReactiveIntegerControlState();

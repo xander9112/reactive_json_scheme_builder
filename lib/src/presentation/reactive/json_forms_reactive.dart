@@ -5,8 +5,8 @@ import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
 class JsonFormsReactive implements JsonForms<FormGroup> {
   JsonFormsReactive({
     required Map<String, dynamic> jsonSchema,
-    required List<Map<String, RenderType<FormGroup>>>? customRenderList,
     required this.onSubmit,
+    List<Map<String, RenderType<FormGroup>>>? customRenderList,
     Map<String, dynamic>? dataJson,
     Map<String, dynamic>? uiSchema,
   }) {
@@ -22,6 +22,8 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
     }
 
     form = createFormGroup();
+
+    initSubscribers();
   }
 
   @override
@@ -45,6 +47,8 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
   @override
   List<Map<String, RenderType<FormGroup>>> get myRenderList =>
       reactiveRenderList(createWidgets);
+
+  void initSubscribers() {}
 
   FormGroup createFormGroup() {
     return _buildFormGroup(
@@ -121,38 +125,44 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
     final type = controlProperties.type;
     final readOnly = controlProperties.constValue != null;
 
-    final value = getValueFromPath(data, path.split('.'));
+    final value = JFUtils.getValueFromPath(data, path.split('.'));
 
     switch (type) {
       case 'string':
         if (controlProperties.format == 'date') {
           return FormControl<DateTime>(
-            // return FormControl<String>(
-            validators: _parseValidators(schema, requiredList),
-            disabled: readOnly,
+            validators: _parseValidators(schema, requiredList, path),
             value: DateTime.tryParse(value.toString()),
-            // value: readOnly ? schema['const'].toString() : value as String?,
+            disabled: readOnly,
           );
         }
+
         return FormControl<String>(
-          validators: _parseValidators(schema, requiredList),
-          disabled: readOnly,
+          validators: _parseValidators(schema, requiredList, path),
           value: readOnly ? schema['const'].toString() : value as String?,
+          disabled: readOnly,
         );
       case 'number':
         return FormControl<double>(
-          validators: _parseValidators(schema, requiredList),
+          validators: _parseValidators(schema, requiredList, path),
           value: double.tryParse(value.toString()),
+          disabled: readOnly,
         );
       case 'integer':
         return FormControl<int>(
-          validators: _parseValidators(schema, requiredList),
+          validators: _parseValidators(schema, requiredList, path),
           value: value as int?,
+          disabled: readOnly,
         );
       case 'boolean':
-        return FormControl<bool>(value: value as bool?);
+        return FormControl<bool>(
+          value: value as bool?,
+          disabled: readOnly,
+        );
       case 'null':
-        return FormControl<Null>();
+        return FormControl<Null>(
+          disabled: readOnly,
+        );
       default:
         throw Exception('Unsupported JSON Schema type: $type');
     }
@@ -162,29 +172,48 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
   List<Validator<dynamic>> _parseValidators(
     Map<String, JsonSchema4> schema,
     List<String>? requiredList,
+    String path,
   ) {
     final controlName = schema.entries.first.key;
-    // final controlProperties = schema.entries.first.value;
+    final Map<String, dynamic>? uiSchemaOptions =
+        JFUtils.findElementByScope(uiSchemaDTO, path)?.options;
 
     final validators = <Validator<dynamic>>[];
 
     if (requiredList?.contains(controlName) ?? false) {
       validators.add(Validators.required);
     }
-    // if (schema['minLength'] != null) {
-    //   validators
-    //       .add(Validators.minLength(controlProperties.minLength as int));
-    // }
 
-    // if (schema['maxLength'] != null) {
-    //   validators
-    //       .add(Validators.maxLength(controlProperties['maxLength'] as int));
-    // }
+    if (uiSchemaOptions != null) {
+      final type = uiSchemaOptions['type'] as String;
+      final minimum = uiSchemaOptions['minimum'] as num?;
+      final maximum = uiSchemaOptions['maximum'] as num?;
+      final pattern = uiSchemaOptions['pattern'] as String?;
 
-    // if (schema['pattern'] != null) {
-    //   validators
-    //       .add(Validators.pattern(controlProperties['pattern'].toString()));
-    // }
+      if (pattern != null) {
+        validators.add(Validators.pattern(pattern));
+      }
+
+      if (minimum != null) {
+        if (type == 'string') {
+          validators.add(Validators.minLength(minimum.toInt()));
+        }
+
+        if (type == 'number') {
+          validators.add(Validators.min(minimum.toInt()));
+        }
+      }
+
+      if (maximum != null) {
+        if (type == 'string') {
+          validators.add(Validators.maxLength(maximum.toInt()));
+        }
+
+        if (type == 'number') {
+          validators.add(Validators.max(maximum.toInt()));
+        }
+      }
+    }
 
     return validators;
   }

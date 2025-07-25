@@ -60,7 +60,7 @@ class _TabComponentState extends State<TabComponent>
 
   Widget _buildTabContent(UISchemaElement element) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
         key: ValueKey(_currentIndex), // Ключ нужен для AnimatedSize
         crossAxisAlignment: CrossAxisAlignment.stretch,

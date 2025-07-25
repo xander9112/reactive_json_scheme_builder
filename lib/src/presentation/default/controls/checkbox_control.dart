@@ -4,14 +4,14 @@ import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
 class CheckboxControl extends StatefulWidget {
   const CheckboxControl({
     required this.label,
-    required this.path,
     required this.jsonData,
     required this.callback,
+    this.path,
     super.key,
   });
 
   final String label;
-  final List<String> path;
+  final List<String>? path;
   final Map<String, dynamic> jsonData;
   final JsonFormsCallback callback;
 
@@ -25,13 +25,14 @@ class _CheckboxState extends State<CheckboxControl> {
   @override
   Widget build(BuildContext context) {
     final bool value =
-        getValueFromPath(widget.jsonData, widget.path) as bool? ?? false;
+        JFUtils.getValueFromPath(widget.jsonData, widget.path) as bool? ??
+            false;
 
     return CheckboxListTile(
       value: value,
       onChanged: (bool? value) {
         setState(() {
-          setValueAtPath(widget.jsonData, widget.path, value);
+          JFUtils.setValueAtPath(widget.jsonData, widget.path, value);
         });
         widget.callback(widget.jsonData);
       },

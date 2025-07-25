@@ -5,15 +5,15 @@ class DateControl extends StatefulWidget {
   const DateControl({
     required this.label,
     required this.description,
-    required this.path,
     required this.jsonData,
     required this.callback,
+    this.path,
     super.key,
   });
 
   final String label;
   final String? description;
-  final List<String> path;
+  final List<String>? path;
   final Map<String, dynamic> jsonData;
   final JsonFormsCallback callback;
 
@@ -36,7 +36,7 @@ class _DateControlState extends State<DateControl> {
           );
 
           if (pickedDate != null) {
-            setValueAtPath(
+            JFUtils.setValueAtPath(
               widget.jsonData,
               widget.path,
               pickedDate,
