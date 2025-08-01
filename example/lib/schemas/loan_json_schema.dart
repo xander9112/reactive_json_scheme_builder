@@ -1,247 +1,271 @@
 const loanJsonSchemaStr = r'''
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "required": [
+        "loanAmount",
+        "loanTerm"
+    ],
     "properties": {
-        "loanAmount": {
-            "title": "Сумма",
-            "description": "Сумма",
-            "type": "number",
-            "minimum": 1000,
-            "maximum": 10000000
-        },
-        "currency": {
-            "title": "Валюта",
-            "description": "Валюта",
-            "type": "string",
-            "enum": [
-                "RUB",
-                "YAN"
-            ]
-        },
-        "loanTerm": {
-            "title": "Срок в месяцах",
-            "description": "Срок в месяцах",
-            "type": "number",
-            "minimum": 1,
-            "maximum": 60
-        },
-        "loanPurpose": {
-            "title": "Цель",
-            "description": "Цель",
-            "type": "string",
-            "enum": [
-                "car",
-                "education",
-                "medical",
-                "travel",
-                "other"
-            ]
-        },
-        "otherPurposeDescription": {
-            "title": "Другое",
-            "description": "Другое",
-            "type": "string"
-        },
-        "Applicant": {
-            "type": "object",
-            "properties": {
-                "phoneNumber": {
-                    "title": "Номер телефона",
-                    "description": "Номер телефона",
-                    "type": "string",
-                    "pattern": "^\\+?[0-9\\s\\-\\(\\)]{7,15}$"
-                },
-                "email": {
-                    "title": "Электронная почта",
-                    "description": "Электронная почта",
-                    "type": "string",
-                    "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
-                },
-                "lastName": {
-                    "title": "Фамилия",
-                    "description": "Фамилия",
-                    "type": "string",
-                    "pattern": "^[a-zA-Zа-яА-Я\\s\\-]{2,80}$"
-                },
-                "birthDate": {
-                    "title": "Дата рождения",
-                    "description": "Дата рождения",
-                    "type": "string"
-                },
-                "passportNumber": {
-                    "title": "Серия и номер паспорта",
-                    "description": "Серия и номер паспорта",
-                    "type": "string",
-                    "pattern": "^\\d{4}\\s\\d{6}$"
-                },
-                "firstName": {
-                    "title": "Имя",
-                    "description": "Имя",
-                    "type": "string",
-                    "pattern": "^[a-zA-Zа-яА-Я\\s\\-]{2,50}$"
-                },
-                "gender": {
-                    "title": "Пол",
-                    "description": "Пол",
-                    "type": "string",
-                    "enum": [
-                        "male",
-                        "female"
-                    ]
-                },
-                "passportIssuedBy": {
-                    "title": "Кем выдан паспорт",
-                    "description": "Кем выдан паспорт",
-                    "type": "string"
-                },
-                "passportIssueDate": {
-                    "title": "Дата выдачи паспорта",
-                    "description": "Дата выдачи паспорта",
-                    "type": "string"
-                },
-                "middleName": {
-                    "title": "Отчество",
-                    "description": "Отчество",
-                    "type": "string"
-                },
-                "taxId": {
-                    "title": "ИНН",
-                    "description": "ИНН",
-                    "type": "string",
-                    "minLength": 12,
-                    "maxLength": 12
-                }
-            },
-            "required": [
-                "phoneNumber",
-                "lastName",
-                "birthDate",
-                "passportNumber",
-                "firstName"
-            ]
-        },
-        "applicationDate": {
-            "title": "Дата заявки",
-            "description": "Дата заявки",
-            "type": "string"
-        },
-        "applicationId": {
-            "title": "Id заявки",
-            "description": "Id заявки",
-            "type": "string"
-        },
-        "Employment": {
-            "type": "object",
-            "properties": {
-                "employmentType": {
-                    "title": "Тип занятости",
-                    "description": "Тип занятости",
-                    "type": "string",
-                    "enum": [
-                        "employed",
-                        "self_employed",
-                        "unemployed",
-                        "pensioner",
-                        "student"
-                    ]
-                },
-                "companyName": {
-                    "title": "Название компании",
-                    "description": "Название компании",
-                    "type": "string"
-                },
-                "position": {
-                    "title": "Должность",
-                    "description": "Должность",
-                    "type": "string"
-                },
-                "workExperience": {
-                    "title": "Общий стаж работы в месяцах",
-                    "description": "Общий стаж работы в месяцах",
-                    "type": "number"
-                },
-                "currentJobExperience": {
-                    "title": "Стаж на текущем месте работы в месяцах",
-                    "description": "Стаж на текущем месте работы в месяцах",
-                    "type": "number"
-                },
-                "monthlyIncome": {
-                    "title": "Ежемесячный доход в рублях",
-                    "description": "Ежемесячный доход в рублях",
-                    "type": "number"
-                },
-                "additionalIncome": {
-                    "title": "Дополнительный доход в рублях",
-                    "description": "Дополнительный доход в рублях",
-                    "type": "number"
-                }
-            },
-            "required": [
-                "employmentType",
-                "monthlyIncome"
-            ]
-        },
-        "Address": {
-            "type": "object",
-            "properties": {
-                "registrationAddress": {
-                    "title": "Адрес регистрации",
-                    "description": "Адрес регистрации",
-                    "type": "string"
-                },
-                "residentialAddress": {
-                    "title": "Адрес Проживания",
-                    "description": "Адрес Проживания",
-                    "type": "string"
-                },
-                "sameAsRegistration": {
-                    "title": "Совпадает с адресом регистрации",
-                    "description": "Совпадает с адресом регистрации",
-                    "default": true,
-                    "type": "boolean"
-                }
-            },
-            "required": [
-                "registrationAddress"
-            ]
-        },
-        "Consents": {
-            "type": "object",
-            "properties": {
-                "personalDataProcessing": {
-                    "title": "Согласие на обработку персональных данных",
-                    "description": "Согласие на обработку персональных данных",
-                    "type": "boolean"
-                },
-                "creditBureauCheck": {
-                    "title": "Согласие на проверку кредитной истории",
-                    "description": "Согласие на проверку кредитной истории",
-                    "type": "boolean"
-                },
-                "marketingCommunications": {
-                    "title": "Согласие на маркетинговые коммуникации",
-                    "description": "Согласие на маркетинговые коммуникации",
-                    "default": true,
-                    "type": "boolean"
-                }
-            },
-            "required": [
-                "personalDataProcessing",
-                "creditBureauCheck"
-            ]
-        },
         "status": {
-            "title": "Статус заявки",
-            "description": "Статус заявки",
-            "type": "string",
             "enum": [
                 "new",
                 "in_review",
                 "approved",
                 "rejected",
                 "canceled"
-            ]
+            ],
+            "type": "string",
+            "title": "Статус заявки",
+            "description": "Статус заявки"
+        },
+        "Address": {
+            "type": "object",
+            "required": [
+                "registrationAddress"
+            ],
+            "properties": {
+                "residentialAddress": {
+                    "type": "string",
+                    "title": "Адрес Проживания",
+                    "description": "Адрес Проживания"
+                },
+                "sameAsRegistration": {
+                    "type": "boolean",
+                    "title": "Совпадает с адресом регистрации",
+                    "description": "Совпадает с адресом регистрации"
+                },
+                "registrationAddress": {
+                    "type": "string",
+                    "title": "Адрес регистрации",
+                    "description": "Адрес регистрации"
+                }
+            }
+        },
+        "Consents": {
+            "type": "object",
+            "required": [
+                "personalDataProcessing",
+                "creditBureauCheck"
+            ],
+            "properties": {
+                "creditBureauCheck": {
+                    "type": "boolean",
+                    "title": "Согласие на проверку кредитной истории",
+                    "description": "Согласие на проверку кредитной истории"
+                },
+                "personalDataProcessing": {
+                    "type": "boolean",
+                    "title": "Согласие на обработку персональных данных",
+                    "description": "Согласие на обработку персональных данных"
+                },
+                "marketingCommunications": {
+                    "type": "boolean",
+                    "title": "Согласие на маркетинговые коммуникации",
+                    "default": true,
+                    "description": "Согласие на маркетинговые коммуникации"
+                }
+            }
+        },
+        "currency": {
+            "enum": [
+                "RUB",
+                "YAN"
+            ],
+            "type": "string",
+            "title": "Валюта",
+            "default": "RUB",
+            "description": "Валюта"
+        },
+        "loanTerm": {
+            "type": "number",
+            "title": "Срок в месяцах",
+            "maximum": 60,
+            "minimum": 1,
+            "description": "Срок в месяцах"
+        },
+        "Applicant": {
+            "type": "object",
+            "required": [
+                "phoneNumber",
+                "lastName",
+                "firstName",
+                "birthDate"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "title": "Электронная почта",
+                    "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+                    "description": "Электронная почта"
+                },
+                "taxId": {
+                    "type": "string",
+                    "title": "ИНН",
+                    "maxLength": 12,
+                    "minLength": 12,
+                    "description": "ИНН"
+                },
+                "gender": {
+                    "enum": [
+                        "male",
+                        "female"
+                    ],
+                    "type": "string",
+                    "title": "Пол",
+                    "description": "Пол"
+                },
+                "lastName": {
+                    "type": "string",
+                    "title": "Фамилия",
+                    "pattern": "^[a-zA-Zа-яА-Я\\s\\-]{2,80}$",
+                    "description": "Фамилия"
+                },
+                "birthDate": {
+                    "type": "string",
+                    "title": "Дата рождения",
+                    "description": "Дата рождения"
+                },
+                "firstName": {
+                    "type": "string",
+                    "title": "Имя",
+                    "pattern": "^[a-zA-Zа-яА-Я\\s\\-]{2,50}$",
+                    "description": "Имя"
+                },
+                "middleName": {
+                    "type": "string",
+                    "title": "Отчество",
+                    "description": "Отчество"
+                },
+                "phoneNumber": {
+                    "type": "string",
+                    "title": "Номер телефона",
+                    "default": "",
+                    "pattern": "^\\+?[0-9\\s\\-\\(\\)]{7,15}$",
+                    "description": "Номер телефона"
+                },
+                "passportNumber": {
+                    "type": "string",
+                    "title": "Серия и номер паспорта",
+                    "pattern": "",
+                    "description": "Серия и номер паспорта"
+                },
+                "passportIssuedBy": {
+                    "type": "string",
+                    "title": "Кем выдан паспорт",
+                    "description": "Кем выдан паспорт"
+                },
+                "passportIssueDate": {
+                    "type": "string",
+                    "title": "Дата выдачи паспорта",
+                    "description": "Дата выдачи паспорта"
+                }
+            }
+        },
+        "Employment": {
+            "type": "object",
+            "required": [
+                "employmentType",
+                "monthlyIncome"
+            ],
+            "properties": {
+                "position": {
+                    "type": "string",
+                    "title": "Должность",
+                    "description": "Должность"
+                },
+                "companyName": {
+                    "type": "string",
+                    "title": "Название компании",
+                    "description": "Название компании"
+                },
+                "monthlyIncome": {
+                    "type": "number",
+                    "title": "Ежемесячный доход в рублях",
+                    "description": "Ежемесячный доход в рублях"
+                },
+                "employmentType": {
+                    "enum": [
+                        "employed",
+                        "self_employed",
+                        "unemployed",
+                        "pensioner",
+                        "student"
+                    ],
+                    "type": "string",
+                    "title": "Тип занятости",
+                    "description": "Тип занятости"
+                },
+                "workExperience": {
+                    "type": "number",
+                    "title": "Общий стаж работы в месяцах",
+                    "description": "Общий стаж работы в месяцах"
+                },
+                "additionalIncome": {
+                    "type": "number",
+                    "title": "Дополнительный доход в рублях",
+                    "description": "Дополнительный доход в рублях"
+                },
+                "currentJobExperience": {
+                    "type": "number",
+                    "title": "Стаж на текущем месте работы в месяцах",
+                    "description": "Стаж на текущем месте работы в месяцах"
+                }
+            }
+        },
+        "loanAmount": {
+            "type": "number",
+            "title": "Сумма",
+            "maximum": 10000000,
+            "minimum": 1000,
+            "description": "Сумма"
+        },
+        "loanPurpose": {
+            "enum": [
+                "car",
+                "education",
+                "medical",
+                "travel",
+                "other"
+            ],
+            "type": "string",
+            "title": "Цель",
+            "description": "Цель"
+        },
+        "applicationId": {
+            "type": "string",
+            "title": "Id заявки",
+            "description": "Id заявки"
+        },
+        "applicationDate": {
+            "type": "string",
+            "title": "Дата заявки",
+            "description": "Дата заявки"
+        },
+        "loanReceiptDate": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "format": "date"
+            },
+            "title": "Желаемая дата получения кредита",
+            "format": "date",
+            "maxItems": 2,
+            "minItems": 2
+        },
+        "methodReceivingMoney": {
+            "enum": [
+                "cash",
+                "account",
+                "card"
+            ],
+            "type": "string",
+            "title": "Способ получения"
+        },
+        "otherPurposeDescription": {
+            "type": "string",
+            "title": "Другое",
+            "description": "Другое"
         }
     }
 }

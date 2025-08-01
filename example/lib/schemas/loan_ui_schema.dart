@@ -11,7 +11,6 @@ const loanUiSchemaStr = r'''
         {
             "type": "TABS_COMPONENT",
             "options": {
-                "display": {},
                 "data": {
                     "items": [
                         {
@@ -31,7 +30,8 @@ const loanUiSchemaStr = r'''
                             "label": "Адрес"
                         }
                     ]
-                }
+                },
+                "display": {}
             },
             "elements": [
                 {
@@ -45,8 +45,8 @@ const loanUiSchemaStr = r'''
                     "elements": [
                         {
                             "type": "INPUT_NUMBER",
-                            "scope": "#/properties/loanAmount",
                             "label": "Сумма",
+                            "scope": "#/properties/loanAmount",
                             "options": {
                                 "name": "loanAmount",
                                 "type": "number",
@@ -59,36 +59,27 @@ const loanUiSchemaStr = r'''
                         },
                         {
                             "type": "DROP_DOWN",
-                            "scope": "#/properties/currency",
                             "label": "Валюта",
+                            "scope": "#/properties/currency",
                             "options": {
-                                "enum": [
-                                    [
-                                        "R"
-                                    ],
-                                    [
-                                        "Y"
-                                    ]
-                                ],
-                                "name": "currency",
-                                "type": "string",
-                                "title": "Валюта",
-                                "bordered": true,
-                                "listHeight": 256,
-                                "description": "Валюта",
-                                "defaultValue": "RUB",
                                 "data": {
                                     "items": {
                                         "RUB": "RUB",
                                         "YAN": "YAN"
                                     }
-                                }
+                                },
+                                "name": "currency",
+                                "type": "string",
+                                "title": "Валюта",
+                                "bordered": true,
+                                "listHeight": 256,
+                                "description": "Валюта"
                             }
                         },
                         {
                             "type": "INPUT_NUMBER",
-                            "scope": "#/properties/loanTerm",
                             "label": "Срок в месяцах",
+                            "scope": "#/properties/loanTerm",
                             "options": {
                                 "name": "loanTerm",
                                 "type": "number",
@@ -101,58 +92,46 @@ const loanUiSchemaStr = r'''
                             }
                         },
                         {
-                            "type": "DROP_DOWN",
-                            "scope": "#/properties/loanPurpose",
-                            "label": "Цель",
+                            "type": "RADIO",
+                            "label": "Способ получения",
+                            "scope": "#/properties/methodReceivingMoney",
                             "options": {
-                                "enum": [
-                                    [
-                                        "c"
-                                    ],
-                                    [
-                                        "e"
-                                    ],
-                                    [
-                                        "m"
-                                    ],
-                                    [
-                                        "t"
-                                    ],
-                                    [
-                                        "o"
-                                    ],
-                                    [
-                                        "Д"
-                                    ]
-                                ],
+                                "data": {
+                                    "items": {
+                                        "card": "На карту",
+                                        "cash": "Наличными",
+                                        "account": "На счет"
+                                    }
+                                },
+                                "name": "methodReceivingMoney",
+                                "type": "string",
+                                "title": "Способ получения",
+                                "bordered": true
+                            }
+                        },
+                        {
+                            "type": "DROP_DOWN",
+                            "label": "Цель",
+                            "scope": "#/properties/loanPurpose",
+                            "options": {
+                                "data": {
+                                    "items": {
+                                        "car": "Авто",
+                                        "other": "Другое",
+                                        "travel": "Путешествие",
+                                        "medical": "Лечение",
+                                        "education": "Образование"
+                                    }
+                                },
                                 "name": "loanPurpose",
                                 "type": "string",
                                 "title": "Цель",
                                 "bordered": true,
                                 "listHeight": 256,
-                                "description": "Цель",
-                                "data": {
-                                    "items": {
-                                        "car": "Авто",
-                                        "education": "Образование",
-                                        "medical": "Лечение",
-                                        "travel": "Путешествие",
-                                        "other": "Другое"
-                                    }
-                                }
+                                "description": "Цель"
                             }
                         },
                         {
-                            "type": "INPUT_TEXT",
-                            "scope": "#/properties/otherPurposeDescription",
-                            "label": "Другое",
-                            "options": {
-                                "name": "otherPurposeDescription",
-                                "type": "string",
-                                "title": "Другое",
-                                "bordered": true,
-                                "description": "Другое"
-                            },
                             "rule": {
                                 "effect": "SHOW",
                                 "condition": {
@@ -161,13 +140,43 @@ const loanUiSchemaStr = r'''
                                         "const": "other"
                                     }
                                 }
+                            },
+                            "type": "INPUT_TEXT",
+                            "label": "Другое",
+                            "scope": "#/properties/otherPurposeDescription",
+                            "options": {
+                                "name": "otherPurposeDescription",
+                                "type": "string",
+                                "title": "Другое",
+                                "bordered": true,
+                                "description": "Другое"
                             }
                         },
                         {
-                            "type": "INPUT_TEXT",
-                            "scope": "#/properties/Applicant/properties/phoneNumber",
-                            "label": "Номер телефона",
+                            "type": "DATE_RANGE",
+                            "label": "Желаемая дата получения кредита",
+                            "scope": "#/properties/loanReceiptDate",
                             "options": {
+                                "name": "loanReceiptDate",
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "format": "date"
+                                },
+                                "title": "Желаемая дата получения кредита",
+                                "format": "date",
+                                "bordered": true,
+                                "maxItems": 2,
+                                "minItems": 2,
+                                "alowClear": true
+                            }
+                        },
+                        {
+                            "type": "INPUT_MASK",
+                            "label": "Номер телефона",
+                            "scope": "#/properties/Applicant/properties/phoneNumber",
+                            "options": {
+                                "mask": "9 999 999 99 99",
                                 "name": "phoneNumber",
                                 "size": "middle",
                                 "type": "string",
@@ -179,8 +188,8 @@ const loanUiSchemaStr = r'''
                         },
                         {
                             "type": "INPUT_TEXT",
-                            "scope": "#/properties/Applicant/properties/email",
                             "label": "Электронная почта",
+                            "scope": "#/properties/Applicant/properties/email",
                             "options": {
                                 "name": "email",
                                 "size": "middle",
@@ -193,8 +202,8 @@ const loanUiSchemaStr = r'''
                         },
                         {
                             "type": "INPUT_TEXT",
-                            "scope": "#/properties/applicationDate",
                             "label": "Дата заявки",
+                            "scope": "#/properties/applicationDate",
                             "options": {
                                 "name": "applicationDate",
                                 "type": "string",
@@ -205,8 +214,8 @@ const loanUiSchemaStr = r'''
                         },
                         {
                             "type": "INPUT_TEXT",
-                            "scope": "#/properties/applicationId",
                             "label": "Id заявки",
+                            "scope": "#/properties/applicationId",
                             "options": {
                                 "name": "applicationId",
                                 "type": "string",
@@ -239,15 +248,15 @@ const loanUiSchemaStr = r'''
                                     "type": "GRID_COMPONENT",
                                     "options": {
                                         "lg": 8,
-                                        "md": 12,
-                                        "sm": 24,
-                                        "xs": 24
+                                        "md": 8,
+                                        "sm": 8,
+                                        "xs": 8
                                     },
                                     "elements": [
                                         {
                                             "type": "INPUT_TEXT",
-                                            "scope": "#/properties/Applicant/properties/lastName",
                                             "label": "Фамилия",
+                                            "scope": "#/properties/Applicant/properties/lastName",
                                             "options": {
                                                 "name": "lastName",
                                                 "size": "middle",
@@ -264,15 +273,15 @@ const loanUiSchemaStr = r'''
                                     "type": "GRID_COMPONENT",
                                     "options": {
                                         "lg": 8,
-                                        "md": 12,
-                                        "sm": 24,
-                                        "xs": 24
+                                        "md": 8,
+                                        "sm": 8,
+                                        "xs": 8
                                     },
                                     "elements": [
                                         {
                                             "type": "INPUT_TEXT",
-                                            "scope": "#/properties/Applicant/properties/firstName",
                                             "label": "Имя",
+                                            "scope": "#/properties/Applicant/properties/firstName",
                                             "options": {
                                                 "name": "firstName",
                                                 "size": "middle",
@@ -289,15 +298,15 @@ const loanUiSchemaStr = r'''
                                     "type": "GRID_COMPONENT",
                                     "options": {
                                         "lg": 8,
-                                        "md": 24,
-                                        "sm": 24,
-                                        "xs": 24
+                                        "md": 8,
+                                        "sm": 8,
+                                        "xs": 8
                                     },
                                     "elements": [
                                         {
                                             "type": "INPUT_TEXT",
-                                            "scope": "#/properties/Applicant/properties/middleName",
                                             "label": "Отчество",
+                                            "scope": "#/properties/Applicant/properties/middleName",
                                             "options": {
                                                 "name": "middleName",
                                                 "size": "middle",
@@ -324,15 +333,15 @@ const loanUiSchemaStr = r'''
                                     "type": "GRID_COMPONENT",
                                     "options": {
                                         "lg": 8,
-                                        "md": 12,
-                                        "sm": 24,
-                                        "xs": 24
+                                        "md": 8,
+                                        "sm": 8,
+                                        "xs": 8
                                     },
                                     "elements": [
                                         {
                                             "type": "INPUT_TEXT",
-                                            "scope": "#/properties/Applicant/properties/birthDate",
                                             "label": "Дата рождения",
+                                            "scope": "#/properties/Applicant/properties/birthDate",
                                             "options": {
                                                 "name": "birthDate",
                                                 "type": "string",
@@ -347,36 +356,28 @@ const loanUiSchemaStr = r'''
                                     "type": "GRID_COMPONENT",
                                     "options": {
                                         "lg": 8,
-                                        "md": 12,
-                                        "sm": 24,
-                                        "xs": 24
+                                        "md": 8,
+                                        "sm": 8,
+                                        "xs": 8
                                     },
                                     "elements": [
                                         {
                                             "type": "DROP_DOWN",
-                                            "scope": "#/properties/Applicant/properties/gender",
                                             "label": "Пол",
+                                            "scope": "#/properties/Applicant/properties/gender",
                                             "options": {
-                                                "enum": [
-                                                    [
-                                                        "m"
-                                                    ],
-                                                    [
-                                                        "f"
-                                                    ]
-                                                ],
-                                                "name": "gender",
-                                                "type": "string",
-                                                "title": "Пол",
-                                                "bordered": true,
-                                                "listHeight": 256,
-                                                "description": "Пол",
                                                 "data": {
                                                     "items": {
                                                         "male": "Муж",
                                                         "female": "Жен"
                                                     }
-                                                }
+                                                },
+                                                "name": "gender",
+                                                "type": "string",
+                                                "title": "Пол",
+                                                "bordered": true,
+                                                "listHeight": 256,
+                                                "description": "Пол"
                                             }
                                         }
                                     ]
@@ -385,15 +386,15 @@ const loanUiSchemaStr = r'''
                                     "type": "GRID_COMPONENT",
                                     "options": {
                                         "lg": 8,
-                                        "md": 24,
-                                        "sm": 24,
-                                        "xs": 24
+                                        "md": 8,
+                                        "sm": 8,
+                                        "xs": 8
                                     },
                                     "elements": [
                                         {
                                             "type": "INPUT_TEXT",
-                                            "scope": "#/properties/Applicant/properties/taxId",
                                             "label": "ИНН",
+                                            "scope": "#/properties/Applicant/properties/taxId",
                                             "options": {
                                                 "name": "taxId",
                                                 "size": "middle",
@@ -422,21 +423,22 @@ const loanUiSchemaStr = r'''
                                     "type": "GRID_COMPONENT",
                                     "options": {
                                         "lg": 8,
-                                        "md": 12,
-                                        "sm": 24,
-                                        "xs": 24
+                                        "md": 8,
+                                        "sm": 8,
+                                        "xs": 8
                                     },
                                     "elements": [
                                         {
-                                            "type": "INPUT_TEXT",
-                                            "scope": "#/properties/Applicant/properties/passportNumber",
+                                            "type": "INPUT_MASK",
                                             "label": "Серия и номер паспорта",
+                                            "scope": "#/properties/Applicant/properties/passportNumber",
                                             "options": {
+                                                "mask": "99 99 999999",
                                                 "name": "passportNumber",
                                                 "size": "middle",
                                                 "type": "string",
                                                 "title": "Серия и номер паспорта",
-                                                "pattern": "^\\d{4}\\s\\d{6}$",
+                                                "pattern": "",
                                                 "bordered": true,
                                                 "description": "Серия и номер паспорта"
                                             }
@@ -447,15 +449,15 @@ const loanUiSchemaStr = r'''
                                     "type": "GRID_COMPONENT",
                                     "options": {
                                         "lg": 8,
-                                        "md": 12,
-                                        "sm": 24,
-                                        "xs": 24
+                                        "md": 8,
+                                        "sm": 8,
+                                        "xs": 8
                                     },
                                     "elements": [
                                         {
                                             "type": "INPUT_TEXT",
-                                            "scope": "#/properties/Applicant/properties/passportIssuedBy",
                                             "label": "Кем выдан паспорт",
+                                            "scope": "#/properties/Applicant/properties/passportIssuedBy",
                                             "options": {
                                                 "name": "passportIssuedBy",
                                                 "type": "string",
@@ -470,15 +472,15 @@ const loanUiSchemaStr = r'''
                                     "type": "GRID_COMPONENT",
                                     "options": {
                                         "lg": 8,
-                                        "md": 24,
-                                        "sm": 24,
-                                        "xs": 24
+                                        "md": 8,
+                                        "sm": 8,
+                                        "xs": 8
                                     },
                                     "elements": [
                                         {
                                             "type": "INPUT_TEXT",
-                                            "scope": "#/properties/Applicant/properties/passportIssueDate",
                                             "label": "Дата выдачи паспорта",
+                                            "scope": "#/properties/Applicant/properties/passportIssueDate",
                                             "options": {
                                                 "name": "passportIssueDate",
                                                 "type": "string",
@@ -504,54 +506,53 @@ const loanUiSchemaStr = r'''
                     "elements": [
                         {
                             "type": "DROP_DOWN",
-                            "scope": "#/properties/Employment/properties/employmentType",
                             "label": "Тип занятости",
+                            "scope": "#/properties/Employment/properties/employmentType",
                             "options": {
-                                "enum": [
-                                    [
-                                        "e"
-                                    ],
-                                    [
-                                        "s"
-                                    ],
-                                    [
-                                        "u"
-                                    ],
-                                    [
-                                        "p"
-                                    ],
-                                    [
-                                        "s"
-                                    ]
-                                ],
+                                "data": {
+                                    "items": {
+                                        "student": "Студент",
+                                        "employed": "Работаю",
+                                        "pensioner": "Пенсионер",
+                                        "unemployed": "Безработный",
+                                        "self_employed": "Самозанятый"
+                                    }
+                                },
                                 "name": "employmentType",
                                 "type": "string",
                                 "title": "Тип занятости",
                                 "bordered": true,
                                 "listHeight": 256,
-                                "description": "Тип занятости",
-                                "data": {
-                                    "items": {
-                                        "employed": "Работаю",
-                                        "self_employed": "Самозанятый",
-                                        "unemployed": "Безработный",
-                                        "pensioner": "Пенсионер",
-                                        "student": "Студент"
-                                    }
-                                }
+                                "description": "Тип занятости"
                             }
                         },
                         {
+                            "rule": {
+                                "effect": "HIDE",
+                                "condition": {
+                                    "scope": "#/properties/Employment/properties/employmentType",
+                                    "schema": {
+                                        "enum": [
+                                            "self_employed",
+                                            "pensioner",
+                                            "student",
+                                            "unemployed"
+                                        ]
+                                    }
+                                }
+                            },
                             "type": "INPUT_TEXT",
-                            "scope": "#/properties/Employment/properties/companyName",
                             "label": "Название компании",
+                            "scope": "#/properties/Employment/properties/companyName",
                             "options": {
                                 "name": "companyName",
                                 "type": "string",
                                 "title": "Название компании",
                                 "bordered": true,
                                 "description": "Название компании"
-                            },
+                            }
+                        },
+                        {
                             "rule": {
                                 "effect": "HIDE",
                                 "condition": {
@@ -565,45 +566,19 @@ const loanUiSchemaStr = r'''
                                         ]
                                     }
                                 }
-                            }
-                        },
-                        {
+                            },
                             "type": "INPUT_TEXT",
-                            "scope": "#/properties/Employment/properties/position",
                             "label": "Должность",
+                            "scope": "#/properties/Employment/properties/position",
                             "options": {
                                 "name": "position",
                                 "type": "string",
                                 "title": "Должность",
                                 "bordered": true,
                                 "description": "Должность"
-                            },
-                            "rule": {
-                                "effect": "HIDE",
-                                "condition": {
-                                    "scope": "#/properties/Employment/properties/employmentType",
-                                    "schema": {
-                                        "enum": [
-                                            "self_employed",
-                                            "pensioner",
-                                            "student",
-                                            "unemployed"
-                                        ]
-                                    }
-                                }
                             }
                         },
                         {
-                            "type": "INPUT_NUMBER",
-                            "scope": "#/properties/Employment/properties/workExperience",
-                            "label": "Общий стаж работы в месяцах",
-                            "options": {
-                                "name": "workExperience",
-                                "type": "number",
-                                "title": "Общий стаж работы в месяцах",
-                                "bordered": true,
-                                "description": "Общий стаж работы в месяцах"
-                            },
                             "rule": {
                                 "effect": "HIDE",
                                 "condition": {
@@ -612,19 +587,19 @@ const loanUiSchemaStr = r'''
                                         "const": "student"
                                     }
                                 }
+                            },
+                            "type": "INPUT_NUMBER",
+                            "label": "Общий стаж работы в месяцах",
+                            "scope": "#/properties/Employment/properties/workExperience",
+                            "options": {
+                                "name": "workExperience",
+                                "type": "number",
+                                "title": "Общий стаж работы в месяцах",
+                                "bordered": true,
+                                "description": "Общий стаж работы в месяцах"
                             }
                         },
                         {
-                            "type": "INPUT_NUMBER",
-                            "scope": "#/properties/Employment/properties/currentJobExperience",
-                            "label": "Стаж на текущем месте работы в месяцах",
-                            "options": {
-                                "name": "currentJobExperience",
-                                "type": "number",
-                                "title": "Стаж на текущем месте работы в месяцах",
-                                "bordered": true,
-                                "description": "Стаж на текущем месте работы в месяцах"
-                            },
                             "rule": {
                                 "effect": "HIDE",
                                 "condition": {
@@ -638,12 +613,22 @@ const loanUiSchemaStr = r'''
                                         ]
                                     }
                                 }
+                            },
+                            "type": "INPUT_NUMBER",
+                            "label": "Стаж на текущем месте работы в месяцах",
+                            "scope": "#/properties/Employment/properties/currentJobExperience",
+                            "options": {
+                                "name": "currentJobExperience",
+                                "type": "number",
+                                "title": "Стаж на текущем месте работы в месяцах",
+                                "bordered": true,
+                                "description": "Стаж на текущем месте работы в месяцах"
                             }
                         },
                         {
                             "type": "INPUT_NUMBER",
-                            "scope": "#/properties/Employment/properties/monthlyIncome",
                             "label": "Ежемесячный доход в рублях",
+                            "scope": "#/properties/Employment/properties/monthlyIncome",
                             "options": {
                                 "name": "monthlyIncome",
                                 "type": "number",
@@ -654,8 +639,8 @@ const loanUiSchemaStr = r'''
                         },
                         {
                             "type": "INPUT_NUMBER",
-                            "scope": "#/properties/Employment/properties/additionalIncome",
                             "label": "Дополнительный доход в рублях",
+                            "scope": "#/properties/Employment/properties/additionalIncome",
                             "options": {
                                 "name": "additionalIncome",
                                 "type": "number",
@@ -677,8 +662,8 @@ const loanUiSchemaStr = r'''
                     "elements": [
                         {
                             "type": "INPUT_TEXT",
-                            "scope": "#/properties/Address/properties/registrationAddress",
                             "label": "Адрес регистрации",
+                            "scope": "#/properties/Address/properties/registrationAddress",
                             "options": {
                                 "name": "registrationAddress",
                                 "type": "string",
@@ -689,13 +674,12 @@ const loanUiSchemaStr = r'''
                         },
                         {
                             "type": "SWITCH",
-                            "scope": "#/properties/Address/properties/sameAsRegistration",
                             "label": "Совпадает с адресом регистрации",
+                            "scope": "#/properties/Address/properties/sameAsRegistration",
                             "options": {
                                 "name": "sameAsRegistration",
                                 "type": "boolean",
                                 "title": "Совпадает с адресом регистрации",
-                                "default": true,
                                 "bordered": true,
                                 "description": "Совпадает с адресом регистрации",
                                 "checkedChildren": "On",
@@ -703,16 +687,6 @@ const loanUiSchemaStr = r'''
                             }
                         },
                         {
-                            "type": "INPUT_TEXT",
-                            "scope": "#/properties/Address/properties/residentialAddress",
-                            "label": "Адрес Проживания",
-                            "options": {
-                                "name": "residentialAddress",
-                                "type": "string",
-                                "title": "Адрес Проживания",
-                                "bordered": true,
-                                "description": "Адрес Проживания"
-                            },
                             "rule": {
                                 "effect": "HIDE",
                                 "condition": {
@@ -721,6 +695,16 @@ const loanUiSchemaStr = r'''
                                         "const": true
                                     }
                                 }
+                            },
+                            "type": "INPUT_TEXT",
+                            "label": "Адрес Проживания",
+                            "scope": "#/properties/Address/properties/residentialAddress",
+                            "options": {
+                                "name": "residentialAddress",
+                                "type": "string",
+                                "title": "Адрес Проживания",
+                                "bordered": true,
+                                "description": "Адрес Проживания"
                             }
                         }
                     ]
@@ -735,7 +719,8 @@ const loanUiSchemaStr = r'''
                 "sm": 24,
                 "xs": 24,
                 "name": "Applicant"
-            }
+            },
+            "elements": []
         },
         {
             "type": "GRID_COMPONENT",
@@ -749,8 +734,8 @@ const loanUiSchemaStr = r'''
             "elements": [
                 {
                     "type": "SWITCH",
-                    "scope": "#/properties/Consents/properties/personalDataProcessing",
                     "label": "Согласие на обработку персональных данных",
+                    "scope": "#/properties/Consents/properties/personalDataProcessing",
                     "options": {
                         "name": "personalDataProcessing",
                         "type": "boolean",
@@ -763,8 +748,8 @@ const loanUiSchemaStr = r'''
                 },
                 {
                     "type": "SWITCH",
-                    "scope": "#/properties/Consents/properties/creditBureauCheck",
                     "label": "Согласие на проверку кредитной истории",
+                    "scope": "#/properties/Consents/properties/creditBureauCheck",
                     "options": {
                         "name": "creditBureauCheck",
                         "type": "boolean",
@@ -777,8 +762,8 @@ const loanUiSchemaStr = r'''
                 },
                 {
                     "type": "SWITCH",
-                    "scope": "#/properties/Consents/properties/marketingCommunications",
                     "label": "Согласие на маркетинговые коммуникации",
+                    "scope": "#/properties/Consents/properties/marketingCommunications",
                     "options": {
                         "name": "marketingCommunications",
                         "type": "boolean",
@@ -786,7 +771,6 @@ const loanUiSchemaStr = r'''
                         "default": true,
                         "bordered": true,
                         "description": "Согласие на маркетинговые коммуникации",
-                        "defaultValue": true,
                         "defaultChecked": true,
                         "checkedChildren": "On",
                         "unCheckedChildren": "Off"
@@ -796,41 +780,24 @@ const loanUiSchemaStr = r'''
         },
         {
             "type": "DROP_DOWN",
-            "scope": "#/properties/status",
             "label": "Статус заявки",
+            "scope": "#/properties/status",
             "options": {
-                "enum": [
-                    [
-                        "n"
-                    ],
-                    [
-                        "i"
-                    ],
-                    [
-                        "a"
-                    ],
-                    [
-                        "r"
-                    ],
-                    [
-                        "c"
-                    ]
-                ],
+                "data": {
+                    "items": {
+                        "new": "Новая",
+                        "approved": "Одобрена",
+                        "canceled": "Отменена",
+                        "rejected": "Отклонена",
+                        "in_review": "На рассмотрении"
+                    }
+                },
                 "name": "status",
                 "type": "string",
                 "title": "Статус заявки",
                 "bordered": true,
                 "listHeight": 256,
-                "description": "Статус заявки",
-                "data": {
-                    "items": {
-                        "new": "Новая",
-                        "in_review": "На рассмотрении",
-                        "approved": "Одобрена",
-                        "rejected": "Отклонена",
-                        "canceled": "Отменена"
-                    }
-                }
+                "description": "Статус заявки"
             }
         },
         {
@@ -838,8 +805,8 @@ const loanUiSchemaStr = r'''
             "label": "Отправить",
             "options": {
                 "name": "sentButton",
-                "type": "submit",
-                "htmlType": "button"
+                "type": "primary",
+                "htmlType": "submit"
             }
         }
     ]
