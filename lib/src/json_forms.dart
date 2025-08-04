@@ -43,4 +43,6 @@ abstract class JsonForms<FormType> {
   );
 
   Widget getFormWidget(BuildContext context, {EdgeInsets padding});
+
+  void dispose();
 }

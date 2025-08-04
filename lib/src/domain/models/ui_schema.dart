@@ -6,6 +6,7 @@ class UISchemaElement {
     this.label,
     this.text,
     this.options,
+    this.rule,
   });
 
   factory UISchemaElement.fromJsonSchema(
@@ -29,6 +30,7 @@ class UISchemaElement {
           );
         },
       ).toList(),
+      rule: json['rule'] as Map<String, dynamic>?,
     );
   }
 
@@ -44,6 +46,7 @@ class UISchemaElement {
       label: json['label'] as String?,
       text: json['text'] as String?,
       options: json['options'] as Map<String, dynamic>?,
+      rule: json['rule'] as Map<String, dynamic>?,
     );
   }
   String? type;
@@ -52,6 +55,7 @@ class UISchemaElement {
   String? label;
   String? text;
   Map<String, dynamic>? options;
+  Map<String, dynamic>? rule;
 
   Map<String, dynamic> toJson() {
     return {
@@ -61,12 +65,13 @@ class UISchemaElement {
       'label': label,
       'text': text,
       'options': options,
+      'rules': rule,
     };
   }
 
   @override
   String toString() {
-    return 'type: $type, scope: $scope, elements: $elements, label: $label, text: $text, options: $options';
+    return 'type: $type, scope: $scope, elements: $elements, label: $label, text: $text, options: $options, rules: $rule';
   }
 }
 

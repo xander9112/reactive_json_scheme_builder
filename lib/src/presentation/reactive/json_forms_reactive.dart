@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
@@ -22,6 +24,8 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
     }
 
     form = createFormGroup();
+
+    addRules(uiSchemaDTO);
 
     initSubscribers();
   }
@@ -48,13 +52,49 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
   List<Map<String, RenderType<FormGroup>>> get myRenderList =>
       reactiveRenderList(createWidgets);
 
-  void initSubscribers() {}
+//ключ = scope элемента, с правилом
+  //мапа для быстрого обхода по всем правилам
+  Map<String, Rule> rules = {};
+
+  StreamSubscription<Map<String, Object?>?>? formSubscription;
+
+  void initSubscribers() {
+    formSubscription ??= form.valueChanges.listen((data) {
+      //TODO: обсчет правил, применение/откат эффектов
+      rules.forEach(
+        (key, value) {
+          if (key == '#/properties/Address/properties/residentialAddress') {
+            final value2 = JFUtils.getValueFromPath(
+              data!,
+              JFUtils.getParts(value.condition.scope),
+            );
+
+            if (value.effect == Effect.hide) {
+              (form.control(JFUtils.getParts(key)!.join('.'))
+                      as JsonSchemeFormControl)
+                  .visible = !(value2 as bool);
+            }
+          }
+        },
+      );
+    });
+  }
 
   FormGroup createFormGroup() {
     return _buildFormGroup(
       jsonSchemaDTO.properties!,
       jsonSchemaDTO.required,
     );
+  }
+
+  void addRules(UISchemaElement element) {
+    if (element.rule != null) {
+      rules[element.scope ?? ''] = Rule.fromJson(element.rule!);
+    }
+
+    for (final child in element.elements ?? <UISchemaElement>[]) {
+      addRules(child);
+    }
   }
 
   FormGroup _buildFormGroup(
@@ -76,7 +116,11 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
             path: newPath,
           );
         case 'array':
-          // _parseArray(value);
+          // controls[name] = _parseArray(
+          //   value.items,
+          //   requiredList,
+          //   path: newPath,
+          // );
           break;
         case 'string':
         case 'number':
@@ -114,6 +158,34 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
     return FormGroup(controls);
   }
 
+  // Преобразует тип "array" в FormArray
+  // FormArray<dynamic> _parseArray(
+  //   List<JsonSchema4>? items,
+  //   List<String>? requiredList, {
+  //   String path = '',
+  // }) {
+  //   if (items == null) {
+  //     return FormArray([]);
+  //   }
+
+  //   final controls = <AbstractControl<dynamic>>[];
+
+  //   for (final element in items) {
+  //     switch (element.type) {
+  //       case 'object':
+  //         controls
+  //             .add(_parseObject(element.properties, requiredList, path: path));
+  //       case 'array':
+  //         controls.add(_parseArray(element.items, requiredList, path: path));
+  //       default:
+  //         controls.add(_buildControl({'': element}, requiredList, path: path));
+  //         print(element);
+  //     }
+  //   }
+
+  //   return FormArray(controls);
+  // }
+
   AbstractControl<dynamic> _buildControl(
     Map<String, JsonSchema4> schema,
     List<String>? requiredList, {
@@ -130,37 +202,36 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
     switch (type) {
       case 'string':
         if (controlProperties.format == 'date') {
-          return FormControl<DateTime>(
+          return JsonSchemeFormControl<DateTime>(
             validators: _parseValidators(schema, requiredList, path),
             value: DateTime.tryParse(value.toString()),
             disabled: readOnly,
           );
         }
-
-        return FormControl<String>(
+        return JsonSchemeFormControl<String>(
           validators: _parseValidators(schema, requiredList, path),
           value: readOnly ? schema['const'].toString() : value as String?,
           disabled: readOnly,
         );
       case 'number':
-        return FormControl<double>(
+        return JsonSchemeFormControl<double>(
           validators: _parseValidators(schema, requiredList, path),
           value: double.tryParse(value.toString()),
           disabled: readOnly,
         );
       case 'integer':
-        return FormControl<int>(
+        return JsonSchemeFormControl<int>(
           validators: _parseValidators(schema, requiredList, path),
           value: value as int?,
           disabled: readOnly,
         );
       case 'boolean':
-        return FormControl<bool>(
+        return JsonSchemeFormControl<bool>(
           value: value as bool?,
           disabled: readOnly,
         );
       case 'null':
-        return FormControl<Null>(
+        return JsonSchemeFormControl<Null>(
           disabled: readOnly,
         );
       default:
@@ -258,5 +329,10 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    formSubscription?.cancel();
   }
 }

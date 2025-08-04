@@ -262,4 +262,7 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
       ),
     );
   }
+
+  @override
+  void dispose() {}
 }

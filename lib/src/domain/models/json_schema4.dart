@@ -59,6 +59,13 @@ class JsonSchema4 {
                   MapEntry(k, JsonSchema4.fromJson(v as Map<String, dynamic>)),
             )
           : null,
+      // items: json['items'] != null
+      //     ? (json['items'] as List)
+      //         .map(
+      //           (e) => JsonSchema4.fromJson(e as Map<String, dynamic>),
+      //         )
+      //         .toList()
+      //     : null,
       items: json['items'] != null
           ? JsonSchema4.fromJson(json['items'] as Map<String, dynamic>)
           : null,
