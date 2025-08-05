@@ -27,9 +27,9 @@ void main() {
 
       runApp(
         MyAppReactive(
-          schema: jsonDecode(loanJsonSchemaStr) as Map<String, dynamic>,
+          schema: jsonDecode(exampleJsonSchemaStr) as Map<String, dynamic>,
           // schema: jsonDecode(jsonSchemaStr) as Map<String, dynamic>,
-          uiSchema: jsonDecode(loanUiSchemaStr) as Map<String, dynamic>,
+          // uiSchema: jsonDecode(loanUiSchemaStr) as Map<String, dynamic>,
         ),
       );
     },

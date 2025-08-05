@@ -21,23 +21,6 @@ class HorizontalLayout extends StatelessWidget {
 
   static String type = 'HorizontalLayout';
 
-  static Widget render(
-    JsonSchema4 schema,
-    UISchemaElement uiSchema,
-    JsonForms<FormGroup> jsonForms,
-    List<Widget> Function(
-      JsonSchema4 schema,
-      UISchemaElement uiSchema,
-      List<Widget> widgets,
-    ) createWidgets,
-  ) =>
-      HorizontalLayout(
-        schema: schema,
-        uiSchema: uiSchema,
-        jsonForms: jsonForms,
-        createWidgets: createWidgets,
-      );
-
   @override
   Widget build(BuildContext context) {
     final List<Widget> localWidgets = [];

@@ -17,10 +17,15 @@ List<Map<String, RenderType<FormGroup>>> reactiveRenderList(
           UISchemaElement uiSchema,
           JsonForms<FormGroup> jsonForms,
         ) =>
-            HorizontalLayout.render(schema, uiSchema, jsonForms, createWidgets),
+            HorizontalLayout(
+              createWidgets: createWidgets,
+              schema: schema,
+              uiSchema: uiSchema,
+              jsonForms: jsonForms,
+            ),
       },
       {
-        'VerticalLayout': (
+        VerticalLayout.type: (
           JsonSchema4 schema,
           UISchemaElement uiSchema,
           JsonForms<FormGroup> jsonForms,
@@ -39,11 +44,7 @@ List<Map<String, RenderType<FormGroup>>> reactiveRenderList(
           UISchemaElement uiSchema,
           JsonForms<FormGroup> jsonForms,
         ) {
-          return ListTile(
-            title: Text(
-              uiSchema.text!,
-            ),
-          );
+          return ListTile(title: Text(uiSchema.text!));
         },
       },
       {
@@ -67,31 +68,23 @@ List<Map<String, RenderType<FormGroup>>> reactiveRenderList(
                 );
               }
 
-              // if (item.format == PropertyFormat.email.name) {
-              //   return EmailControl(
-              //     label: label,
-              //     description: item.description,
-              //     path: getParts(uiSchema.scope!),
-              //     jsonData: {},
-              //     callback: (Map<String, dynamic> data) {
-              //       // callback(data);
-              //     },
-              //     multi: multi,
-              //   );
-              // }
+              if (item.format == PropertyFormat.email.name) {
+                return ReactiveEmailControl(
+                  formControlName: JFUtils.getFormControlName(schema, uiSchema),
+                  label: JFUtils.getLabel(schema, uiSchema),
+                  description: item.description,
+                  path: JFUtils.getParts(uiSchema.scope),
+                );
+              }
 
-              // if (item.format == PropertyFormat.uri.name) {
-              //   return UriControl(
-              //     label: label,
-              //     description: item.description,
-              //     path: getParts(uiSchema.scope!),
-              //     jsonData: {},
-              //     callback: (Map<String, dynamic> data) {
-              //       // callback(data);
-              //     },
-              //     multi: multi,
-              //   );
-              // }
+              if (item.format == PropertyFormat.uri.name) {
+                return ReactiveUriControl(
+                  formControlName: JFUtils.getFormControlName(schema, uiSchema),
+                  label: JFUtils.getLabel(schema, uiSchema),
+                  description: item.description,
+                  path: JFUtils.getParts(uiSchema.scope),
+                );
+              }
 
               if (item.enumValues != null) {
                 return ReactiveDropdownControl(

@@ -19,6 +19,8 @@ class VerticalLayout extends StatelessWidget {
     List<Widget> widgets,
   ) createWidgets;
 
+  static String type = 'VerticalLayout';
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> localWidgets = [];

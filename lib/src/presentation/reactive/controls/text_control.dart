@@ -8,12 +8,15 @@ class ReactiveTextControl extends StatelessWidget {
     this.label,
     super.key,
     this.description,
+    this.inputType = TextInputType.text,
   });
 
   final String formControlName;
   final String? label;
   final String? description;
   final List<String>? path;
+
+  final TextInputType inputType;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +32,7 @@ class ReactiveTextControl extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 16.0),
           child: ReactiveTextField<String>(
             formControlName: formControlName,
+            keyboardType: inputType,
             decoration: InputDecoration(
               labelText: label,
               helperText: description,
