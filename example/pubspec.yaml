@@ -8,13 +8,14 @@ environment:
 
 dependencies:
   collection: ^1.19.0
+  dio: ^5.8.0+1
   flutter:
     sdk: flutter
-  reactive_forms_json_scheme:
-    path: ../
   mask_text_input_formatter: ^2.9.0
   reactive_date_range_picker: ^2.3.0
   reactive_date_time_picker: ^5.0.0
+  reactive_forms_json_scheme:
+    path: ../
 
 dev_dependencies:
   flutter_lints: ^5.0.0

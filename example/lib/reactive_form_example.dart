@@ -34,6 +34,19 @@ class _ReactiveFormExampleState extends State<ReactiveFormExample> {
       uiSchema: widget.uiSchema,
       dataJson: widget.data,
       customRenderList: forceUIRenders,
+      onReset: () {
+        jsonForms.form.reset();
+      },
+      onPressed: (event) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog.adaptive(
+              content: Text('Название события: $event'),
+            );
+          },
+        );
+      },
       onSubmit: (value) {
         jsonForms.form.markAllAsTouched();
         if (kDebugMode) {

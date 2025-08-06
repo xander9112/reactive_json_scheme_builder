@@ -9,6 +9,8 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
     required List<Map<String, RenderType<GlobalKey<FormState>>>>?
         customRenderList,
     required this.onSubmit,
+    required this.onReset,
+    required this.onPressed,
     Map<String, dynamic>? uiSchema,
   }) {
     jsonSchemaDTO = JsonSchema4.fromJson(jsonSchema);
@@ -42,6 +44,12 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
 
   @override
   void Function(Map<String, dynamic> value) onSubmit;
+
+  @override
+  void Function() onReset;
+
+  @override
+  void Function(String event) onPressed;
 
   @override
   List<Map<String, RenderType<GlobalKey<FormState>>>> get myRenderList => [

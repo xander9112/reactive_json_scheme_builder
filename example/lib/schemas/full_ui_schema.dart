@@ -60,139 +60,260 @@ const fullUiSchemaStr = r'''
                     },
                     "elements": [
                         {
-                            "type": "INPUT_NUMBER",
-                            "scope": "#/properties/number_input",
-                            "label": "Число",
+                            "type": "GRID_COMPONENT",
                             "options": {
-                                "name": "number_input",
-                                "type": "number",
-                                "title": "Число",
-                                "bordered": true,
-                                "validation": {},
-                                "description": "Описание",
-                                "labelPosition": "left",
-                                "decimalSeparator": ","
-                            }
-                        },
-                        {
-                            "type": "INPUT_TEXT",
-                            "scope": "#/properties/text_input",
-                            "label": "Текст",
-                            "options": {
-                                "name": "text_input",
-                                "size": "middle",
-                                "type": "string",
-                                "title": "Текст",
-                                "bordered": true,
-                                "validation": {}
-                            }
-                        },
-                        {
-                            "type": "INPUT_PASSWORD",
-                            "scope": "#/properties/password_input",
-                            "label": "Пароль",
-                            "options": {
-                                "name": "password_input",
-                                "type": "string",
-                                "title": "Пароль",
-                                "bordered": true,
-                                "validation": {}
-                            }
-                        },
-                        {
-                            "type": "TEXT_AREA",
-                            "scope": "#/properties/long_input",
-                            "label": "Длинный текст",
-                            "options": {
-                                "name": "long_input",
-                                "rows": 5,
-                                "type": "string",
-                                "title": "Длинный текст",
-                                "rowsMax": 10,
-                                "bordered": true,
-                                "validation": {}
-                            }
-                        },
-                        {
-                            "type": "INPUT_TEXT",
-                            "scope": "#/properties/text_validation_input",
-                            "label": "Поле с валидацией",
-                            "options": {
-                                "name": "text_validation_input",
-                                "size": "middle",
-                                "type": "string",
-                                "title": "Поле с валидацией",
-                                "format": "email",
-                                "length": "15",
-                                "bordered": true,
-                                "maxLength": 20,
-                                "minLength": 10,
-                                "validation": {
-                                    "required": "Поле обязательно для заполнения",
-                                    "minLength": "Минимальной должно быть 10 символов",
-                                    "maxLength": "Максимально может быть 20 символов",
-                                    "email": "Должен быть email"
+                                "lg": 24,
+                                "md": 24,
+                                "sm": 24,
+                                "xs": 24
+                            },
+                            "elements": [
+                                {
+                                    "type": "GRID_COMPONENT",
+                                    "options": {
+                                        "lg": 6,
+                                        "md": 8,
+                                        "sm": 12,
+                                        "xs": 24
+                                    },
+                                    "elements": [
+                                        {
+                                            "type": "INPUT_NUMBER",
+                                            "scope": "#/properties/number_input",
+                                            "label": "Число",
+                                            "options": {
+                                                "name": "number_input",
+                                                "type": "number",
+                                                "title": "Число",
+                                                "bordered": true,
+                                                "validation": {},
+                                                "description": "Описание",
+                                                "labelPosition": "left",
+                                                "decimalSeparator": ","
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "GRID_COMPONENT",
+                                    "options": {
+                                        "lg": 6,
+                                        "md": 8,
+                                        "sm": 12,
+                                        "xs": 24
+                                    },
+                                    "elements": [
+                                        {
+                                            "type": "INPUT_TEXT",
+                                            "scope": "#/properties/text_input",
+                                            "label": "Текст",
+                                            "options": {
+                                                "name": "text_input",
+                                                "size": "middle",
+                                                "type": "string",
+                                                "title": "Текст",
+                                                "bordered": true,
+                                                "validation": {}
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "GRID_COMPONENT",
+                                    "options": {
+                                        "lg": 6,
+                                        "md": 8,
+                                        "sm": 12,
+                                        "xs": 24
+                                    },
+                                    "elements": [
+                                        {
+                                            "type": "INPUT_PASSWORD",
+                                            "scope": "#/properties/password_input",
+                                            "label": "Пароль",
+                                            "options": {
+                                                "name": "password_input",
+                                                "type": "string",
+                                                "title": "Пароль",
+                                                "bordered": true,
+                                                "validation": {}
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "GRID_COMPONENT",
+                                    "options": {
+                                        "lg": 6,
+                                        "md": 8,
+                                        "sm": 12,
+                                        "xs": 24
+                                    },
+                                    "elements": [
+                                        {
+                                            "type": "TEXT_AREA",
+                                            "scope": "#/properties/long_input",
+                                            "label": "Длинный текст",
+                                            "options": {
+                                                "name": "long_input",
+                                                "rows": 1,
+                                                "type": "string",
+                                                "title": "Длинный текст",
+                                                "rowsMax": 10,
+                                                "bordered": true,
+                                                "validation": {}
+                                            }
+                                        }
+                                    ]
                                 }
-                            }
+                            ]
                         },
                         {
-                            "type": "INPUT_MASK",
-                            "scope": "#/properties/letter_mask",
-                            "label": "Номер машины",
+                            "type": "GRID_COMPONENT",
                             "options": {
-                                "mask": "a 999 aa",
-                                "name": "letter_mask",
-                                "type": "string",
-                                "title": "Номер машины",
-                                "bordered": true,
-                                "validation": {}
-                            }
+                                "lg": 24,
+                                "md": 24,
+                                "sm": 24,
+                                "xs": 24
+                            },
+                            "elements": [
+                                {
+                                    "type": "GRID_COMPONENT",
+                                    "options": {
+                                        "lg": 6,
+                                        "md": 8,
+                                        "sm": 12,
+                                        "xs": 24
+                                    },
+                                    "elements": [
+                                        {
+                                            "type": "INPUT_TEXT",
+                                            "scope": "#/properties/text_validation_input",
+                                            "label": "Поле с валидацией",
+                                            "options": {
+                                                "name": "text_validation_input",
+                                                "size": "middle",
+                                                "type": "string",
+                                                "title": "Поле с валидацией",
+                                                "format": "email",
+                                                "length": "15",
+                                                "bordered": true,
+                                                "maxLength": 20,
+                                                "minLength": 10,
+                                                "validation": {
+                                                    "required": "Поле обязательно для заполнения",
+                                                    "minLength": "Минимальной должно быть 10 символов",
+                                                    "maxLength": "Максимально может быть 20 символов",
+                                                    "email": "Должен быть email"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "GRID_COMPONENT",
+                                    "options": {
+                                        "lg": 6,
+                                        "md": 8,
+                                        "sm": 12,
+                                        "xs": 24
+                                    },
+                                    "elements": [
+                                        {
+                                            "type": "INPUT_MASK",
+                                            "scope": "#/properties/letter_mask",
+                                            "label": "Номер машины",
+                                            "options": {
+                                                "mask": "a 999 aa",
+                                                "name": "letter_mask",
+                                                "type": "string",
+                                                "title": "Номер машины",
+                                                "bordered": true,
+                                                "validation": {}
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "GRID_COMPONENT",
+                                    "options": {
+                                        "lg": 6,
+                                        "md": 8,
+                                        "sm": 12,
+                                        "xs": 24
+                                    },
+                                    "elements": [
+                                        {
+                                            "type": "INPUT_MASK",
+                                            "scope": "#/properties/mask_input",
+                                            "label": "Маска",
+                                            "options": {
+                                                "mask": "+9 (999) 999-99-99",
+                                                "name": "mask_input",
+                                                "type": "string",
+                                                "title": "Маска",
+                                                "bordered": true,
+                                                "validation": {}
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "GRID_COMPONENT",
+                                    "options": {
+                                        "lg": 6,
+                                        "md": 24,
+                                        "sm": 12,
+                                        "xs": 24
+                                    },
+                                    "elements": [
+                                        {
+                                            "type": "DROP_DOWN",
+                                            "scope": "#/properties/select_input",
+                                            "label": "Выбор из списка",
+                                            "options": {
+                                                "name": "select_input",
+                                                "type": "string",
+                                                "title": "Выбор из списка",
+                                                "bordered": true,
+                                                "listHeight": 256,
+                                                "validation": {},
+                                                "data": {
+                                                    "items": {
+                                                        "element_1": "Элемент 1",
+                                                        "element_2": "Элемент 2",
+                                                        "element_3": "Элемент 2"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
                         },
                         {
-                            "type": "INPUT_MASK",
-                            "scope": "#/properties/mask_input",
-                            "label": "Маска",
+                            "type": "GRID_COMPONENT",
                             "options": {
-                                "mask": "+9 (999) 999-99-99",
-                                "name": "mask_input",
-                                "type": "string",
-                                "title": "Маска",
-                                "bordered": true,
-                                "validation": {}
-                            }
-                        },
-                        {
-                            "type": "DROP_DOWN",
-                            "scope": "#/properties/select_input",
-                            "label": "Выбор из списка",
-                            "options": {
-                                "name": "select_input",
-                                "type": "string",
-                                "title": "Выбор из списка",
-                                "bordered": true,
-                                "listHeight": 256,
-                                "validation": {},
-                                "data": {
-                                    "items": {
-                                        "element_1": "Элемент 1",
-                                        "element_2": "Элемент 2",
-                                        "element_3": "Элемент 2"
+                                "lg": 6,
+                                "md": 12,
+                                "sm": 18,
+                                "xs": 24
+                            },
+                            "elements": [
+                                {
+                                    "type": "DROP_DOWN",
+                                    "scope": "#/properties/select_data_source_input",
+                                    "label": "Выбор из динамического списка",
+                                    "options": {
+                                        "name": "select_data_source_input",
+                                        "type": "string",
+                                        "title": "Выбор из динамического списка",
+                                        "bordered": true,
+                                        "listHeight": 256,
+                                        "validation": {}
                                     }
                                 }
-                            }
-                        },
-                        {
-                            "type": "DROP_DOWN",
-                            "scope": "#/properties/select_data_source_input",
-                            "label": "Выбор из динамического списка",
-                            "options": {
-                                "name": "select_data_source_input",
-                                "type": "string",
-                                "title": "Выбор из динамического списка",
-                                "bordered": true,
-                                "listHeight": 256,
-                                "validation": {}
-                            }
+                            ]
                         }
                     ]
                 },

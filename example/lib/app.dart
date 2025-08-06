@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'reactive_form_example.dart';
+import 'remote_reactive_form_example.dart';
 import 'schemas/_schemas.dart';
 
 class App extends StatelessWidget {
@@ -39,6 +40,12 @@ class App extends StatelessWidget {
             title: 'Pages',
             schema: jsonDecode(pagesJsonSchemaStr),
             uiSchema: jsonDecode(pagesUiSchemaStr),
+          ),
+        },
+        {
+          'title': 'Remote form',
+          'page': RemoteReactiveFormExample(
+            title: 'Pages',
           ),
         }
       ];

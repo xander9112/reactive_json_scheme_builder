@@ -218,9 +218,23 @@ final List<Map<String, RenderType<FormGroup>>> forceUIRenders = [
     ) {
       String label = JFUtils.getLabel(schema, uiSchema) ?? 'Button';
 
-      return ElevatedButton(
+      final options = ButtonOptions.fromJson(uiSchema.options!);
+
+      if (options.buttonType.isSubmit) {
+        return ElevatedButton(
+            onPressed: () {
+              jsonForms.onSubmit(jsonForms.form.value);
+            },
+            child: Text(label));
+      }
+
+      if (options.buttonType.isReset) {
+        return OutlinedButton(onPressed: jsonForms.onReset, child: Text(label));
+      }
+
+      return TextButton(
           onPressed: () {
-            jsonForms.onSubmit(jsonForms.form.value);
+            jsonForms.onPressed('custom_event');
           },
           child: Text(label));
     }

@@ -8,6 +8,8 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
   JsonFormsReactive({
     required Map<String, dynamic> jsonSchema,
     required this.onSubmit,
+    required this.onReset,
+    required this.onPressed,
     List<Map<String, RenderType<FormGroup>>>? customRenderList,
     Map<String, dynamic>? dataJson,
     Map<String, dynamic>? uiSchema,
@@ -47,6 +49,12 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
 
   @override
   void Function(Map<String, dynamic> value) onSubmit;
+
+  @override
+  void Function() onReset;
+
+  @override
+  void Function(String event) onPressed;
 
   @override
   List<Map<String, RenderType<FormGroup>>> get myRenderList =>

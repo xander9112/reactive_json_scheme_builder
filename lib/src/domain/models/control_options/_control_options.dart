@@ -1,3 +1,4 @@
+export 'button_options.dart';
 export 'control_options.dart';
 export 'date_options.dart';
 export 'number_options.dart';

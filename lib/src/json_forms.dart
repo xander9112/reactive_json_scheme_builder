@@ -83,6 +83,10 @@ abstract class JsonForms<FormType> {
 
   late final void Function(Map<String, dynamic> value) onSubmit;
 
+  late final void Function() onReset;
+
+  late final void Function(String event) onPressed;
+
   List<Map<String, RenderType<FormType>>> get myRenderList;
 
   List<Widget> createWidgets(
