@@ -1,4 +1,4 @@
-const fullJsonSchemaStr = r'''
+const pagesJsonSchemaStr = r'''
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",

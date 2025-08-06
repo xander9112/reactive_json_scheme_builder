@@ -31,23 +31,36 @@ class _ReactivePasswordControlState extends State<ReactivePasswordControl> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: ReactiveTextField<String>(
-        formControlName: widget.formControlName,
-        obscureText: _obscureText,
-        decoration: InputDecoration(
-          labelText: widget.label,
-          helperText: widget.description,
-          border: const OutlineInputBorder(),
-          suffixIcon: IconButton(
-            icon: Icon(
-              _obscureText ? Icons.visibility_off : Icons.visibility,
+    return ReactiveFormField<String, String>(
+      formControlName: widget.formControlName,
+      builder: (field) {
+        final control = JsonSchemeFormControl.fromFormControl(field.control);
+        if (!control.visible) {
+          return const SizedBox();
+        }
+
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 16.0),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 16.0),
+            child: ReactiveTextField<String>(
+              formControlName: widget.formControlName,
+              obscureText: _obscureText,
+              decoration: InputDecoration(
+                labelText: widget.label,
+                helperText: widget.description,
+                border: const OutlineInputBorder(),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscureText ? Icons.visibility_off : Icons.visibility,
+                  ),
+                  onPressed: _toggleVisibility,
+                ),
+              ),
             ),
-            onPressed: _toggleVisibility,
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

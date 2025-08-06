@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
 
-class ReactiveTextControl extends StatelessWidget {
-  const ReactiveTextControl({
+class ReactiveSliderControl extends StatelessWidget {
+  const ReactiveSliderControl({
     required this.formControlName,
     required this.options,
     this.path,
@@ -11,7 +11,6 @@ class ReactiveTextControl extends StatelessWidget {
     this.helper,
     this.hint,
     super.key,
-    this.keyboardType = TextInputType.text,
     this.inputFormatters,
   });
 
@@ -21,9 +20,7 @@ class ReactiveTextControl extends StatelessWidget {
   final String? hint;
   final List<String>? path;
 
-  final TextInputType keyboardType;
-
-  final TextOptions options;
+  final SliderOptions options;
 
   final List<TextInputFormatter>? inputFormatters;
 
@@ -40,28 +37,30 @@ class ReactiveTextControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ReactiveFormField<String, String>(
+    return ReactiveFormField<num, num>(
       formControlName: formControlName,
       validationMessages: validationMessages,
       builder: (field) {
         final control = JsonSchemeFormControl.fromFormControl(field.control);
+
         if (!control.visible) {
           return const SizedBox();
         }
 
         return Padding(
           padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 16.0),
-          child: ReactiveTextField<String>(
-            formControlName: formControlName,
-            keyboardType: keyboardType,
-            inputFormatters: inputFormatters,
-            validationMessages: validationMessages,
-            decoration: InputDecoration(
-              labelText: label,
-              helperText: helper,
-              hintText: hint,
-              border: const OutlineInputBorder(),
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (label != null) Text(label ?? ''),
+              ReactiveSlider(
+                formControlName: formControlName,
+                max: options.max.toDouble(),
+                labelBuilder: (value) => '$value',
+                min: options.min.toDouble(),
+                divisions: options.max,
+              ),
+            ],
           ),
         );
       },

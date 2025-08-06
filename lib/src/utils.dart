@@ -171,6 +171,16 @@ abstract class JFUtils {
 
     return search(root);
   }
+
+  static String? getLastNameFromPath(String path) {
+    final items = path.split('/');
+
+    if (items.isNotEmpty) {
+      return items.last;
+    }
+
+    return null;
+  }
 }
 
 class RegexPattern {

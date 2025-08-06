@@ -23,16 +23,21 @@ class ReactiveRadioControl extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: Column(
-        children: (enumValues as List<Map>).map(
-          (e) {
-            return ReactiveRadioListTile(
-              formControlName: formControlName,
-              value: e.entries.first.key,
-              title: Text(e.entries.first.value.toString()),
-              secondary: description != null ? Text(description ?? '') : null,
-            );
-          },
-        ).toList(),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (label != null) Text(label ?? ''),
+          ...(enumValues as List<Map>).map(
+            (e) {
+              return ReactiveRadioListTile(
+                contentPadding: EdgeInsets.zero,
+                formControlName: formControlName,
+                value: e.entries.first.key,
+                title: Text(e.entries.first.value.toString()),
+                secondary: description != null ? Text(description ?? '') : null,
+              );
+            },
+          ),
+        ],
       ),
     );
   }

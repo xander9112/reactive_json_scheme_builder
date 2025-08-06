@@ -1,4 +1,4 @@
-const fullUiSchemaStr = r'''
+const pagesUiSchemaStr = r'''
 {
     "type": "GRID_COMPONENT",
     "options": {
@@ -21,7 +21,7 @@ const fullUiSchemaStr = r'''
             "type": "DIVIDER"
         },
         {
-            "type": "TABS_COMPONENT",
+            "type": "PAGES",
             "options": {
                 "display": {},
                 "data": {

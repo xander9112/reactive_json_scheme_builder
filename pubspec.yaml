@@ -10,6 +10,7 @@ dependencies:
   collection: ^1.19.0
   flutter:
     sdk: flutter
+  intl: ^0.20.2
   mask_text_input_formatter: ^2.9.0
   reactive_date_range_picker: ^2.3.0
   reactive_date_time_picker: ^5.0.0

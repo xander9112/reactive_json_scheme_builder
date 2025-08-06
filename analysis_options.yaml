@@ -26,6 +26,7 @@ analyzer:
     invalid_annotation_target: ignore
     one_member_abstracts: ignore
     public_member_api_docs: ignore
+    avoid_equals_and_hash_code_on_mutable_classes: ignore
 
   # Exclude auto-generated files from dart analysis
   exclude:

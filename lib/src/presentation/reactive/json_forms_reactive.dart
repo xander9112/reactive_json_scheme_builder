@@ -116,12 +116,12 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
             path: newPath,
           );
         case 'array':
-          // controls[name] = _parseArray(
-          //   value.items,
-          //   requiredList,
-          //   path: newPath,
-          // );
-          break;
+          controls[name] = _parseArray(
+            {name: value},
+            requiredList,
+            path: newPath,
+          );
+
         case 'string':
         case 'number':
         case 'integer':
@@ -159,32 +159,33 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
   }
 
   // Преобразует тип "array" в FormArray
-  // FormArray<dynamic> _parseArray(
-  //   List<JsonSchema4>? items,
-  //   List<String>? requiredList, {
-  //   String path = '',
-  // }) {
-  //   if (items == null) {
-  //     return FormArray([]);
-  //   }
+  AbstractControl<dynamic> _parseArray(
+    Map<String, JsonSchema4>? properties,
+    List<String>? requiredList, {
+    String path = '',
+  }) {
+    if (properties?.entries.first.value.isDate ?? false) {
+      return JsonSchemeFormControl<DateTimeRange>(
+        value: DateRangeValueAccessor.parse(
+          JFUtils.getValueFromPath(data, path.split('.'))
+              as Map<String, dynamic>?,
+        ),
+      );
+    }
 
-  //   final controls = <AbstractControl<dynamic>>[];
+    if (properties?.entries.first.value.items?.isNumber ?? false) {
+      return JsonSchemeFormControl<RangeValues>(
+        value: RangeSliderValueAccessor.parse(
+          JFUtils.getValueFromPath(data, path.split('.'))
+              as Map<String, dynamic>?,
+        ),
+      );
+    }
 
-  //   for (final element in items) {
-  //     switch (element.type) {
-  //       case 'object':
-  //         controls
-  //             .add(_parseObject(element.properties, requiredList, path: path));
-  //       case 'array':
-  //         controls.add(_parseArray(element.items, requiredList, path: path));
-  //       default:
-  //         controls.add(_buildControl({'': element}, requiredList, path: path));
-  //         print(element);
-  //     }
-  //   }
+    final controls = <AbstractControl<dynamic>>[];
 
-  //   return FormArray(controls);
-  // }
+    return FormArray(controls);
+  }
 
   AbstractControl<dynamic> _buildControl(
     Map<String, JsonSchema4> schema,
@@ -201,22 +202,27 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
 
     switch (type) {
       case 'string':
-        if (controlProperties.format == 'date') {
+        if ([
+          'date',
+          'date-time',
+          'time',
+        ].contains(controlProperties.format)) {
           return JsonSchemeFormControl<DateTime>(
             validators: _parseValidators(schema, requiredList, path),
             value: DateTime.tryParse(value.toString()),
             disabled: readOnly,
           );
         }
+
         return JsonSchemeFormControl<String>(
           validators: _parseValidators(schema, requiredList, path),
           value: readOnly ? schema['const'].toString() : value as String?,
           disabled: readOnly,
         );
       case 'number':
-        return JsonSchemeFormControl<double>(
+        return JsonSchemeFormControl<num>(
           validators: _parseValidators(schema, requiredList, path),
-          value: double.tryParse(value.toString()),
+          value: num.tryParse(value.toString()),
           disabled: readOnly,
         );
       case 'integer':
@@ -257,16 +263,19 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
 
     if (uiSchemaOptions != null) {
       final type = uiSchemaOptions['type'] as String;
-      final minimum = uiSchemaOptions['minimum'] as num?;
-      final maximum = uiSchemaOptions['maximum'] as num?;
+      final minimum = uiSchemaOptions['minimum'] as num? ??
+          schema.entries.first.value.minLength;
+      final maximum = uiSchemaOptions['maximum'] as num? ??
+          schema.entries.first.value.maxLength;
       final pattern = uiSchemaOptions['pattern'] as String?;
+      final isEmail = schema.entries.first.value.format == 'email';
 
       if (pattern != null) {
         validators.add(Validators.pattern(pattern));
       }
 
       if (minimum != null) {
-        if (type == 'string') {
+        if (type == 'string' || type == 'email' || type == 'url') {
           validators.add(Validators.minLength(minimum.toInt()));
         }
 
@@ -276,13 +285,17 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
       }
 
       if (maximum != null) {
-        if (type == 'string') {
+        if (type == 'string' || type == 'email' || type == 'url') {
           validators.add(Validators.maxLength(maximum.toInt()));
         }
 
         if (type == 'number') {
           validators.add(Validators.max(maximum.toInt()));
         }
+      }
+
+      if (isEmail) {
+        validators.add(Validators.email);
       }
     }
 
@@ -334,5 +347,46 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
   @override
   void dispose() {
     formSubscription?.cancel();
+  }
+
+  @override
+  Map<String, dynamic> normalizeFormData(Map<String, Object?> input) {
+    return _convertMap(input);
+  }
+
+  Map<String, dynamic> _convertMap(Map<String, Object?> map) {
+    return map.map((key, value) => MapEntry(key, _normalizeValue(value)));
+  }
+
+  dynamic _normalizeValue(dynamic value) {
+    if (value == null) return null;
+
+    if (value is DateTime) {
+      return value.toIso8601String();
+    }
+
+    if (value is DateTimeRange) {
+      return {
+        'start': value.start.toIso8601String(),
+        'end': value.end.toIso8601String(),
+      };
+    }
+
+    if (value is RangeValues) {
+      return {
+        'start': value.start,
+        'end': value.end,
+      };
+    }
+
+    if (value is Map) {
+      return _convertMap(Map<String, Object?>.from(value));
+    }
+
+    if (value is List) {
+      return value.map(_normalizeValue).toList();
+    }
+
+    return value;
   }
 }

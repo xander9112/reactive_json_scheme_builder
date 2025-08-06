@@ -6,17 +6,22 @@ class ReactiveTextMaskControl extends StatefulWidget {
   const ReactiveTextMaskControl({
     required this.formControlName,
     required this.mask,
+    required this.options,
     this.path,
     this.label,
     super.key,
-    this.description,
+    this.helper,
+    this.hint,
   });
 
   final String formControlName;
   final String? label;
-  final String? description;
+  final String? helper;
+  final String? hint;
   final String mask;
   final List<String>? path;
+
+  final TextOptions options;
 
   @override
   State<ReactiveTextMaskControl> createState() =>
@@ -29,26 +34,26 @@ class _ReactiveTextMaskControlState extends State<ReactiveTextMaskControl> {
   @override
   void initState() {
     maskFormatter = MaskTextInputFormatter(
-      mask: widget.mask.replaceAll('1', '#'), // '+1 (###) ###-##-##',
-      filter: {'#': RegExp('[0-9]')},
+      mask: widget.mask,
+      filter: {
+        'a': RegExp('[A-Za-z]'),
+        '9': RegExp(r'\d'),
+        '*': RegExp('[A-Za-z0-9]'),
+      },
     );
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: ReactiveTextField<String>(
-        formControlName: widget.formControlName,
-        inputFormatters: [maskFormatter],
-        keyboardType: TextInputType.number,
-        decoration: InputDecoration(
-          labelText: widget.label,
-          helperText: widget.mask,
-          border: const OutlineInputBorder(),
-        ),
-      ),
+    return ReactiveTextControl(
+      formControlName: widget.formControlName,
+      inputFormatters: [maskFormatter],
+      keyboardType: TextInputType.number,
+      label: widget.label,
+      options: widget.options,
+      hint: widget.hint ?? widget.mask,
+      helper: widget.helper,
     );
   }
 }

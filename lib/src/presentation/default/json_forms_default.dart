@@ -265,4 +265,39 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
 
   @override
   void dispose() {}
+
+  @override
+  @override
+  Map<String, dynamic> normalizeFormData(Map<String, Object?> input) {
+    return _convertMap(input);
+  }
+
+  Map<String, dynamic> _convertMap(Map<String, Object?> map) {
+    return map.map((key, value) => MapEntry(key, _normalizeValue(value)));
+  }
+
+  dynamic _normalizeValue(dynamic value) {
+    if (value == null) return null;
+
+    if (value is DateTime) {
+      return value.toIso8601String();
+    }
+
+    if (value is DateTimeRange) {
+      return {
+        'start': value.start.toIso8601String(),
+        'end': value.end.toIso8601String(),
+      };
+    }
+
+    if (value is Map) {
+      return _convertMap(Map<String, Object?>.from(value));
+    }
+
+    if (value is List) {
+      return value.map(_normalizeValue).toList();
+    }
+
+    return value;
+  }
 }

@@ -5,6 +5,7 @@ import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
 class ReactiveNumberControl extends StatefulWidget {
   const ReactiveNumberControl({
     required this.formControlName,
+    required this.options,
     this.path,
     this.label,
     super.key,
@@ -15,6 +16,8 @@ class ReactiveNumberControl extends StatefulWidget {
   final String? label;
   final String? description;
   final List<String>? path;
+
+  final NumberOptions options;
 
   @override
   State<ReactiveNumberControl> createState() => _ReactiveNumberControlState();
@@ -28,10 +31,18 @@ class _ReactiveNumberControlState extends State<ReactiveNumberControl> {
       child: ReactiveTextField<num>(
         formControlName: widget.formControlName,
         inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
-          // FilteringTextInputFormatter.allow(RegExp(r'^\d*[.,]?\d*$')) // Чтобы можно было вводить и 12.34 и 12,34
+          // DecimalThousandsFormatter(locale: 'ru_RU'),
+          // FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$')),
+          FilteringTextInputFormatter.allow(
+            RegExp(
+              r'^\d*[.,]?\d*$',
+            ),
+          ), // Чтобы можно было вводить и 12.34 и 12,34
         ],
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        // valueAccessor: NumValueAccessor(
+        //     // locale: 'ru_RU', // или другой локаль
+        //     ),
         decoration: InputDecoration(
           labelText: widget.label,
           helperText: widget.description,

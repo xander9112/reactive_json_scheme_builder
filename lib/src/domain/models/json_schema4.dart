@@ -195,6 +195,9 @@ class JsonSchema4 {
   List<JsonSchema4>? examples;
   Map<String, dynamic>? extensions;
 
+  bool get isDate => format == 'date';
+  bool get isNumber => type == 'number';
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,

@@ -6,6 +6,7 @@ import 'package:reactive_forms_json_scheme/src/_src.dart';
 class ReactiveDateControl extends StatelessWidget {
   const ReactiveDateControl({
     required this.formControlName,
+    required this.options,
     this.path,
     this.label,
     super.key,
@@ -16,6 +17,19 @@ class ReactiveDateControl extends StatelessWidget {
   final String? label;
   final String? description;
   final List<String>? path;
+
+  final DateOptions options;
+
+  ReactiveDatePickerFieldType get type {
+    switch (options.format) {
+      case DateOptionsFormat.date:
+        return ReactiveDatePickerFieldType.date;
+      case DateOptionsFormat.dateTime:
+        return ReactiveDatePickerFieldType.dateTime;
+      case DateOptionsFormat.time:
+        return ReactiveDatePickerFieldType.time;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +48,7 @@ class ReactiveDateControl extends StatelessWidget {
             formControl: control,
             firstDate: DateTime(2000),
             lastDate: DateTime(2100),
+            type: type,
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
               labelText: label,

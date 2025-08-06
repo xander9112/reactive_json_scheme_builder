@@ -27,8 +27,9 @@ final List<Map<String, RenderType<FormGroup>>> forceUIRenders = [
       return ReactiveTextControl(
         formControlName: JFUtils.getFormControlName(schema, uiSchema),
         label: JFUtils.getLabel(schema, uiSchema),
-        description: JFUtils.getDescription(schema, uiSchema),
+        helper: JFUtils.getDescription(schema, uiSchema),
         path: JFUtils.getParts(uiSchema.scope),
+        options: TextOptions.fromJson(uiSchema.options!),
       );
     }
   },
@@ -57,6 +58,7 @@ final List<Map<String, RenderType<FormGroup>>> forceUIRenders = [
         label: JFUtils.getLabel(schema, uiSchema),
         description: JFUtils.getDescription(schema, uiSchema),
         path: JFUtils.getParts(uiSchema.scope),
+        options: TextAreaOptions.fromJson(uiSchema.options!),
       );
     }
   },
@@ -69,9 +71,10 @@ final List<Map<String, RenderType<FormGroup>>> forceUIRenders = [
       return ReactiveTextMaskControl(
         formControlName: JFUtils.getFormControlName(schema, uiSchema),
         label: JFUtils.getLabel(schema, uiSchema),
-        description: JFUtils.getDescription(schema, uiSchema),
+        helper: JFUtils.getDescription(schema, uiSchema),
         path: JFUtils.getParts(uiSchema.scope),
         mask: uiSchema.options?['mask'],
+        options: TextOptions.fromJson(uiSchema.options!),
       );
     }
   },
@@ -86,6 +89,7 @@ final List<Map<String, RenderType<FormGroup>>> forceUIRenders = [
         label: JFUtils.getLabel(schema, uiSchema),
         description: JFUtils.getDescription(schema, uiSchema),
         path: JFUtils.getParts(uiSchema.scope),
+        options: NumberOptions.fromJson(uiSchema.options!),
       );
     }
   },
@@ -133,17 +137,46 @@ final List<Map<String, RenderType<FormGroup>>> forceUIRenders = [
       );
     }
   },
+  // {
+  //   'CHECKBOX': (
+  //     JsonSchema4 schema,
+  //     UISchemaElement uiSchema,
+  //     JsonForms<FormGroup> jsonForms,
+  //   ) {
+  //     return ReactiveCheckboxControl(
+  //       formControlName: JFUtils.getFormControlName(schema, uiSchema),
+  //       label: JFUtils.getLabel(schema, uiSchema),
+  //       description: JFUtils.getDescription(schema, uiSchema),
+  //       path: JFUtils.getParts(uiSchema.scope),
+  //     );
+  //   }
+  // },
+
   {
-    'CHECKBOX': (
+    'SLIDER': (
       JsonSchema4 schema,
       UISchemaElement uiSchema,
       JsonForms<FormGroup> jsonForms,
     ) {
-      return ReactiveCheckboxControl(
+      final JsonSchema4 item = JFUtils.getItemFromJsonScheme(
+          JFUtils.getParts(uiSchema.scope)!, schema);
+
+      if (item.isNumber) {
+        return ReactiveSliderControl(
+          formControlName: JFUtils.getFormControlName(schema, uiSchema),
+          label: JFUtils.getLabel(schema, uiSchema),
+          helper: JFUtils.getDescription(schema, uiSchema),
+          path: JFUtils.getParts(uiSchema.scope),
+          options: SliderOptions.fromJson(uiSchema.options!),
+        );
+      }
+
+      return ReactiveSliderRangeControl(
         formControlName: JFUtils.getFormControlName(schema, uiSchema),
         label: JFUtils.getLabel(schema, uiSchema),
-        description: JFUtils.getDescription(schema, uiSchema),
+        helper: JFUtils.getDescription(schema, uiSchema),
         path: JFUtils.getParts(uiSchema.scope),
+        options: SliderOptions.fromJson(uiSchema.options!),
       );
     }
   },
@@ -158,36 +191,25 @@ final List<Map<String, RenderType<FormGroup>>> forceUIRenders = [
         label: JFUtils.getLabel(schema, uiSchema),
         description: JFUtils.getDescription(schema, uiSchema),
         path: JFUtils.getParts(uiSchema.scope),
+        options: DateOptions.fromJson(uiSchema.options!),
       );
     }
   },
-
-  // {
-  //   'DATE_RANGE': (
-  //     JsonSchema4 schema,
-  //     UISchemaElement uiSchema,
-  //     JsonForms<FormGroup> jsonForms,
-  //   ) {
-  //     final List<String> parts = uiSchema.scope.split('/')..removeAt(0);
-  //     String label = uiSchema.label ?? camelCaseToWords(parts.last);
-  //     final String formControlName =
-  //         parts.whereNot((element) => element == 'properties').join('.');
-
-  //     if (schema.required != null && schema.required!.contains(parts.last)) {
-  //       label += '*';
-  //     }
-
-  //     final JsonSchema4 item = getItemFromJsonScheme(parts, schema);
-
-  //     return ReactiveRangeDateControl(
-  //       formControlName: formControlName,
-  //       label: label,
-  //       callback: (data) {},
-  //       path: getParts(uiSchema.scope),
-  //       jsonData: const {},
-  //     );
-  //   }
-  // },
+  {
+    'DATE_RANGE': (
+      JsonSchema4 schema,
+      UISchemaElement uiSchema,
+      JsonForms<FormGroup> jsonForms,
+    ) {
+      return ReactiveDateRangeControl(
+        formControlName: JFUtils.getFormControlName(schema, uiSchema),
+        label: JFUtils.getLabel(schema, uiSchema),
+        description: JFUtils.getDescription(schema, uiSchema),
+        path: JFUtils.getParts(uiSchema.scope),
+        options: DateOptions.fromJson(uiSchema.options!),
+      );
+    }
+  },
   {
     'BUTTON': (
       JsonSchema4 schema,
@@ -236,6 +258,20 @@ final List<Map<String, RenderType<FormGroup>>> forceUIRenders = [
       JsonForms<FormGroup> jsonForms,
     ) {
       return TabComponent(
+        uiSchema: uiSchema,
+        schema: schema,
+        jsonForms: jsonForms,
+        createWidgets: jsonForms.createWidgets,
+      );
+    }
+  },
+  {
+    PagesComponent.type: (
+      JsonSchema4 schema,
+      UISchemaElement uiSchema,
+      JsonForms<FormGroup> jsonForms,
+    ) {
+      return PagesComponent(
         uiSchema: uiSchema,
         schema: schema,
         jsonForms: jsonForms,

@@ -1,3 +1,5 @@
+import 'package:reactive_forms_json_scheme/src/_src.dart';
+
 class UISchemaElement {
   UISchemaElement({
     this.type,
@@ -31,6 +33,14 @@ class UISchemaElement {
         },
       ).toList(),
       rule: json['rule'] as Map<String, dynamic>?,
+      options: {
+        'name': JFUtils.getLastNameFromPath(path),
+        'type': json['type'],
+        'format': json['format'],
+
+// final String name;
+// final String type;
+      },
     );
   }
 

@@ -3,7 +3,56 @@ import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
 
 enum PropertyType { string, number, integer, boolean, array, object }
 
-enum PropertyFormat { date, time, email, hostname, uri }
+enum PropertyFormat {
+  date,
+  time,
+  dateTime,
+  email,
+  hostname,
+  uri;
+
+  bool get isDateTime => this == date || this == dateTime || this == time;
+
+// static bool isDate(String value) {
+//   return value ==
+// }
+
+  String get value {
+    switch (this) {
+      case PropertyFormat.date:
+        return 'date';
+      case PropertyFormat.time:
+        return 'time';
+      case PropertyFormat.dateTime:
+        return 'date-time';
+      case PropertyFormat.email:
+        return 'email';
+      case PropertyFormat.hostname:
+        return 'hostname';
+      case PropertyFormat.uri:
+        return 'uri';
+    }
+  }
+
+  static PropertyFormat? fromString(String value) {
+    switch (value) {
+      case 'date':
+        return PropertyFormat.date;
+      case 'time':
+        return PropertyFormat.time;
+      case 'date-time':
+        return PropertyFormat.dateTime;
+      case 'email':
+        return PropertyFormat.email;
+      case 'hostname':
+        return PropertyFormat.hostname;
+      case 'uri':
+        return PropertyFormat.uri;
+      default:
+        return null;
+    }
+  }
+}
 
 abstract class JsonForms<FormType> {
   JsonForms({
@@ -45,4 +94,6 @@ abstract class JsonForms<FormType> {
   Widget getFormWidget(BuildContext context, {EdgeInsets padding});
 
   void dispose();
+
+  Map<String, dynamic> normalizeFormData(Map<String, Object?> input);
 }

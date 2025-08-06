@@ -59,12 +59,14 @@ List<Map<String, RenderType<FormGroup>>> reactiveRenderList(
 
           switch (item.type) {
             case 'string':
-              if (item.format == PropertyFormat.date.name) {
+              if (PropertyFormat.fromString(item.format ?? '')?.isDateTime ??
+                  false) {
                 return ReactiveDateControl(
                   formControlName: JFUtils.getFormControlName(schema, uiSchema),
                   label: JFUtils.getLabel(schema, uiSchema),
                   description: JFUtils.getDescription(schema, uiSchema),
                   path: JFUtils.getParts(uiSchema.scope),
+                  options: DateOptions.fromJson(uiSchema.options!),
                 );
               }
 
@@ -72,8 +74,9 @@ List<Map<String, RenderType<FormGroup>>> reactiveRenderList(
                 return ReactiveEmailControl(
                   formControlName: JFUtils.getFormControlName(schema, uiSchema),
                   label: JFUtils.getLabel(schema, uiSchema),
-                  description: item.description,
+                  helper: item.description,
                   path: JFUtils.getParts(uiSchema.scope),
+                  options: TextOptions.fromJson(uiSchema.options!),
                 );
               }
 
@@ -81,8 +84,9 @@ List<Map<String, RenderType<FormGroup>>> reactiveRenderList(
                 return ReactiveUriControl(
                   formControlName: JFUtils.getFormControlName(schema, uiSchema),
                   label: JFUtils.getLabel(schema, uiSchema),
-                  description: item.description,
+                  helper: item.description,
                   path: JFUtils.getParts(uiSchema.scope),
+                  options: TextOptions.fromJson(uiSchema.options!),
                 );
               }
 
@@ -99,8 +103,9 @@ List<Map<String, RenderType<FormGroup>>> reactiveRenderList(
               return ReactiveTextControl(
                 formControlName: JFUtils.getFormControlName(schema, uiSchema),
                 label: JFUtils.getLabel(schema, uiSchema),
-                description: JFUtils.getDescription(schema, uiSchema),
+                helper: JFUtils.getDescription(schema, uiSchema),
                 path: JFUtils.getParts(uiSchema.scope),
+                options: TextOptions.fromJson(uiSchema.options!),
               );
             case 'boolean':
               return ReactiveCheckboxControl(
@@ -122,9 +127,37 @@ List<Map<String, RenderType<FormGroup>>> reactiveRenderList(
                 label: JFUtils.getLabel(schema, uiSchema),
                 description: JFUtils.getDescription(schema, uiSchema),
                 path: JFUtils.getParts(uiSchema.scope),
+                options: NumberOptions.fromJson(uiSchema.options!),
               );
+            // case 'array':
+            //   final JsonSchema4 item = JFUtils.getItemFromJsonScheme(
+            //     JFUtils.getParts(uiSchema.scope)!,
+            //     schema,
+            //   );
+
+            //   print(item.type);
+            //   if (item.isNumber) {
+            //     return ReactiveSliderControl(
+            //       formControlName: JFUtils.getFormControlName(schema, uiSchema),
+            //       label: JFUtils.getLabel(schema, uiSchema),
+            //       helper: JFUtils.getDescription(schema, uiSchema),
+            //       path: JFUtils.getParts(uiSchema.scope),
+            //       options: SliderOptions.fromJson(uiSchema.options!),
+            //     );
+            //   }
+
+            //   return const SizedBox();
+
+            //   return ReactiveSliderRangeControl(
+            //     formControlName: JFUtils.getFormControlName(schema, uiSchema),
+            //     label: JFUtils.getLabel(schema, uiSchema),
+            //     helper: JFUtils.getDescription(schema, uiSchema),
+            //     path: JFUtils.getParts(uiSchema.scope),
+            //     options: SliderOptions.fromJson(uiSchema.options!),
+            //   );
+
             default:
-              return Container();
+              return const SizedBox();
           }
         },
       },
