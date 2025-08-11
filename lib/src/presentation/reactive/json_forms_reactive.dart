@@ -13,6 +13,7 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
     List<Map<String, RenderType<FormGroup>>>? customRenderList,
     Map<String, dynamic>? dataJson,
     Map<String, dynamic>? uiSchema,
+    this.sources = const {},
   }) {
     jsonSchemaDTO = JsonSchema4.fromJson(jsonSchema);
     uiSchemaDTO = uiSchema != null
@@ -55,6 +56,9 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
 
   @override
   void Function(String event) onPressed;
+
+  @override
+  final Map<String, dynamic> sources;
 
   @override
   List<Map<String, RenderType<FormGroup>>> get myRenderList =>
@@ -270,7 +274,7 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
     }
 
     if (uiSchemaOptions != null) {
-      final type = uiSchemaOptions['type'] as String;
+      final type = schema.entries.first.value.type;
       final minimum = uiSchemaOptions['minimum'] as num? ??
           schema.entries.first.value.minLength;
       final maximum = uiSchemaOptions['maximum'] as num? ??

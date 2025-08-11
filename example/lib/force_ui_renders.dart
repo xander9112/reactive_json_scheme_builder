@@ -1,3 +1,4 @@
+import 'package:example/table.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
 
@@ -191,7 +192,12 @@ final List<Map<String, RenderType<FormGroup>>> forceUIRenders = [
         label: JFUtils.getLabel(schema, uiSchema),
         description: JFUtils.getDescription(schema, uiSchema),
         path: JFUtils.getParts(uiSchema.scope),
-        options: DateOptions.fromJson(uiSchema.options!),
+        options: DateOptions.fromJson({
+          ...uiSchema.options!,
+          'format': JFUtils.getItemFromJsonScheme(
+                  JFUtils.getParts(uiSchema.scope)!, schema)
+              .format
+        }),
       );
     }
   },
@@ -206,7 +212,12 @@ final List<Map<String, RenderType<FormGroup>>> forceUIRenders = [
         label: JFUtils.getLabel(schema, uiSchema),
         description: JFUtils.getDescription(schema, uiSchema),
         path: JFUtils.getParts(uiSchema.scope),
-        options: DateOptions.fromJson(uiSchema.options!),
+        options: DateOptions.fromJson({
+          ...uiSchema.options!,
+          'format': JFUtils.getItemFromJsonScheme(
+                  JFUtils.getParts(uiSchema.scope)!, schema)
+              .format
+        }),
       );
     }
   },
@@ -248,7 +259,7 @@ final List<Map<String, RenderType<FormGroup>>> forceUIRenders = [
       String label = JFUtils.getLabel(schema, uiSchema) ?? 'Title';
 
       return Padding(
-        padding: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.all(16),
         child: Text(
           label,
           style: TextStyle(fontSize: 18),
@@ -290,6 +301,21 @@ final List<Map<String, RenderType<FormGroup>>> forceUIRenders = [
         schema: schema,
         jsonForms: jsonForms,
         createWidgets: jsonForms.createWidgets,
+      );
+    }
+  },
+  {
+    UiTable.type: (
+      JsonSchema4 schema,
+      UISchemaElement uiSchema,
+      JsonForms<FormGroup> jsonForms,
+    ) {
+      return UiTable(
+        uiSchema: uiSchema,
+        schema: schema,
+        jsonForms: jsonForms,
+        createWidgets: jsonForms.createWidgets,
+        options: TableOptions.fromJson(uiSchema.options!),
       );
     }
   },

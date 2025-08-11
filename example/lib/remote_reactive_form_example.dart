@@ -1,13 +1,12 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:dio/browser.dart';
 import 'package:dio/dio.dart';
-import 'package:dio/io.dart';
 import 'package:example/force_ui_renders.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
+
+import 'client/_client.dart';
 
 class RemoteReactiveFormExample extends StatefulWidget {
   const RemoteReactiveFormExample({
@@ -52,6 +51,13 @@ class _RemoteReactiveFormExampleState extends State<RemoteReactiveFormExample> {
             jsonSchema: data['jsonSchema'] as Map<String, dynamic>,
             uiSchema: data['uiSchema'] as Map<String, dynamic>,
             customRenderList: forceUIRenders,
+            sources: {
+              'users': [
+                {'age': '28', 'last_name': 'Иванов', 'first_name': 'Иван'},
+                {'age': '23', 'last_name': 'Петров', 'first_name': 'Петр'},
+                {'age': '28', 'last_name': 'Долгачев', 'first_name': 'Алексей'},
+              ]
+            },
             onReset: () {
               jsonForms?.form.reset();
             },
@@ -105,6 +111,7 @@ class _RemoteReactiveFormExampleState extends State<RemoteReactiveFormExample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.grey[200],
         title: ReactiveTextField(
           formControl: _control,
           decoration: InputDecoration(labelText: 'ID формы'),
@@ -135,26 +142,7 @@ class _RemoteReactiveFormExampleState extends State<RemoteReactiveFormExample> {
   Dio createUnsafeDio(String baseUrl) {
     final dio = Dio(BaseOptions(baseUrl: baseUrl));
 
-    if (kIsWeb) {
-      dio.httpClientAdapter = BrowserHttpClientAdapter();
-    } else {
-      dio.httpClientAdapter = IOHttpClientAdapter(
-        createHttpClient: () {
-          final client = HttpClient();
-
-          // Отключение валидации сертификатов (НЕ использовать на проде)
-          client.badCertificateCallback = (
-            X509Certificate cert,
-            String host,
-            int port,
-          ) {
-            return true;
-          };
-
-          return client;
-        },
-      );
-    }
+    dio.httpClientAdapter = client;
 
     return dio;
   }

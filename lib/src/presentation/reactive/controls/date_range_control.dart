@@ -35,9 +35,6 @@ class ReactiveDateRangeControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final form = ReactiveForm.of(context)! as FormGroup;
-    // print(form.controls);
-    // return const Text('DATE RANMge');
     return ReactiveFormField<DateTimeRange, DateTimeRange>(
       formControlName: formControlName,
       builder: (field) {

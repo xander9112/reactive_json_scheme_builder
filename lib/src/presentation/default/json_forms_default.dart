@@ -12,6 +12,7 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
     required this.onReset,
     required this.onPressed,
     Map<String, dynamic>? uiSchema,
+    this.sources = const {},
   }) {
     jsonSchemaDTO = JsonSchema4.fromJson(jsonSchema);
     uiSchemaDTO = uiSchema != null
@@ -50,6 +51,9 @@ class JsonFormsDefault implements JsonForms<GlobalKey<FormState>> {
 
   @override
   void Function(String event) onPressed;
+
+  @override
+  final Map<String, dynamic> sources;
 
   @override
   List<Map<String, RenderType<GlobalKey<FormState>>>> get myRenderList => [

@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -36,12 +35,20 @@ enum DateOptionsFormat {
 
 class DateOptions extends ControlOptions {
   DateOptions({
-    required super.name,
-    required super.type,
     required super.validation,
     required super.description,
     required this.format,
   });
+
+  factory DateOptions.fromJson(Map<String, dynamic> map) {
+    final options = ControlOptions.fromJson(map);
+
+    return DateOptions(
+      format: DateOptionsFormat.fromString(map['format'] as String),
+      validation: options.validation,
+      description: options.description,
+    );
+  }
 
   final DateOptionsFormat format;
 
@@ -56,8 +63,6 @@ class DateOptions extends ControlOptions {
   }) {
     return DateOptions(
       format: format ?? this.format,
-      name: name ?? this.name,
-      type: type ?? this.type,
       validation: validation ?? this.validation,
       description: description ?? this.description,
     );
@@ -67,8 +72,6 @@ class DateOptions extends ControlOptions {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'format': format.toStringValue(),
-      'name': name,
-      'type': type,
       'validation': validation,
       'description': description,
     };
@@ -77,38 +80,20 @@ class DateOptions extends ControlOptions {
   @override
   String toJson() => json.encode(toMap());
 
-  factory DateOptions.fromJson(Map<String, dynamic> map) {
-    final options = ControlOptions.fromJson(map);
-
-    return DateOptions(
-      format: DateOptionsFormat.fromString(map['format'] as String),
-      name: options.name,
-      type: options.type,
-      validation: options.validation,
-      description: options.description,
-    );
-  }
-
   @override
   String toString() =>
-      'DateOptions(name: $name, type: $type, validation: $validation, description: $description, format: $format)';
+      'DateOptions(validation: $validation, description: $description, format: $format)';
 
   @override
   bool operator ==(covariant DateOptions other) {
     if (identical(this, other)) return true;
 
     return other.format == format &&
-        other.name == name &&
-        other.type == type &&
         mapEquals(other.validation, validation) &&
         other.description == description;
   }
 
   @override
   int get hashCode =>
-      format.hashCode ^
-      name.hashCode ^
-      type.hashCode ^
-      validation.hashCode ^
-      description.hashCode;
+      format.hashCode ^ validation.hashCode ^ description.hashCode;
 }

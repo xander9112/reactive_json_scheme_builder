@@ -61,6 +61,7 @@ abstract class JsonForms<FormType> {
     required this.onSubmit,
     Map<String, dynamic>? dataJson,
     Map<String, dynamic>? uiSchema,
+    this.sources = const {},
   }) {
     jsonSchemaDTO = JsonSchema4.fromJson(jsonSchema);
     uiSchemaDTO = uiSchema != null
@@ -86,6 +87,8 @@ abstract class JsonForms<FormType> {
   late final void Function() onReset;
 
   late final void Function(String event) onPressed;
+
+  final Map<String, dynamic> sources;
 
   List<Map<String, RenderType<FormType>>> get myRenderList;
 
