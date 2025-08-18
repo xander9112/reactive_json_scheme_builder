@@ -138,8 +138,13 @@ abstract class JFUtils {
   }
 
   static List<Map<dynamic, dynamic>> getItems(
-    UISchemaElement uiSchema,
-  ) {
+    UISchemaElement uiSchema, [
+    List<Map<String, dynamic>>? sourceData,
+  ]) {
+    if (sourceData != null) {
+      return sourceData;
+    }
+
     return ((uiSchema.options?['data'] as Map?)?['items'] as Map?)
             ?.entries
             .map((e) => {e.key: e.value})

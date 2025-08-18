@@ -10,12 +10,10 @@ const pagesUiSchemaStr = r'''
     "elements": [
         {
             "type": "TITLE",
-            "text": "Заголовок",
-            "options": {
-                "label": "Заголовок",
-                "variant": "h4",
-                "name": "title"
-            }
+            "label": "Форма со всеми компонентами",
+              "options": {
+                "variant": "h4"
+              }
         },
         {
             "type": "DIVIDER"

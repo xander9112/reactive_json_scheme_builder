@@ -29,7 +29,6 @@ class PagesComponent extends StatefulWidget {
 class _PagesComponentState extends State<PagesComponent>
     with SingleTickerProviderStateMixin {
   late final List<Map<String, dynamic>> pages;
-  late TabController _tabController;
   int _currentIndex = 0;
 
   List<UISchemaElement> get elements => widget.uiSchema.elements ?? [];
@@ -42,24 +41,9 @@ class _PagesComponentState extends State<PagesComponent>
         .toList();
 
     super.initState();
-    _tabController = TabController(length: pages.length, vsync: this);
-
-    _tabController.addListener(() {
-      if (_tabController.indexIsChanging) {
-        setState(() {
-          _currentIndex = _tabController.index;
-        });
-      }
-    });
   }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  Widget _buildTabContent(UISchemaElement element) {
+  Widget _buildPageContent(UISchemaElement element) {
     final String label = pages.elementAt(_currentIndex)['label'] ?? '';
 
     return Padding(
@@ -98,7 +82,7 @@ class _PagesComponentState extends State<PagesComponent>
     return AnimatedSize(
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
-      child: _buildTabContent(elements[_currentIndex]),
+      child: _buildPageContent(elements[_currentIndex]),
     );
   }
 

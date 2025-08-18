@@ -4,6 +4,7 @@ import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
 class ReactiveDropdownControl extends StatefulWidget {
   const ReactiveDropdownControl({
     required this.formControlName,
+    required this.options,
     this.path,
     this.label,
     super.key,
@@ -17,6 +18,8 @@ class ReactiveDropdownControl extends StatefulWidget {
   final List<String>? path;
 
   final List<dynamic> enumValues;
+
+  final DropDownOptions options;
 
   @override
   State<ReactiveDropdownControl> createState() =>

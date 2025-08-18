@@ -40,9 +40,10 @@ class _ReactiveNumberControlState extends State<ReactiveNumberControl> {
           ), // Чтобы можно было вводить и 12.34 и 12,34
         ],
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        // valueAccessor: NumValueAccessor(
-        //     // locale: 'ru_RU', // или другой локаль
-        //     ),
+        valueAccessor: NumValueAccessor(
+            //     // locale: 'ru_RU', // или другой локаль
+
+            ),
         decoration: InputDecoration(
           labelText: widget.label,
           helperText: widget.description,

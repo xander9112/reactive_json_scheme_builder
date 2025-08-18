@@ -1,6 +1,8 @@
 export 'button_options.dart';
 export 'control_options.dart';
 export 'date_options.dart';
+export 'drop_down_data_options.dart';
+export 'drop_down_options.dart';
 export 'number_options.dart';
 export 'slider_options.dart';
 export 'table_options/_table_options.dart';

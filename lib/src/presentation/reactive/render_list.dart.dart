@@ -61,7 +61,6 @@ List<Map<String, RenderType<FormGroup>>> reactiveRenderList(
             case 'string':
               if (PropertyFormat.fromString(item.format ?? '')?.isDateTime ??
                   false) {
-                print(schema);
                 return ReactiveDateControl(
                   formControlName: JFUtils.getFormControlName(schema, uiSchema),
                   label: JFUtils.getLabel(schema, uiSchema),
@@ -104,6 +103,7 @@ List<Map<String, RenderType<FormGroup>>> reactiveRenderList(
                   description: JFUtils.getDescription(schema, uiSchema),
                   path: JFUtils.getParts(uiSchema.scope),
                   enumValues: item.enumValues! as List<String>,
+                  options: DropDownOptions.fromJson(uiSchema.options!),
                 );
               }
 

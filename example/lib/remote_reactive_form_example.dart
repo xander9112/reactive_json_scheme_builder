@@ -51,11 +51,41 @@ class _RemoteReactiveFormExampleState extends State<RemoteReactiveFormExample> {
             jsonSchema: data['jsonSchema'] as Map<String, dynamic>,
             uiSchema: data['uiSchema'] as Map<String, dynamic>,
             customRenderList: forceUIRenders,
+            dataJson: {
+              "users": [],
+              "slider": 2558.8,
+              "long_input":
+                  "Очень длинный текст который должен влазить в строку",
+              "mask_input": "+7 (123) 518-92-87",
+              "text_input": "Обычный текст",
+              "letter_mask": "a 222 fg",
+              "date_control": "2025-08-12T00:00:00.000",
+              "number_input": 21312,
+              "select_input": "element_2",
+              "slider_range": {"start": 3384.1000000000004, "end": 7026.4},
+              "time_control": "1970-01-01T17:39:00.000",
+              "radio_control": "man",
+              "password_input": "Qwerty!123",
+              "switch_control": true,
+              "datetime_control": "2025-08-13T19:39:00.000",
+              "date_range_control": {
+                "start": "2025-08-12T00:00:00.000",
+                "end": "2025-09-11T00:00:00.000"
+              },
+              "text_validation_input": "поле@mail.ru",
+              "checkbox_group_control": null,
+              "select_data_source_input": "2"
+            },
             sources: {
               'users': [
                 {'age': '28', 'last_name': 'Иванов', 'first_name': 'Иван'},
                 {'age': '23', 'last_name': 'Петров', 'first_name': 'Петр'},
                 {'age': '28', 'last_name': 'Долгачев', 'first_name': 'Алексей'},
+              ],
+              'items': [
+                {"1": "Петров"},
+                {"2": "Иванов"},
+                {"3": "Смирнов"},
               ]
             },
             onReset: () {
