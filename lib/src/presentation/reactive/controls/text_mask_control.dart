@@ -46,14 +46,24 @@ class _ReactiveTextMaskControlState extends State<ReactiveTextMaskControl> {
 
   @override
   Widget build(BuildContext context) {
-    return ReactiveTextControl(
+    return ReactiveFormField(
       formControlName: widget.formControlName,
-      inputFormatters: [maskFormatter],
-      keyboardType: TextInputType.number,
-      label: widget.label,
-      options: widget.options,
-      hint: widget.hint ?? widget.mask,
-      helper: widget.helper,
+      builder: (field) {
+        final control = JsonSchemeFormControl.fromFormControl(field.control);
+        if (!control.visible) {
+          return const SizedBox();
+        }
+
+        return ReactiveTextControl(
+          formControlName: widget.formControlName,
+          inputFormatters: [maskFormatter],
+          keyboardType: TextInputType.number,
+          label: widget.label,
+          options: widget.options,
+          hint: widget.hint ?? widget.mask,
+          helper: widget.helper,
+        );
+      },
     );
   }
 }

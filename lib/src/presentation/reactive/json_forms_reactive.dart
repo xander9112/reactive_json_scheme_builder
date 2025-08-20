@@ -30,6 +30,8 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
 
     addRules(uiSchemaDTO);
 
+    applyRules(data);
+
     initSubscribers();
   }
 
@@ -64,7 +66,7 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
   List<Map<String, RenderType<FormGroup>>> get myRenderList =>
       reactiveRenderList(createWidgets);
 
-//ключ = scope элемента, с правилом
+  //ключ = scope элемента, с правилом
   //мапа для быстрого обхода по всем правилам
   Map<String, Rule> rules = {};
 
@@ -72,24 +74,74 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
 
   void initSubscribers() {
     formSubscription ??= form.valueChanges.listen((data) {
-      //TODO: обсчет правил, применение/откат эффектов
-      rules.forEach(
-        (key, value) {
-          if (key == '#/properties/Address/properties/residentialAddress') {
-            final value2 = JFUtils.getValueFromPath(
-              data!,
-              JFUtils.getParts(value.condition.scope),
-            );
+      if (data == null) return;
 
-            if (value.effect == Effect.hide) {
-              (form.control(JFUtils.getParts(key)!.join('.'))
-                      as JsonSchemeFormControl)
-                  .visible = !(value2 as bool);
-            }
-          }
-        },
-      );
+      applyRules(data);
     });
+  }
+
+  void applyRules(Map<String, Object?> data) {
+    for (final rule in rules.entries) {
+      resolveCondition(rule.value.condition, data)
+          ? applyEffect(rule.key, rule.value.effect)
+          : discardEffect(rule.key, rule.value.effect);
+    }
+  }
+
+  bool resolveCondition(Condition condition, Map<String, Object?> data) {
+    //TODO: обрабатывать правила по пропертям формы:
+    //  "scope": "#",
+    // "schema": {
+    //  "properties": {
+    //    "stringArray": { "contains": { "const": "Foo"  }  }
+    //  },
+    //  "required": ["stringArray", "otherProperty"]
+    // }
+
+    final value = JFUtils.getValueFromPath(
+      data,
+      JFUtils.getParts(condition.scope),
+    );
+
+    if (value == null) {
+      return !condition.failWhenUndefined;
+    }
+
+    return condition.schema.evaluate(value);
+  }
+
+  void applyEffect(String scope, Effect effect) {
+    final control = form.control(JFUtils.getParts(scope)!.join('.'))
+        as JsonSchemeFormControl;
+
+    switch (effect) {
+      case Effect.hide:
+        control.visible = false;
+      case Effect.show:
+        control.visible = true;
+      case Effect.enable:
+        control.markAsEnabled();
+      case Effect.disable:
+        control.markAsDisabled();
+      case Effect.unknown:
+    }
+  }
+
+  void discardEffect(String scope, Effect effect) {
+    final control = form.control(JFUtils.getParts(scope)!.join('.'))
+        as JsonSchemeFormControl;
+
+    switch (effect) {
+      case Effect.hide:
+        control.visible = true;
+      case Effect.show:
+        control.visible = false;
+      case Effect.enable:
+        control.markAsDisabled();
+      case Effect.disable:
+        control.markAsEnabled();
+      case Effect.unknown:
+    }
   }
 
   FormGroup createFormGroup() {

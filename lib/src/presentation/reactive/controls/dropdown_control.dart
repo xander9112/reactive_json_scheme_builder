@@ -48,17 +48,27 @@ class _ReactiveDropdownControlState extends State<ReactiveDropdownControl> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 16.0),
-      child: ReactiveDropdownField<String>(
-        formControlName: widget.formControlName,
-        decoration: InputDecoration(
-          labelText: widget.label,
-          helperText: widget.description,
-          border: const OutlineInputBorder(),
-        ),
-        items: items,
-      ),
+    return ReactiveFormField(
+      formControlName: widget.formControlName,
+      builder: (field) {
+        final control = JsonSchemeFormControl.fromFormControl(field.control);
+        if (!control.visible) {
+          return const SizedBox();
+        }
+
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 16.0),
+          child: ReactiveDropdownField<String>(
+            formControlName: widget.formControlName,
+            decoration: InputDecoration(
+              labelText: widget.label,
+              helperText: widget.description,
+              border: const OutlineInputBorder(),
+            ),
+            items: items,
+          ),
+        );
+      },
     );
   }
 }

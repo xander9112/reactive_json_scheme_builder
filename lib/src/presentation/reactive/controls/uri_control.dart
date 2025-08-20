@@ -20,13 +20,23 @@ class ReactiveUriControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ReactiveTextControl(
+    return ReactiveFormField(
       formControlName: formControlName,
-      label: label,
-      helper: helper,
-      path: path,
-      keyboardType: TextInputType.url,
-      options: options,
+      builder: (field) {
+        final control = JsonSchemeFormControl.fromFormControl(field.control);
+        if (!control.visible) {
+          return const SizedBox();
+        }
+
+        return ReactiveTextControl(
+          formControlName: formControlName,
+          label: label,
+          helper: helper,
+          path: path,
+          keyboardType: TextInputType.url,
+          options: options,
+        );
+      },
     );
   }
 }

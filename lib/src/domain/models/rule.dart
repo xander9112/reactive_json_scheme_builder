@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_catches_without_on_clauses
+
 class Rule {
   Rule({required this.condition, required this.effect});
 
@@ -42,10 +44,11 @@ class Condition {
 
   factory Condition.fromJson(Map<String, dynamic> json) {
     return Condition(
-      scope: json['scope']?.toString() ?? '',
+      scope: json['scope']?.toString() ?? '#',
       schema: ConditionSchema.fromJson(
         json['schema'] as Map<String, dynamic>? ?? {},
       ),
+      failWhenUndefined: (json['failWhenUndefined'] as bool?) ?? false,
     );
   }
 
@@ -65,20 +68,59 @@ class ConditionSchema {
   ConditionSchema({
     this.constCondition,
     this.enumCondition,
+    this.notCondition,
+    this.minimum,
+    this.maximum,
+    this.exclusiveMinimum,
+    this.exclusiveMaximum,
   });
 
   factory ConditionSchema.fromJson(Map<String, dynamic> json) {
     return ConditionSchema(
       constCondition: json['const'],
       enumCondition: json['enum'] as List<dynamic>?,
+      notCondition: json['not'] != null
+          ? ConditionSchema.fromJson(json['not'] as Map<String, dynamic>)
+          : null,
+      minimum: json['minimum'] as num?,
+      maximum: json['maximum'] as num?,
+      exclusiveMinimum: json['exclusiveMinimum'] as num?,
+      exclusiveMaximum: json['exclusiveMaximum'] as num?,
     );
   }
-
-  //TODO: добавить поддержку всей схемы
 
   final dynamic constCondition;
 
   final List<dynamic>? enumCondition;
+
+  final ConditionSchema? notCondition;
+
+  final num? minimum;
+
+  final num? maximum;
+
+  final num? exclusiveMinimum;
+
+  final num? exclusiveMaximum;
+
+  bool evaluate(dynamic value) {
+    try {
+      final results = [
+        if (constCondition != null) value == constCondition,
+        if (enumCondition != null) enumCondition!.contains(value),
+        if (notCondition != null) !notCondition!.evaluate(value),
+        if (minimum != null && value is num) value >= minimum!,
+        if (maximum != null && value is num) value <= maximum!,
+        if (exclusiveMinimum != null && value is num) value > exclusiveMinimum!,
+        if (exclusiveMaximum != null && value is num) value < exclusiveMaximum!,
+      ];
+
+      return results.every((e) => e);
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 
   @override
   String toString() {

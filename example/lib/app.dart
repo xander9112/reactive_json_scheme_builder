@@ -54,6 +54,14 @@ class App extends StatelessWidget {
           ),
         },
         {
+          'title': 'TestExample',
+          'page': ReactiveFormExample(
+            title: 'Pages',
+            schema: jsonDecode(testExampleJsonSchema),
+            uiSchema: jsonDecode(textExampleUiSchema),
+          ),
+        },
+        {
           'title': 'Remote form',
           'page': RemoteReactiveFormExample(
             title: 'Pages',

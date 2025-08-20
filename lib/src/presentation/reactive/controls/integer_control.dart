@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
 
 class ReactiveIntegerControl extends StatefulWidget {
@@ -24,14 +23,24 @@ class ReactiveIntegerControl extends StatefulWidget {
 class _ReactiveIntegerControlState extends State<ReactiveIntegerControl> {
   @override
   Widget build(BuildContext context) {
-    return ReactiveTextField<num>(
+    return ReactiveFormField(
       formControlName: widget.formControlName,
-      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-      keyboardType: TextInputType.number,
-      decoration: InputDecoration(
-        labelText: widget.label,
-        helperText: widget.description,
-      ),
+      builder: (field) {
+        final control = JsonSchemeFormControl.fromFormControl(field.control);
+        if (!control.visible) {
+          return const SizedBox();
+        }
+
+        return ReactiveTextField<num>(
+          formControlName: widget.formControlName,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            labelText: widget.label,
+            helperText: widget.description,
+          ),
+        );
+      },
     );
   }
 }
