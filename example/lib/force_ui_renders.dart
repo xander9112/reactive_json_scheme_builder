@@ -100,13 +100,20 @@ final List<Map<String, RenderType<FormGroup>>> forceUIRenders = [
       UISchemaElement uiSchema,
       JsonForms<FormGroup> jsonForms,
     ) {
+      final options = DropDownOptions.fromJson(uiSchema.options!);
+
+      final data = options.data != null
+          ? jsonForms.sources[options.data?.source]
+              as List<Map<String, dynamic>>?
+          : null;
+
       return ReactiveDropdownControl(
-        formControlName: JFUtils.getFormControlName(schema, uiSchema),
-        label: JFUtils.getLabel(schema, uiSchema),
-        description: JFUtils.getDescription(schema, uiSchema),
-        path: JFUtils.getParts(uiSchema.scope),
-        enumValues: JFUtils.getItems(uiSchema),
-      );
+          formControlName: JFUtils.getFormControlName(schema, uiSchema),
+          label: JFUtils.getLabel(schema, uiSchema),
+          description: JFUtils.getDescription(schema, uiSchema),
+          path: JFUtils.getParts(uiSchema.scope),
+          enumValues: JFUtils.getItems(uiSchema, data),
+          options: DropDownOptions.fromJson(uiSchema.options!));
     }
   },
   {

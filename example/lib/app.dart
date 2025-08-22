@@ -19,31 +19,37 @@ class App extends StatelessWidget {
             uiSchema: jsonDecode(loanUiSchemaStr),
           ),
         },
+        // {
+        //   'title': 'Full json schema',
+        //   'page': ReactiveFormExample(
+        //       title: 'Full json schema',
+        //       schema: jsonDecode(fullJsonSchemaStr),
+        //       uiSchema: jsonDecode(fullUiSchemaStr),
+        //       data: {
+        //         "text_validation_input": "dsdaa@mail.ru",
+        //         "select_input": "element_2",
+        //         "radio_control": "other",
+        //         "letter_mask": "a 111 dd",
+        //         "slider": 5821.299999999999,
+        //         "slider_range": {"start": 6626.8, "end": 7302.7},
+        //         "date_range_control": {
+        //           "start": "2025-08-18T00:00:00.000",
+        //           "end": "2025-09-19T00:00:00.000"
+        //         }
+        //       }),
+        // },
+        // {
+        //   'title': 'Short json schema',
+        //   'page': ReactiveFormExample(
+        //     title: 'Short json schema',
+        //     schema: jsonDecode(shortJsonSchemaStr),
+        //     uiSchema: jsonDecode(shortUiSchemaStr),
+        //   ),
+        // },
         {
-          'title': 'Full json schema',
-          'page': ReactiveFormExample(
-              title: 'Full json schema',
-              schema: jsonDecode(fullJsonSchemaStr),
-              uiSchema: jsonDecode(fullUiSchemaStr),
-              data: {
-                "text_validation_input": "dsdaa@mail.ru",
-                "select_input": "element_2",
-                "radio_control": "other",
-                "letter_mask": "a 111 dd",
-                "slider": 5821.299999999999,
-                "slider_range": {"start": 6626.8, "end": 7302.7},
-                "date_range_control": {
-                  "start": "2025-08-18T00:00:00.000",
-                  "end": "2025-09-19T00:00:00.000"
-                }
-              }),
-        },
-        {
-          'title': 'Short json schema',
-          'page': ReactiveFormExample(
-            title: 'Short json schema',
-            schema: jsonDecode(shortJsonSchemaStr),
-            uiSchema: jsonDecode(shortUiSchemaStr),
+          'title': 'Remote form',
+          'page': RemoteReactiveFormExample(
+            title: 'Pages',
           ),
         },
         {

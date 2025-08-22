@@ -16,7 +16,7 @@ void main() {
         }
       };
 
-      runApp(MaterialApp(home: App()));
+      runApp(MaterialApp(debugShowCheckedModeBanner: false, home: App()));
     },
     (error, stackTrace) {
       // Здесь логируешь или обрабатываешь необработанные ошибки

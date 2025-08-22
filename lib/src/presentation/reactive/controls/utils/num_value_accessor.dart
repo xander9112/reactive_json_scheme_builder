@@ -25,7 +25,8 @@ class NumValueAccessor extends ControlValueAccessor<num, String> {
   NumValueAccessor({
     String locale = 'en_US',
     bool allowFractions = true,
-  })  : _numberFormat = NumberFormat.decimalPattern(locale),
+  })  : _numberFormat = NumberFormat.decimalPattern(),
+        // })  : _numberFormat = NumberFormat.decimalPattern(locale),
         _allowFractions = allowFractions {
     _numberFormat.minimumFractionDigits = 0;
     _numberFormat.maximumFractionDigits = _allowFractions ? 10 : 0;
@@ -33,15 +34,18 @@ class NumValueAccessor extends ControlValueAccessor<num, String> {
   final NumberFormat _numberFormat;
   final bool _allowFractions;
 
+// TODO: Проверить преобразование
   @override
   String modelToViewValue(num? modelValue) {
     if (modelValue == null) return '';
 
     // Для целых чисел используем форматирование без дробной части
     if (modelValue is int && !_allowFractions) {
+      return modelValue.toString();
       return _numberFormat.format(modelValue);
     }
 
+    return modelValue.toString();
     // Для всех случаев конвертируем в double
     return _numberFormat.format(modelValue.toDouble());
   }

@@ -747,7 +747,7 @@ const loanUiSchemaStr = r'''
                         "type": "boolean",
                         "title": "Согласие на обработку персональных данных",
                         "bordered": true,
-                        "description": "Согласие на обработку персональных данных",
+
                         "checkedChildren": "On",
                         "unCheckedChildren": "Off"
                     }
@@ -761,7 +761,7 @@ const loanUiSchemaStr = r'''
                         "type": "boolean",
                         "title": "Согласие на проверку кредитной истории",
                         "bordered": true,
-                        "description": "Согласие на проверку кредитной истории",
+
                         "checkedChildren": "On",
                         "unCheckedChildren": "Off"
                     }
@@ -776,7 +776,7 @@ const loanUiSchemaStr = r'''
                         "title": "Согласие на маркетинговые коммуникации",
                         "default": true,
                         "bordered": true,
-                        "description": "Согласие на маркетинговые коммуникации",
+                        "description": "Чтобы мы могли отправлять вам рекламу",
                         "defaultChecked": true,
                         "checkedChildren": "On",
                         "unCheckedChildren": "Off"

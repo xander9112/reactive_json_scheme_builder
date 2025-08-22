@@ -74,9 +74,10 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
 
   void initSubscribers() {
     formSubscription ??= form.valueChanges.listen((data) {
-      if (data == null) return;
+       if (data == null) return;
 
       applyRules(data);
+
     });
   }
 
