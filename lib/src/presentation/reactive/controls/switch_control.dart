@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reactive_forms/reactive_forms.dart';
+import 'package:reactive_forms_json_scheme/reactive_forms_json_scheme.dart';
 
 class ReactiveSwitchControl extends StatelessWidget {
   const ReactiveSwitchControl({
@@ -17,13 +17,22 @@ class ReactiveSwitchControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: ReactiveSwitchListTile(
-        formControlName: formControlName,
-        title: label != null ? Text(label ?? '') : null,
-        subtitle: description != null ? Text(description ?? '') : null,
-      ),
+    return ReactiveFormField(
+      formControlName: formControlName,
+      builder: (field) {
+        final control = JsonSchemeFormControl.fromFormControl(field.control);
+        if (!control.visible) {
+          return const SizedBox();
+        }
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 16.0),
+          child: ReactiveSwitchListTile(
+            formControlName: formControlName,
+            title: label != null ? Text(label ?? '') : null,
+            subtitle: description != null ? Text(description ?? '') : null,
+          ),
+        );
+      },
     );
   }
 }

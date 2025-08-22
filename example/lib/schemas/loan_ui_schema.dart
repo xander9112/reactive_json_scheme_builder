@@ -138,7 +138,8 @@ const loanUiSchemaStr = r'''
                                     "scope": "#/properties/loanPurpose",
                                     "schema": {
                                         "const": "other"
-                                    }
+                                    },
+                                   "failWhenUndefined": true
                                 }
                             },
                             "type": "INPUT_TEXT",
@@ -538,7 +539,8 @@ const loanUiSchemaStr = r'''
                                             "student",
                                             "unemployed"
                                         ]
-                                    }
+                                    },
+                                    "failWhenUndefined": true
                                 }
                             },
                             "type": "INPUT_TEXT",
@@ -564,7 +566,8 @@ const loanUiSchemaStr = r'''
                                             "student",
                                             "unemployed"
                                         ]
-                                    }
+                                    },
+                                    "failWhenUndefined": true
                                 }
                             },
                             "type": "INPUT_TEXT",
@@ -585,7 +588,8 @@ const loanUiSchemaStr = r'''
                                     "scope": "#/properties/Employment/properties/employmentType",
                                     "schema": {
                                         "const": "student"
-                                    }
+                                    },
+                                    "failWhenUndefined": true
                                 }
                             },
                             "type": "INPUT_NUMBER",
@@ -611,7 +615,8 @@ const loanUiSchemaStr = r'''
                                             "student",
                                             "unemployed"
                                         ]
-                                    }
+                                    },
+                                     "failWhenUndefined": true
                                 }
                             },
                             "type": "INPUT_NUMBER",
@@ -693,7 +698,8 @@ const loanUiSchemaStr = r'''
                                     "scope": "#/properties/Address/properties/sameAsRegistration",
                                     "schema": {
                                         "const": true
-                                    }
+                                    },
+                                     "failWhenUndefined": true
                                 }
                             },
                             "type": "INPUT_TEXT",

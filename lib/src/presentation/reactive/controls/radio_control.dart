@@ -20,25 +20,36 @@ class ReactiveRadioControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (label != null) Text(label ?? ''),
-          ...(enumValues as List<Map>).map(
-            (e) {
-              return ReactiveRadioListTile(
-                contentPadding: EdgeInsets.zero,
-                formControlName: formControlName,
-                value: e.entries.first.key,
-                title: Text(e.entries.first.value.toString()),
-                secondary: description != null ? Text(description ?? '') : null,
-              );
-            },
+    return ReactiveFormField(
+      formControlName: formControlName,
+      builder: (field) {
+        final control = JsonSchemeFormControl.fromFormControl(field.control);
+        if (!control.visible) {
+          return const SizedBox();
+        }
+
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (label != null) Text(label ?? ''),
+              ...(enumValues as List<Map>).map(
+                (e) {
+                  return ReactiveRadioListTile(
+                    contentPadding: EdgeInsets.zero,
+                    formControlName: formControlName,
+                    value: e.entries.first.key,
+                    title: Text(e.entries.first.value.toString()),
+                    secondary:
+                        description != null ? Text(description ?? '') : null,
+                  );
+                },
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

@@ -17,10 +17,19 @@ class ReactiveCheckboxControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ReactiveCheckboxListTile(
+    return ReactiveFormField(
       formControlName: formControlName,
-      title: label != null ? Text(label ?? '') : null,
-      subtitle: description != null ? Text(description ?? '') : null,
+      builder: (field) {
+        final control = JsonSchemeFormControl.fromFormControl(field.control);
+        if (!control.visible) {
+          return const SizedBox();
+        }
+        return ReactiveCheckboxListTile(
+          formControlName: formControlName,
+          title: label != null ? Text(label ?? '') : null,
+          subtitle: description != null ? Text(description ?? '') : null,
+        );
+      },
     );
   }
 }
