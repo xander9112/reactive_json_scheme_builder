@@ -6,4 +6,3 @@ export 'pages_json_schema.dart';
 export 'pages_ui_schema.dart';
 export 'short_json_schema.dart';
 export 'short_ui_schema.dart';
-export 'test_example_schema.dart';

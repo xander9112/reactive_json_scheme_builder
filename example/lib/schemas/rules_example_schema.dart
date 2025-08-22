@@ -1,4 +1,4 @@
-const textExampleUiSchema = r'''
+const rulesExampleUiSchema = r'''
 {
   "type": "VerticalLayout",
   "elements": [
@@ -99,13 +99,74 @@ const textExampleUiSchema = r'''
           "failWhenUndefined": true
         }
       }
+    },
+    {
+      "type": "INPUT_TEXT",
+      "label": "Проверка Contains, наберите test",
+      "scope": "#/properties/contains",
+      "options": {
+        "name": "contains",
+        "type": "string",
+        "title": "contains",
+        "bordered": true,
+        "description": "contains"
+      }
+    },
+    {
+      "type": "INPUT_TEXT",
+      "label": "Видно если выше поле содержит test",
+      "scope": "#/properties/contains1",
+      "options": {
+        "name": "contains1",
+        "type": "string",
+        "title": "contains1",
+        "bordered": true,
+        "description": "contains1"
+      },
+      "rule": {
+        "effect": "SHOW",
+        "condition": {
+          "scope": "#/properties/contains",
+          "schema": {
+            "contains": { "const": "test"}
+          },
+          "failWhenUndefined": true
+        }
+      }
+    },
+     {
+      "type": "INPUT_TEXT",
+      "label": "Видно если заполнены поля name,contains и number, contains содержит test, name равен test, number от 1 включительно до 10 не включительно ",
+      "scope": "#/properties/required",
+      "options": {
+        "name": "required",
+        "type": "string",
+        "title": "required",
+        "bordered": true,
+        "description": "required"
+      },
+      "rule": {
+        "effect": "SHOW",
+        "condition": {
+          "scope": "#",
+          "schema": {
+            "properties": {
+                "contains": { "contains": { "const": "test"  } },
+                "name": { "const": "test" },
+                "number":{ "minimum": 1, "exclusiveMaximum": 10 }
+            },
+            "required": ["name", "contains", "number"]
+          },
+          "failWhenUndefined": true
+        }
+      }
     }
   ]
 }
 
 ''';
 
-const testExampleJsonSchema = r'''
+const rulesExampleJsonSchema = r'''
 {
   "type": "object",
   "properties": {
@@ -148,6 +209,15 @@ const testExampleJsonSchema = r'''
     },
     "number1": {
       "type": "integer"
+    },
+    "contains": {
+      "type": "string"
+    },
+    "contains1": {
+      "type": "string"
+    },
+     "required": {
+      "type": "string"
     }
   }
 }

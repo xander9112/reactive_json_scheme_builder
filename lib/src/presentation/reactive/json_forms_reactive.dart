@@ -89,15 +89,6 @@ class JsonFormsReactive implements JsonForms<FormGroup> {
   }
 
   bool resolveCondition(Condition condition, Map<String, Object?> data) {
-    //TODO: обрабатывать правила по пропертям формы:
-    //  "scope": "#",
-    // "schema": {
-    //  "properties": {
-    //    "stringArray": { "contains": { "const": "Foo"  }  }
-    //  },
-    //  "required": ["stringArray", "otherProperty"]
-    // }
-
     final value = JFUtils.getValueFromPath(
       data,
       JFUtils.getParts(condition.scope),

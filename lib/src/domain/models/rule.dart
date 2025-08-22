@@ -73,6 +73,9 @@ class ConditionSchema {
     this.maximum,
     this.exclusiveMinimum,
     this.exclusiveMaximum,
+    this.required,
+    this.contains,
+    this.properties,
   });
 
   factory ConditionSchema.fromJson(Map<String, dynamic> json) {
@@ -86,6 +89,19 @@ class ConditionSchema {
       maximum: json['maximum'] as num?,
       exclusiveMinimum: json['exclusiveMinimum'] as num?,
       exclusiveMaximum: json['exclusiveMaximum'] as num?,
+      required: json['required'] as List<dynamic>?,
+      contains: json['contains'] != null
+          ? ContainsSchema.fromJson(json['contains'] as Map<String, dynamic>)
+          : null,
+      properties: json['properties'] != null
+          ? (json['properties'] as Map<String, dynamic>)
+              .map<String, ConditionSchema>(
+              (key, value) => MapEntry(
+                key,
+                ConditionSchema.fromJson(value as Map<String, dynamic>),
+              ),
+            )
+          : null,
     );
   }
 
@@ -103,6 +119,12 @@ class ConditionSchema {
 
   final num? exclusiveMaximum;
 
+  final List<dynamic>? required;
+
+  final ContainsSchema? contains;
+
+  final Map<String, ConditionSchema>? properties;
+
   bool evaluate(dynamic value) {
     try {
       final results = [
@@ -113,6 +135,9 @@ class ConditionSchema {
         if (maximum != null && value is num) value <= maximum!,
         if (exclusiveMinimum != null && value is num) value > exclusiveMinimum!,
         if (exclusiveMaximum != null && value is num) value < exclusiveMaximum!,
+        if (contains != null) contains!.evaluate(value),
+        if (required != null) evaluateRequired(value),
+        if (properties != null) evaluateProperties(value),
       ];
 
       return results.every((e) => e);
@@ -122,8 +147,63 @@ class ConditionSchema {
     }
   }
 
+  bool evaluateRequired(dynamic value) {
+    if (value is Map<String, dynamic>) {
+      for (final key in required ?? <String>[]) {
+        if (value[key]?.toString().isEmpty ?? true) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    return false;
+  }
+
+  bool evaluateProperties(dynamic value) {
+    if (value is Map<String, dynamic>) {
+      for (final key in properties!.keys) {
+        final propertyValue = value[key];
+
+        if (propertyValue != null) {
+          final result = properties![key]?.evaluate(value[key]) ?? false;
+
+          if (result == false) {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    return false;
+  }
+
   @override
   String toString() {
     return '{const: $constCondition, enum: $enumCondition}';
+  }
+}
+
+class ContainsSchema {
+  ContainsSchema({required this.constCondition});
+
+  factory ContainsSchema.fromJson(Map<String, dynamic> json) {
+    return ContainsSchema(
+      constCondition: json['const'],
+    );
+  }
+
+  final dynamic constCondition;
+
+  bool evaluate(dynamic value) {
+    if (value is List) {
+      return value.contains(constCondition);
+    } else {
+      return value.toString().contains(constCondition.toString());
+    }
   }
 }

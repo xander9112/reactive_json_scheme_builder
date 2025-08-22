@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:example/schemas/rules_example_schema.dart';
 import 'package:flutter/material.dart';
 
 import 'reactive_form_example.dart';
@@ -54,11 +55,11 @@ class App extends StatelessWidget {
           ),
         },
         {
-          'title': 'TestExample',
+          'title': 'Rules Example',
           'page': ReactiveFormExample(
             title: 'Pages',
-            schema: jsonDecode(testExampleJsonSchema),
-            uiSchema: jsonDecode(textExampleUiSchema),
+            schema: jsonDecode(rulesExampleJsonSchema),
+            uiSchema: jsonDecode(rulesExampleUiSchema),
           ),
         },
         {
