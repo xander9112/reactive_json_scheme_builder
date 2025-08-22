@@ -23,6 +23,21 @@ const rulesExampleUiSchema = r'''
       "type": "DROP_DOWN",
       "label": "Kind of dead",
       "scope": "#/properties/kindOfDead",
+      "options": {
+          "data": {
+                      "items": {
+                        "Zombie": "Zombie",
+                        "Vampire":"Vampire",
+                        "Ghoul":"Ghoul"
+                        }
+                  },
+            "name": "kindOfDead",
+            "type": "string",
+            "title": "Kind of dead",
+            "bordered": true,
+            "listHeight": 256,
+             "description": "Kind of dead"
+      },
       "rule": {
         "effect": "ENABLE",
         "condition": {
@@ -44,6 +59,21 @@ const rulesExampleUiSchema = r'''
       "type": "DROP_DOWN",
       "label": "Kind of vegetables",
       "scope": "#/properties/kindOfVegetables",
+      "options": {
+          "data": {
+                      "items": {
+                        "All": "All",
+                        "Some":"Some",
+                        "Only potatoes":"Only potatoes"
+                        }
+                  },
+            "name": "Kind of vegetables",
+            "type": "string",
+            "title": "Kind of vegetables",
+            "bordered": true,
+            "listHeight": 256,
+             "description": "Kind of vegetables"
+      },
       "rule": {
         "effect": "HIDE",
         "condition": {
@@ -58,6 +88,22 @@ const rulesExampleUiSchema = r'''
       "type": "DROP_DOWN",
       "label": "Vitamin deficiency?",
       "scope": "#/properties/vitaminDeficiency",
+       "options": {
+          "data": {
+                      "items": {
+                        "None": "None",
+                        "Vitamin A": "Vitamin A",
+                        "Vitamin B": "Vitamin B",
+                        "Vitamin C": "Vitamin C"
+                        }
+                  }, 
+            "name": "Vitamin deficiency?",
+            "type": "string",
+            "title": "Vitamin deficiency?",
+            "bordered": true,
+            "listHeight": 256,
+             "description": "Vitamin deficiency?"
+      },
       "rule": {
         "effect": "SHOW",
         "condition": {
@@ -136,7 +182,7 @@ const rulesExampleUiSchema = r'''
     },
      {
       "type": "INPUT_TEXT",
-      "label": "Видно если заполнены поля name,contains и number, contains содержит test, name равен test, number от 1 включительно до 10 не включительно ",
+      "label": "Видно если заполнены поля name,contains, number и kindOfDead, contains содержит test, name равен test, number от 1 включительно до 10 не включительно и kindOfDead выбран Vampire ",
       "scope": "#/properties/required",
       "options": {
         "name": "required",
@@ -153,9 +199,10 @@ const rulesExampleUiSchema = r'''
             "properties": {
                 "contains": { "contains": { "const": "test"  } },
                 "name": { "const": "test" },
-                "number":{ "minimum": 1, "exclusiveMaximum": 10 }
+                "number":{ "minimum": 1, "exclusiveMaximum": 10 },
+                "kindOfDead": { "enum": ["Vampire"]}
             },
-            "required": ["name", "contains", "number"]
+            "required": ["name", "contains", "number", "kindOfDead"]
           },
           "failWhenUndefined": true
         }
